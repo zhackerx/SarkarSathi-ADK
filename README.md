@@ -71,6 +71,27 @@ python app.py
 
 Open **http://localhost:8080** — the Flask server serves both the API and the UI.
 
+#### macOS / Linux (bash)
+
+```bash
+cd SarkarSathi-ADK/backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env        # then edit .env and paste your GOOGLE_API_KEY
+python app.py
+```
+
+### Run with Docker (runs anywhere)
+
+```bash
+# from the project root (where the Dockerfile is)
+docker build -t sarkarsathi-adk .
+docker run -p 8080:8080 -e GOOGLE_API_KEY=your_key sarkarsathi-adk
+```
+
+Then open http://localhost:8080. Omit `-e GOOGLE_API_KEY` to run in offline demo mode.
+
 ### Run the agents in the ADK dev UI (optional)
 
 ```powershell

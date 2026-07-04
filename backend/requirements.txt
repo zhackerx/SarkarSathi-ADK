@@ -2,10 +2,11 @@ Flask==3.0.3
 flask-cors==5.0.0
 python-dotenv==1.0.1
 numpy==1.26.4
-# --- Google AI / Agent stack ---
-google-adk==0.5.0
-google-generativeai==0.8.3
-google-genai==0.3.0
+gunicorn==23.0.0  # production WSGI server (Docker / Cloud Run)
+# --- Google AI / Agent stack (validated versions) ---
+google-adk==2.3.0
+google-generativeai==0.8.6
+google-genai==2.10.0
 # --- Optional Google Cloud services (OCR / Translation / Speech / BigQuery) ---
 # Uncomment for full cloud deployment:
 # google-cloud-vision==3.7.4
