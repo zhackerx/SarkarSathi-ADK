@@ -28,6 +28,13 @@ from services.rag import rank_schemes
 
 
 class AgentEngine:
+    # Language code -> name, so the AI can reply in the citizen's chosen language.
+    _LANG_NAMES = {
+        "en": "English", "hi": "Hindi (Devanagari)", "bn": "Bengali", "ta": "Tamil",
+        "te": "Telugu", "mr": "Marathi", "kn": "Kannada", "gu": "Gujarati",
+        "pa": "Punjabi", "ml": "Malayalam", "or": "Odia",
+    }
+
     def __init__(self) -> None:
         self.settings = get_settings()
         self.adk_ready = self._probe_adk()
@@ -286,7 +293,7 @@ class AgentEngine:
             )
         )
         runner = Runner(agent=root_agent, app_name=app_name, session_service=session_service)
-        lang_hint = "Respond in Hindi (Devanagari)." if lang == "hi" else "Respond in English."
+        lang_hint = f"Respond in {self._LANG_NAMES.get(lang, 'English')}."
         content = types.Content(role="user", parts=[types.Part(text=f"{message}\n\n{lang_hint}")])
 
         final = ""
@@ -327,7 +334,7 @@ class AgentEngine:
         if not self.settings.gemini_enabled:
             return self._template_explanation(profile, schemes, lang)
 
-        lang_name = "Hindi (Devanagari)" if lang == "hi" else "English"
+        lang_name = self._LANG_NAMES.get(lang, "English")
         context = "\n".join(
             f"- {s['scheme_name']} ({s['level']}, {s['state']}) | benefit: {s['benefit_text']} | "
             f"why: {'; '.join(s.get('reasons', []))}"

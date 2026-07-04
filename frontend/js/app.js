@@ -2,7 +2,49 @@
 const API = ""; // same origin (Flask serves this page)
 
 const el = (id) => document.getElementById(id);
-const lang = () => document.querySelector('input[name="lang"]:checked').value;
+const lang = () => (el("langSelect") ? el("langSelect").value : "en");
+
+// Supported languages: display name + speech locale (for voice input & guide).
+const LANGS = {
+  en: { name: "English", locale: "en-IN" },
+  hi: { name: "हिंदी", locale: "hi-IN" },
+  bn: { name: "বাংলা", locale: "bn-IN" },
+  ta: { name: "தமிழ்", locale: "ta-IN" },
+  te: { name: "తెలుగు", locale: "te-IN" },
+  mr: { name: "मराठी", locale: "mr-IN" },
+  kn: { name: "ಕನ್ನಡ", locale: "kn-IN" },
+  gu: { name: "ગુજરાતી", locale: "gu-IN" },
+  pa: { name: "ਪੰਜਾਬੀ", locale: "pa-IN" },
+  ml: { name: "മലയാളം", locale: "ml-IN" },
+  or: { name: "ଓଡ଼ିଆ", locale: "or-IN" },
+};
+
+// Step-by-step voice guide (spoken aloud + shown as large text).
+// Reliable, hand-written text in English & Hindi; other languages use English.
+const GUIDE = {
+  en: {
+    heading: "How to use SarkarSathi",
+    intro: "Welcome to SarkarSathi. I help you find government schemes you can get. Here is how to use me by voice.",
+    steps: [
+      "Tap the round microphone button.",
+      "Speak about yourself in one sentence — your age, your state, and your work.",
+      "Wait a moment. I will show the schemes you may get and how much benefit.",
+      "You can also type in the box, or fill the simple form below.",
+    ],
+    example: "Example — say: “I am a 65-year-old retired person from Bihar with a low income.”",
+  },
+  hi: {
+    heading: "सरकारसाथी का उपयोग कैसे करें",
+    intro: "सरकारसाथी में आपका स्वागत है। मैं आपको सरकारी योजनाएँ खोजने में मदद करता हूँ। इसे आवाज़ से इस तरह इस्तेमाल करें।",
+    steps: [
+      "गोल माइक बटन दबाएँ।",
+      "एक वाक्य में अपने बारे में बताएँ — अपनी उम्र, अपना राज्य और अपना काम।",
+      "थोड़ी देर रुकें। मैं आपके लिए उपलब्ध योजनाएँ और लाभ दिखाऊँगा।",
+      "आप बॉक्स में लिख भी सकते हैं, या नीचे दिया सरल फ़ॉर्म भर सकते हैं।",
+    ],
+    example: "उदाहरण — कहें: “मैं बिहार से पैंसठ वर्ष का सेवानिवृत्त व्यक्ति हूँ, आय कम है।”",
+  },
+};
 
 const AGENTS = [
   "ADK Agent Orchestrator",
@@ -31,7 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
   el("sampleBtn").addEventListener("click", fillSample);
   el("voiceBtn").addEventListener("click", startVoice);
   el("docCheckBtn").addEventListener("click", runDocCheck);
+  el("guideBtn").addEventListener("click", toggleGuide);
+  el("guideStopBtn").addEventListener("click", stopGuide);
+  // Update / stop the spoken guide when the language changes.
+  el("langSelect").addEventListener("change", () => {
+    stopGuide();
+    if (!el("voiceGuide").classList.contains("d-none")) renderGuide();
+  });
 });
+
 
 async function loadHealth() {
   try {
@@ -218,9 +268,9 @@ async function runDocCheck() {
 // ---------------- voice (Speech layer) ----------------
 function startVoice() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert("Voice input is not supported in this browser."); return; }
+  if (!SR) { alert("Voice input is not supported in this browser. Please use Chrome or Edge."); return; }
   const rec = new SR();
-  rec.lang = lang() === "hi" ? "hi-IN" : "en-IN";
+  rec.lang = (LANGS[lang()] && LANGS[lang()].locale) || "en-IN";
   rec.interimResults = false;
   const btn = el("voiceBtn");
   btn.classList.add("recording");
@@ -229,6 +279,56 @@ function startVoice() {
   rec.onerror = () => btn.classList.remove("recording");
   rec.start();
 }
+
+// ---------------- voice guide (Text-to-Speech) ----------------
+function guideContent() {
+  // English & Hindi are hand-written; other languages fall back to English text
+  // but are still spoken with the chosen language's voice where available.
+  return GUIDE[lang()] || GUIDE.en;
+}
+
+function renderGuide() {
+  const g = guideContent();
+  el("guideHeading").textContent = g.heading;
+  el("guideSteps").innerHTML = g.steps.map((s) => `<li>${s}</li>`).join("");
+  el("guideExample").textContent = g.example;
+}
+
+function toggleGuide() {
+  const box = el("voiceGuide");
+  const opening = box.classList.contains("d-none");
+  if (opening) {
+    renderGuide();
+    box.classList.remove("d-none");
+    el("guideBtn").setAttribute("aria-expanded", "true");
+    speakGuide();
+  } else {
+    stopGuide();
+    box.classList.add("d-none");
+    el("guideBtn").setAttribute("aria-expanded", "false");
+  }
+}
+
+function speakGuide() {
+  if (!("speechSynthesis" in window)) return; // silently skip; text is still shown
+  window.speechSynthesis.cancel();
+  const g = guideContent();
+  const text = [g.intro, ...g.steps, g.example].join(". ");
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = (LANGS[lang()] && LANGS[lang()].locale) || "en-IN";
+  u.rate = 0.9; // slightly slower for clarity
+  const btn = el("guideBtn");
+  btn.classList.add("speaking");
+  u.onend = () => btn.classList.remove("speaking");
+  u.onerror = () => btn.classList.remove("speaking");
+  window.speechSynthesis.speak(u);
+}
+
+function stopGuide() {
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  el("guideBtn").classList.remove("speaking");
+}
+
 
 // ---------------- helpers ----------------
 function fillSample() {
