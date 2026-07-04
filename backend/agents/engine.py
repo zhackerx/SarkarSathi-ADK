@@ -175,11 +175,20 @@ class AgentEngine:
 
         greetings = ("hi", "hii", "hello", "hey", "namaste", "namaskar", "नमस्ते", "नमस्कार", "हाय")
         about = ("what is this", "what's this", "whats this", "what is sarkarsathi", "who are you",
-                 "what can you do", "what do you do", "how does this work", "how do you work",
-                 "what is it", "help", "यह क्या है", "ये क्या है", "आप कौन", "क्या कर सकते",
-                 "कैसे काम")
+                 "what are you", "what r u", "who r u", "whats sarkarsathi", "what is your name",
+                 "your name", "about you", "about this", "what is this app", "what is this website",
+                 "what can you do", "what do you do", "what all can you", "how does this work",
+                 "how do you work", "what is it", "tell me about you", "help",
+                 "यह क्या है", "ये क्या है", "यह क्या हैं", "आप कौन", "आप क्या", "क्या कर सकते",
+                 "कैसे काम", "आपका नाम")
+        question_words = ("what", "who", "how", "why", "kya", "क्या", "कौन", "कैसे", "क्यों")
+        assistant_refs = ("you", "u", "this", "it", "sarkarsathi", "app", "website", "आप", "यह", "ये", "इस")
+        words = text.replace("?", "").split()
+        looks_like_short_question = (
+            text.endswith("?") or (words and words[0] in question_words)
+        ) and len(words) <= 6 and any(ref in words for ref in assistant_refs)
         is_greeting = text in greetings or any(text.startswith(g + " ") for g in greetings)
-        is_about = any(a in text for a in about)
+        is_about = any(a in text for a in about) or looks_like_short_question
         if not (is_greeting or is_about):
             return None
 
