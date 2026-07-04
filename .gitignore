@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Node (frontend uses CDN only, but just in case)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

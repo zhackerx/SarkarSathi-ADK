@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SarkarSathi ADK — Government Scheme Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+  <!-- ============ Navbar ============ -->
+  <nav class="navbar navbar-dark px-3 px-md-4 sticky-top brand-bar">
+    <span class="navbar-brand mb-0 d-flex align-items-center gap-2">
+      <i class="bi bi-bank2 fs-4"></i>
+      <span>SarkarSathi <span class="badge text-bg-light text-dark ms-1">ADK</span></span>
+    </span>
+    <div class="d-flex align-items-center gap-3">
+      <span id="modeBadge" class="badge rounded-pill text-bg-secondary">connecting…</span>
+      <div class="btn-group btn-group-sm" role="group" aria-label="Language">
+        <input type="radio" class="btn-check" name="lang" id="langEn" value="en" checked />
+        <label class="btn btn-outline-light" for="langEn">EN</label>
+        <input type="radio" class="btn-check" name="lang" id="langHi" value="hi" />
+        <label class="btn btn-outline-light" for="langHi">हिंदी</label>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid py-4 px-md-4">
+    <div class="row g-4">
+      <!-- ============ Left column: input ============ -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h6 class="fw-bold text-uppercase text-muted small mb-3">
+              <i class="bi bi-chat-dots me-1"></i> Ask in your own words
+            </h6>
+            <div class="input-group mb-2">
+              <textarea id="freeText" class="form-control" rows="3"
+                placeholder="e.g. I am a 19-year-old girl from Kanpur pursuing B.Tech, family income ₹2 lakh"></textarea>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="askBtn" class="btn btn-primary flex-grow-1">
+                <i class="bi bi-stars me-1"></i> Ask the Agents
+              </button>
+              <button id="voiceBtn" class="btn btn-outline-secondary" title="Speak">
+                <i class="bi bi-mic"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="fw-bold text-uppercase text-muted small mb-0">
+                <i class="bi bi-person-badge me-1"></i> Citizen Profile
+              </h6>
+              <button id="sampleBtn" class="btn btn-sm btn-link p-0">Try sample</button>
+            </div>
+            <form id="profileForm" class="row g-2">
+              <div class="col-6">
+                <label class="form-label small">Age</label>
+                <input type="number" class="form-control form-control-sm" name="age" min="0" max="120" />
+              </div>
+              <div class="col-6">
+                <label class="form-label small">Annual income (₹)</label>
+                <input type="number" class="form-control form-control-sm" name="income" min="0" />
+              </div>
+              <div class="col-6">
+                <label class="form-label small">State</label>
+                <input type="text" class="form-control form-control-sm" name="state" list="stateList" />
+                <datalist id="stateList">
+                  <option>Uttar Pradesh</option><option>Bihar</option><option>Maharashtra</option>
+                  <option>Karnataka</option><option>Kerala</option><option>Tamil Nadu</option>
+                  <option>Rajasthan</option><option>Gujarat</option><option>Punjab</option>
+                  <option>Haryana</option><option>Delhi</option>
+                </datalist>
+              </div>
+              <div class="col-6">
+                <label class="form-label small">Gender</label>
+                <select class="form-select form-select-sm" name="gender">
+                  <option value="">Any</option><option>Male</option><option>Female</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small">Education</label>
+                <select class="form-select form-select-sm" name="education">
+                  <option value="">Any</option><option>School</option><option>UG</option>
+                  <option>PG</option><option>Diploma</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small">Occupation</label>
+                <select class="form-select form-select-sm" name="occupation">
+                  <option value="">Any</option><option>Student</option><option>Farmer</option>
+                  <option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <label class="form-label small">Social category</label>
+                <select class="form-select form-select-sm" name="social_category">
+                  <option value="">General / Any</option><option>SC</option><option>ST</option>
+                  <option>OBC</option><option>General</option>
+                </select>
+              </div>
+              <div class="col-6 d-flex flex-column justify-content-end">
+                <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"><label class="form-check-label small" for="land">Owns land</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"><label class="form-check-label small" for="dis">Disability</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"><label class="form-check-label small" for="mat">Pregnant / new mother</label></div>
+              </div>
+              <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-success w-100">
+                  <i class="bi bi-search me-1"></i> Find my schemes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ Right column: results ============ -->
+      <div class="col-lg-8">
+        <!-- Agent pipeline -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-body">
+            <h6 class="fw-bold text-uppercase text-muted small mb-3">
+              <i class="bi bi-diagram-3 me-1"></i> ADK Agent Pipeline
+            </h6>
+            <div id="pipeline" class="d-flex flex-wrap gap-2"></div>
+          </div>
+        </div>
+
+        <!-- Benefit banner -->
+        <div id="benefitBanner" class="alert alert-success d-none align-items-center shadow-sm" role="alert"></div>
+
+        <!-- Explanation -->
+        <div id="explanationCard" class="card shadow-sm mb-4 d-none">
+          <div class="card-body">
+            <h6 class="fw-bold text-uppercase text-muted small mb-2">
+              <i class="bi bi-robot me-1"></i> AI Decision Intelligence
+            </h6>
+            <div id="explanation" class="explanation"></div>
+          </div>
+        </div>
+
+        <!-- Placeholder / spinner -->
+        <div id="placeholder" class="text-center text-muted py-5">
+          <i class="bi bi-file-earmark-text display-4 d-block mb-3"></i>
+          Fill the profile or ask a question to discover the government schemes you qualify for.
+        </div>
+        <div id="spinner" class="text-center py-5 d-none">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="text-muted mt-3 mb-0">Agents are working on your request…</p>
+        </div>
+
+        <!-- Scheme cards -->
+        <div id="schemes" class="row g-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Document readiness modal ============ -->
+  <div class="modal fade" id="docModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-folder-check me-2"></i>Document Readiness</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted small mb-2">Type the documents you already have (comma separated), e.g. <em>Aadhaar, Income Certificate</em>.</p>
+          <input type="text" id="docInput" class="form-control mb-3" placeholder="Aadhaar, Bank Passbook" />
+          <button id="docCheckBtn" class="btn btn-primary btn-sm mb-3">Check readiness</button>
+          <div id="docResult"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center text-muted small py-4">
+    Built with Google ADK · Gemini 2.5 Flash · Flask · Bootstrap — prototype knowledge base is illustrative sample data.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

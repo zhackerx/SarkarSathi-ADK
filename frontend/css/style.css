@@ -1,0 +1,92 @@
+:root {
+  --brand: #0b3d91;
+  --brand-2: #ff9933;
+  --brand-3: #138808;
+}
+
+body {
+  background: #f4f6fb;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.brand-bar {
+  background: linear-gradient(90deg, var(--brand) 0%, #12539c 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.card {
+  border: none;
+  border-radius: 0.9rem;
+}
+
+.explanation {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 0.97rem;
+}
+
+/* ---- Agent pipeline chips ---- */
+.agent-chip {
+  border: 1px solid #dbe2f1;
+  background: #fff;
+  border-radius: 2rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  color: #55617a;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.3s ease;
+}
+.agent-chip .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c3ccdd;
+  transition: all 0.3s ease;
+}
+.agent-chip.active {
+  border-color: var(--brand-3);
+  background: #eafbe7;
+  color: var(--brand-3);
+  font-weight: 600;
+}
+.agent-chip.active .dot {
+  background: var(--brand-3);
+  box-shadow: 0 0 0 3px rgba(19, 136, 8, 0.18);
+}
+
+/* ---- Scheme cards ---- */
+.scheme-card {
+  border-left: 4px solid var(--brand);
+  height: 100%;
+}
+.scheme-card .level-badge {
+  font-size: 0.68rem;
+}
+.reason {
+  font-size: 0.82rem;
+}
+.reason.pass {
+  color: var(--brand-3);
+}
+.benefit-amount {
+  color: var(--brand-3);
+  font-weight: 700;
+}
+.step-list {
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+}
+.step-list li {
+  margin-bottom: 0.25rem;
+}
+.doc-pill {
+  font-size: 0.72rem;
+  margin: 0 0.2rem 0.3rem 0;
+}
+#voiceBtn.recording {
+  background: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+}

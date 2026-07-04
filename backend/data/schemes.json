@@ -1,0 +1,1264 @@
+[
+  {
+    "id": "central-nsp-post-matric",
+    "scheme_name": "National Scholarship Portal - Post Matric Scholarship",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 16,
+      "max_age": 30,
+      "income_limit": 250000,
+      "gender": "Any",
+      "education": ["UG", "PG", "Diploma"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Tuition fees + maintenance allowance up to ₹50,000 per year",
+    "benefit_annual_inr": 50000,
+    "documents": ["Aadhaar", "Income Certificate", "Bonafide Certificate", "Bank Passbook"],
+    "apply_url": "https://scholarships.gov.in",
+    "steps": [
+      "Register on the National Scholarship Portal",
+      "Complete your student profile",
+      "Upload Aadhaar, income and bonafide certificates",
+      "Submit and note your application ID for tracking"
+    ]
+  },
+  {
+    "id": "up-scholarship-ug",
+    "scheme_name": "UP Post-Matric Scholarship (General)",
+    "level": "State",
+    "state": "Uttar Pradesh",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 17,
+      "max_age": 30,
+      "income_limit": 200000,
+      "gender": "Any",
+      "education": ["UG", "PG"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Tuition reimbursement + maintenance up to ₹30,000 per year",
+    "benefit_annual_inr": 30000,
+    "documents": ["Aadhaar", "Income Certificate", "Bonafide Certificate", "Caste Certificate (if applicable)"],
+    "apply_url": "https://scholarship.up.gov.in",
+    "steps": [
+      "Register on scholarship.up.gov.in",
+      "Fill the fresh application form",
+      "Upload required certificates",
+      "Submit to institute for verification"
+    ]
+  },
+  {
+    "id": "central-pm-yasasvi",
+    "scheme_name": "PM YASASVI Scholarship (OBC/EBC/DNT)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 13,
+      "max_age": 25,
+      "income_limit": 250000,
+      "gender": "Any",
+      "education": ["School", "UG"],
+      "occupation": ["Student"],
+      "social_category": ["OBC"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Up to ₹1,25,000 per year for tuition and hostel",
+    "benefit_annual_inr": 75000,
+    "documents": ["Aadhaar", "Income Certificate", "OBC Certificate", "Marksheet"],
+    "apply_url": "https://yet.nta.ac.in",
+    "steps": [
+      "Register on the YASASVI portal",
+      "Appear for the entrance test (if required)",
+      "Upload category and income certificates",
+      "Submit application"
+    ]
+  },
+  {
+    "id": "central-pmkisan",
+    "scheme_name": "PM-KISAN Samman Nidhi",
+    "level": "Central",
+    "state": "All",
+    "category": "Farmers",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 600000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Farmer"],
+      "social_category": ["Any"],
+      "requires_land": true,
+      "disability_only": false
+    },
+    "benefit_text": "₹6,000 per year in three equal instalments",
+    "benefit_annual_inr": 6000,
+    "documents": ["Aadhaar", "Land Records", "Bank Passbook"],
+    "apply_url": "https://pmkisan.gov.in",
+    "steps": [
+      "Visit pmkisan.gov.in and click 'New Farmer Registration'",
+      "Enter Aadhaar and land details",
+      "Complete e-KYC",
+      "Track instalment status online"
+    ]
+  },
+  {
+    "id": "central-kcc",
+    "scheme_name": "Kisan Credit Card (KCC)",
+    "level": "Central",
+    "state": "All",
+    "category": "Farmers",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 75,
+      "income_limit": 1000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Farmer"],
+      "social_category": ["Any"],
+      "requires_land": true,
+      "disability_only": false
+    },
+    "benefit_text": "Low-interest crop loan up to ₹3,00,000 at 4% effective interest",
+    "benefit_annual_inr": 12000,
+    "documents": ["Aadhaar", "Land Records", "PAN", "Passport Photo"],
+    "apply_url": "https://www.myscheme.gov.in/schemes/kcc",
+    "steps": [
+      "Visit your bank branch or apply online",
+      "Submit land and identity proof",
+      "Bank assesses credit limit",
+      "Receive Kisan Credit Card"
+    ]
+  },
+  {
+    "id": "central-mudra",
+    "scheme_name": "Pradhan Mantri MUDRA Yojana (PMMY)",
+    "level": "Central",
+    "state": "All",
+    "category": "Startups",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 65,
+      "income_limit": 2000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Entrepreneur", "Self-Employed", "Business"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Collateral-free business loan up to ₹10,00,000",
+    "benefit_annual_inr": 20000,
+    "documents": ["Aadhaar", "PAN", "Business Plan", "Bank Statement"],
+    "apply_url": "https://www.mudra.org.in",
+    "steps": [
+      "Prepare a simple business plan",
+      "Approach a participating bank/NBFC",
+      "Submit KYC and business documents",
+      "Loan sanctioned under Shishu/Kishor/Tarun category"
+    ]
+  },
+  {
+    "id": "central-standup-india",
+    "scheme_name": "Stand-Up India (Women / SC / ST Entrepreneurs)",
+    "level": "Central",
+    "state": "All",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 65,
+      "income_limit": 5000000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Entrepreneur", "Self-Employed", "Business"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Bank loan between ₹10 lakh and ₹1 crore for greenfield enterprise",
+    "benefit_annual_inr": 50000,
+    "documents": ["Aadhaar", "PAN", "Business Proposal", "Address Proof"],
+    "apply_url": "https://www.standupmitra.in",
+    "steps": [
+      "Register on standupmitra.in",
+      "Choose handholding support if needed",
+      "Submit business proposal to bank",
+      "Loan sanctioned for setting up enterprise"
+    ]
+  },
+  {
+    "id": "central-pmmvy",
+    "scheme_name": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+    "level": "Central",
+    "state": "All",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 19,
+      "max_age": 45,
+      "income_limit": 800000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false,
+      "requires_maternity": true
+    },
+    "benefit_text": "₹5,000 maternity benefit for the first living child",
+    "benefit_annual_inr": 5000,
+    "documents": ["Aadhaar", "Bank Passbook", "MCP Card"],
+    "apply_url": "https://wcd.nic.in/schemes/pradhan-mantri-matru-vandana-yojana",
+    "steps": [
+      "Register at the nearest Anganwadi / health centre",
+      "Fill Form 1-A with pregnancy details",
+      "Submit Aadhaar and bank details",
+      "Receive benefit in bank account"
+    ]
+  },
+  {
+    "id": "central-ayushman",
+    "scheme_name": "Ayushman Bharat PM-JAY",
+    "level": "Central",
+    "state": "All",
+    "category": "Health",
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 120,
+      "income_limit": 300000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Health cover up to ₹5,00,000 per family per year",
+    "benefit_annual_inr": 30000,
+    "documents": ["Aadhaar", "Ration Card", "SECC verification"],
+    "apply_url": "https://pmjay.gov.in",
+    "steps": [
+      "Check eligibility on pmjay.gov.in",
+      "Visit a Common Service Centre or empanelled hospital",
+      "Verify identity with Aadhaar",
+      "Receive Ayushman card for cashless treatment"
+    ]
+  },
+  {
+    "id": "central-nsap-oldage",
+    "scheme_name": "Indira Gandhi National Old Age Pension (IGNOAPS)",
+    "level": "Central",
+    "state": "All",
+    "category": "Senior Citizens",
+    "eligibility": {
+      "min_age": 60,
+      "max_age": 120,
+      "income_limit": 120000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Monthly pension of ₹200-₹500 (BPL senior citizens)",
+    "benefit_annual_inr": 6000,
+    "documents": ["Aadhaar", "Age Proof", "BPL Card", "Bank Passbook"],
+    "apply_url": "https://nsap.nic.in",
+    "steps": [
+      "Apply at the local Block/Panchayat office",
+      "Submit age and BPL proof",
+      "Verification by local authority",
+      "Pension credited monthly"
+    ]
+  },
+  {
+    "id": "central-nps-divyang",
+    "scheme_name": "Assistance to Disabled Persons (ADIP)",
+    "level": "Central",
+    "state": "All",
+    "category": "Health",
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 120,
+      "income_limit": 300000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": true
+    },
+    "benefit_text": "Free/subsidised aids and assistive devices",
+    "benefit_annual_inr": 15000,
+    "documents": ["Aadhaar", "Disability Certificate", "Income Certificate"],
+    "apply_url": "https://www.myscheme.gov.in/schemes/adip",
+    "steps": [
+      "Visit an ADIP camp or empanelled agency",
+      "Submit disability and income certificate",
+      "Assessment of required device",
+      "Device provided free or subsidised"
+    ]
+  },
+  {
+    "id": "central-skill-india",
+    "scheme_name": "PM Kaushal Vikas Yojana (Skill Development)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 15,
+      "max_age": 45,
+      "income_limit": 800000,
+      "gender": "Any",
+      "education": ["School", "UG", "Diploma", "Any"],
+      "occupation": ["Student", "Unemployed", "Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Free skill training + certification + placement support",
+    "benefit_annual_inr": 8000,
+    "documents": ["Aadhaar", "Bank Passbook"],
+    "apply_url": "https://www.pmkvyofficial.org",
+    "steps": [
+      "Find a nearby training centre on the PMKVY portal",
+      "Enroll in a course aligned to your interest",
+      "Complete training and assessment",
+      "Receive certification and placement assistance"
+    ]
+  },
+  {
+    "id": "central-css-merit",
+    "scheme_name": "Central Sector Scheme of Scholarship (College & University)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 17,
+      "max_age": 25,
+      "income_limit": 450000,
+      "gender": "Any",
+      "education": ["UG", "PG"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹10,000-₹20,000 per year for meritorious students",
+    "benefit_annual_inr": 12000,
+    "documents": ["Aadhaar", "Income Certificate", "Class 12 Marksheet", "Bonafide Certificate"],
+    "apply_url": "https://scholarships.gov.in",
+    "steps": [
+      "Register on the National Scholarship Portal",
+      "Verify Class 12 merit (top 20th percentile)",
+      "Upload income and academic documents",
+      "Submit for institute verification"
+    ]
+  },
+  {
+    "id": "central-inspire-she",
+    "scheme_name": "INSPIRE Scholarship (Science Students)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 17,
+      "max_age": 27,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["UG", "PG"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹80,000 per year for pursuing natural/basic sciences",
+    "benefit_annual_inr": 80000,
+    "documents": ["Aadhaar", "Class 12 Marksheet", "Admission Proof", "Bank Passbook"],
+    "apply_url": "https://online-inspire.gov.in",
+    "steps": [
+      "Check eligibility (top 1% in Class 12 or JEE/NEET rank)",
+      "Register on the INSPIRE portal",
+      "Upload academic proof",
+      "Submit application"
+    ]
+  },
+  {
+    "id": "central-aicte-pragati",
+    "scheme_name": "AICTE Pragati Scholarship (Girl Students - Technical)",
+    "level": "Central",
+    "state": "All",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 17,
+      "max_age": 28,
+      "income_limit": 800000,
+      "gender": "Female",
+      "education": ["UG", "Diploma"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹50,000 per year for girls in technical/diploma courses",
+    "benefit_annual_inr": 50000,
+    "documents": ["Aadhaar", "Income Certificate", "Admission Proof", "AICTE College Proof"],
+    "apply_url": "https://scholarships.gov.in",
+    "steps": [
+      "Ensure your college is AICTE-approved",
+      "Register on the National Scholarship Portal",
+      "Upload income and admission documents",
+      "Submit for verification"
+    ]
+  },
+  {
+    "id": "central-aicte-saksham",
+    "scheme_name": "AICTE Saksham Scholarship (Differently-Abled Students)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 17,
+      "max_age": 30,
+      "income_limit": 800000,
+      "gender": "Any",
+      "education": ["UG", "Diploma"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": true
+    },
+    "benefit_text": "₹50,000 per year for specially-abled technical students",
+    "benefit_annual_inr": 50000,
+    "documents": ["Aadhaar", "Disability Certificate", "Income Certificate", "Admission Proof"],
+    "apply_url": "https://scholarships.gov.in",
+    "steps": [
+      "Confirm 40%+ disability certificate",
+      "Register on the National Scholarship Portal",
+      "Upload disability and income documents",
+      "Submit application"
+    ]
+  },
+  {
+    "id": "central-nmms",
+    "scheme_name": "National Means-cum-Merit Scholarship (NMMS)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 12,
+      "max_age": 18,
+      "income_limit": 350000,
+      "gender": "Any",
+      "education": ["School"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹12,000 per year for classes 9 to 12",
+    "benefit_annual_inr": 12000,
+    "documents": ["Aadhaar", "Income Certificate", "School Certificate", "Marksheet"],
+    "apply_url": "https://scholarships.gov.in",
+    "steps": [
+      "Appear for the state NMMS examination",
+      "Register on the National Scholarship Portal",
+      "Upload income and school documents",
+      "Submit for verification"
+    ]
+  },
+  {
+    "id": "central-prematric-scst",
+    "scheme_name": "Pre-Matric Scholarship for SC/ST Students",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 10,
+      "max_age": 18,
+      "income_limit": 250000,
+      "gender": "Any",
+      "education": ["School"],
+      "occupation": ["Student"],
+      "social_category": ["SC", "ST"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Monthly stipend + annual book grant for classes 9-10",
+    "benefit_annual_inr": 15000,
+    "documents": ["Aadhaar", "Caste Certificate", "Income Certificate", "School Certificate"],
+    "apply_url": "https://scholarships.gov.in",
+    "steps": [
+      "Register on the National Scholarship Portal",
+      "Upload caste and income certificates",
+      "School verifies enrolment",
+      "Submit application"
+    ]
+  },
+  {
+    "id": "central-vidyalakshmi",
+    "scheme_name": "Vidya Lakshmi Education Loan Portal",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 17,
+      "max_age": 35,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["UG", "PG", "Diploma"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Single-window education loans from multiple banks",
+    "benefit_annual_inr": 40000,
+    "documents": ["Aadhaar", "Admission Letter", "Fee Structure", "Co-applicant Income Proof"],
+    "apply_url": "https://www.vidyalakshmi.co.in",
+    "steps": [
+      "Register on the Vidya Lakshmi portal",
+      "Fill the Common Education Loan Application Form",
+      "Apply to up to 3 banks at once",
+      "Track loan sanction status online"
+    ]
+  },
+  {
+    "id": "central-pmfby",
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana (Crop Insurance)",
+    "level": "Central",
+    "state": "All",
+    "category": "Farmers",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Farmer"],
+      "social_category": ["Any"],
+      "requires_land": true,
+      "disability_only": false
+    },
+    "benefit_text": "Crop insurance against natural calamities at low premium",
+    "benefit_annual_inr": 10000,
+    "documents": ["Aadhaar", "Land Records", "Bank Passbook", "Sowing Certificate"],
+    "apply_url": "https://pmfby.gov.in",
+    "steps": [
+      "Register on pmfby.gov.in or via bank/CSC",
+      "Enter crop and land details",
+      "Pay the nominal farmer premium",
+      "Claim compensation on crop loss"
+    ]
+  },
+  {
+    "id": "central-kusum",
+    "scheme_name": "PM-KUSUM (Solar Pumps for Farmers)",
+    "level": "Central",
+    "state": "All",
+    "category": "Farmers",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Farmer"],
+      "social_category": ["Any"],
+      "requires_land": true,
+      "disability_only": false
+    },
+    "benefit_text": "Up to 60% subsidy on solar water pumps",
+    "benefit_annual_inr": 30000,
+    "documents": ["Aadhaar", "Land Records", "Bank Passbook"],
+    "apply_url": "https://pmkusum.mnre.gov.in",
+    "steps": [
+      "Apply on the state PM-KUSUM portal",
+      "Submit land and identity documents",
+      "Pay your share of the cost",
+      "Solar pump installed on your farm"
+    ]
+  },
+  {
+    "id": "central-soil-health",
+    "scheme_name": "Soil Health Card Scheme",
+    "level": "Central",
+    "state": "All",
+    "category": "Farmers",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Farmer"],
+      "social_category": ["Any"],
+      "requires_land": true,
+      "disability_only": false
+    },
+    "benefit_text": "Free soil testing and crop-wise nutrient recommendations",
+    "benefit_annual_inr": 2000,
+    "documents": ["Aadhaar", "Land Records"],
+    "apply_url": "https://soilhealth.dac.gov.in",
+    "steps": [
+      "Register with the local agriculture office",
+      "Provide a soil sample",
+      "Receive your Soil Health Card",
+      "Follow the fertiliser recommendations"
+    ]
+  },
+  {
+    "id": "central-mgnrega",
+    "scheme_name": "Mahatma Gandhi NREGA (Rural Employment Guarantee)",
+    "level": "Central",
+    "state": "All",
+    "category": "Employment",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 300000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "100 days of guaranteed wage employment per rural household",
+    "benefit_annual_inr": 22000,
+    "documents": ["Aadhaar", "Residence Proof", "Bank Passbook", "Passport Photo"],
+    "apply_url": "https://nrega.nic.in",
+    "steps": [
+      "Apply for a job card at the Gram Panchayat",
+      "Submit residence and identity proof",
+      "Receive your MGNREGA job card",
+      "Request work within 15 days"
+    ]
+  },
+  {
+    "id": "central-vishwakarma",
+    "scheme_name": "PM Vishwakarma Yojana (Artisans & Craftspeople)",
+    "level": "Central",
+    "state": "All",
+    "category": "Employment",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 70,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Self-Employed", "Artisan", "Business"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Skill training + ₹15,000 toolkit + collateral-free loan up to ₹3 lakh",
+    "benefit_annual_inr": 25000,
+    "documents": ["Aadhaar", "Bank Passbook", "Mobile Number"],
+    "apply_url": "https://pmvishwakarma.gov.in",
+    "steps": [
+      "Register via a Common Service Centre",
+      "Verify your traditional trade",
+      "Complete basic skill training",
+      "Receive toolkit grant and loan access"
+    ]
+  },
+  {
+    "id": "central-pmegp",
+    "scheme_name": "Prime Minister's Employment Generation Programme (PMEGP)",
+    "level": "Central",
+    "state": "All",
+    "category": "Startups",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 60,
+      "income_limit": 10000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Entrepreneur", "Self-Employed", "Unemployed"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "15-35% subsidy on new micro-enterprise project cost",
+    "benefit_annual_inr": 60000,
+    "documents": ["Aadhaar", "Project Report", "Caste Certificate (if applicable)", "Education Proof"],
+    "apply_url": "https://www.kviconline.gov.in/pmegpeportal",
+    "steps": [
+      "Prepare a project report",
+      "Apply on the PMEGP e-portal",
+      "Bank appraises the project",
+      "Subsidy credited after unit setup"
+    ]
+  },
+  {
+    "id": "central-startup-seed",
+    "scheme_name": "Startup India Seed Fund Scheme (SISFS)",
+    "level": "Central",
+    "state": "All",
+    "category": "Startups",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 65,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Entrepreneur", "Business"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Up to ₹50 lakh seed funding for early-stage startups",
+    "benefit_annual_inr": 100000,
+    "documents": ["DPIIT Recognition", "Pitch Deck", "PAN", "Incorporation Certificate"],
+    "apply_url": "https://seedfund.startupindia.gov.in",
+    "steps": [
+      "Get DPIIT startup recognition",
+      "Apply to incubators on the Seed Fund portal",
+      "Present your pitch to the incubator",
+      "Receive grant or convertible debenture"
+    ]
+  },
+  {
+    "id": "central-cgtmse",
+    "scheme_name": "Credit Guarantee Fund for Micro & Small Enterprises (CGTMSE)",
+    "level": "Central",
+    "state": "All",
+    "category": "Startups",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 70,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Entrepreneur", "Self-Employed", "Business"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Collateral-free credit guarantee up to ₹5 crore",
+    "benefit_annual_inr": 40000,
+    "documents": ["Aadhaar", "PAN", "Udyam Registration", "Business Plan"],
+    "apply_url": "https://www.cgtmse.in",
+    "steps": [
+      "Register your enterprise on Udyam",
+      "Approach a member lending institution",
+      "Apply for a collateral-free loan",
+      "Loan covered under CGTMSE guarantee"
+    ]
+  },
+  {
+    "id": "central-sukanya",
+    "scheme_name": "Sukanya Samriddhi Yojana (Girl Child Savings)",
+    "level": "Central",
+    "state": "All",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 10,
+      "income_limit": 100000000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "High-interest savings account for a girl child under 10",
+    "benefit_annual_inr": 20000,
+    "documents": ["Girl Child Birth Certificate", "Guardian Aadhaar", "Address Proof"],
+    "apply_url": "https://www.myscheme.gov.in/schemes/ssy",
+    "steps": [
+      "Visit a post office or authorised bank",
+      "Fill the SSY account opening form",
+      "Submit birth certificate and guardian ID",
+      "Deposit minimum ₹250 to open the account"
+    ]
+  },
+  {
+    "id": "central-ujjwala",
+    "scheme_name": "Pradhan Mantri Ujjwala Yojana (LPG Connection)",
+    "level": "Central",
+    "state": "All",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 300000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Free LPG connection + subsidised refills for BPL women",
+    "benefit_annual_inr": 3000,
+    "documents": ["Aadhaar", "BPL Ration Card", "Bank Passbook"],
+    "apply_url": "https://www.pmuy.gov.in",
+    "steps": [
+      "Apply at your nearest LPG distributor",
+      "Submit KYC and BPL proof",
+      "Verification of eligibility",
+      "Receive free gas connection"
+    ]
+  },
+  {
+    "id": "central-jsy",
+    "scheme_name": "Janani Suraksha Yojana (Safe Motherhood)",
+    "level": "Central",
+    "state": "All",
+    "category": "Health",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 49,
+      "income_limit": 300000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false,
+      "requires_maternity": true
+    },
+    "benefit_text": "Cash assistance of ₹1,400 (rural) for institutional delivery",
+    "benefit_annual_inr": 1400,
+    "documents": ["Aadhaar", "JSY/MCP Card", "Bank Passbook", "Delivery Record"],
+    "apply_url": "https://nhm.gov.in",
+    "steps": [
+      "Register pregnancy at a government health centre",
+      "Complete antenatal check-ups",
+      "Deliver at a government/accredited facility",
+      "Receive cash benefit in bank account"
+    ]
+  },
+  {
+    "id": "central-vaya-vandana",
+    "scheme_name": "PM Vaya Vandana Yojana (Senior Pension Plan)",
+    "level": "Central",
+    "state": "All",
+    "category": "Senior Citizens",
+    "eligibility": {
+      "min_age": 60,
+      "max_age": 120,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Assured pension with ~7.4% annual return for seniors",
+    "benefit_annual_inr": 90000,
+    "documents": ["Aadhaar", "Age Proof", "Bank Passbook", "PAN"],
+    "apply_url": "https://licindia.in",
+    "steps": [
+      "Visit an LIC branch or apply online",
+      "Choose pension payout frequency",
+      "Make the lump-sum purchase",
+      "Start receiving pension"
+    ]
+  },
+  {
+    "id": "central-scss",
+    "scheme_name": "Senior Citizen Savings Scheme (SCSS)",
+    "level": "Central",
+    "state": "All",
+    "category": "Senior Citizens",
+    "eligibility": {
+      "min_age": 60,
+      "max_age": 120,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "High-interest 5-year savings scheme for senior citizens",
+    "benefit_annual_inr": 60000,
+    "documents": ["Aadhaar", "Age Proof", "PAN", "Bank Passbook"],
+    "apply_url": "https://www.myscheme.gov.in/schemes/scss",
+    "steps": [
+      "Visit a post office or authorised bank",
+      "Fill the SCSS account form",
+      "Submit age and identity proof",
+      "Deposit and earn quarterly interest"
+    ]
+  },
+  {
+    "id": "central-npche",
+    "scheme_name": "National Programme for Health Care of the Elderly (NPHCE)",
+    "level": "Central",
+    "state": "All",
+    "category": "Senior Citizens",
+    "eligibility": {
+      "min_age": 60,
+      "max_age": 120,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Free geriatric health services at government facilities",
+    "benefit_annual_inr": 8000,
+    "documents": ["Aadhaar", "Age Proof"],
+    "apply_url": "https://nhm.gov.in",
+    "steps": [
+      "Visit a district hospital geriatric clinic",
+      "Register with Aadhaar and age proof",
+      "Get consultation and diagnostics",
+      "Receive free medicines where available"
+    ]
+  },
+  {
+    "id": "central-pmay-urban",
+    "scheme_name": "Pradhan Mantri Awas Yojana - Urban (PMAY-U)",
+    "level": "Central",
+    "state": "All",
+    "category": "Housing",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 1800000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Interest subsidy / grant for buying or building a house",
+    "benefit_annual_inr": 40000,
+    "documents": ["Aadhaar", "Income Certificate", "Bank Passbook", "Property Documents"],
+    "apply_url": "https://pmaymis.gov.in",
+    "steps": [
+      "Check eligibility on pmaymis.gov.in",
+      "Apply online or via a CSC",
+      "Submit income and identity documents",
+      "Subsidy credited to your loan account"
+    ]
+  },
+  {
+    "id": "central-pmay-gramin",
+    "scheme_name": "Pradhan Mantri Awas Yojana - Gramin (PMAY-G)",
+    "level": "Central",
+    "state": "All",
+    "category": "Housing",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 300000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹1.2-1.3 lakh assistance to build a pucca rural house",
+    "benefit_annual_inr": 60000,
+    "documents": ["Aadhaar", "SECC verification", "Bank Passbook", "Job Card"],
+    "apply_url": "https://pmayg.nic.in",
+    "steps": [
+      "Verify your name in the SECC/Awaas+ list",
+      "Apply through the Gram Panchayat",
+      "Geo-tagged verification of site",
+      "Assistance released in instalments"
+    ]
+  },
+  {
+    "id": "central-pm-surya-ghar",
+    "scheme_name": "PM Surya Ghar Muft Bijli Yojana (Rooftop Solar)",
+    "level": "Central",
+    "state": "All",
+    "category": "Energy",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Subsidy up to ₹78,000 for rooftop solar + free units",
+    "benefit_annual_inr": 25000,
+    "documents": ["Aadhaar", "Electricity Bill", "Bank Passbook", "Roof Ownership Proof"],
+    "apply_url": "https://pmsuryaghar.gov.in",
+    "steps": [
+      "Register on pmsuryaghar.gov.in",
+      "Apply for rooftop solar with your DISCOM",
+      "Get installation by a registered vendor",
+      "Subsidy credited after inspection"
+    ]
+  },
+  {
+    "id": "central-saubhagya",
+    "scheme_name": "Saubhagya - Household Electrification",
+    "level": "Central",
+    "state": "All",
+    "category": "Energy",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 120,
+      "income_limit": 300000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Free electricity connection for un-electrified households",
+    "benefit_annual_inr": 3000,
+    "documents": ["Aadhaar", "Ration Card", "Address Proof"],
+    "apply_url": "https://saubhagya.gov.in",
+    "steps": [
+      "Apply at the local electricity office/camp",
+      "Submit identity and address proof",
+      "Site survey by the DISCOM",
+      "Connection installed"
+    ]
+  },
+  {
+    "id": "central-nfpwd",
+    "scheme_name": "National Fellowship for Persons with Disabilities",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 21,
+      "max_age": 40,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["PG"],
+      "occupation": ["Student"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": true
+    },
+    "benefit_text": "Monthly fellowship for M.Phil/PhD scholars with disability",
+    "benefit_annual_inr": 380000,
+    "documents": ["Aadhaar", "Disability Certificate", "PG Marksheet", "Admission Proof"],
+    "apply_url": "https://www.myscheme.gov.in",
+    "steps": [
+      "Secure admission to M.Phil/PhD",
+      "Register on the UGC/scheme portal",
+      "Upload disability and academic proof",
+      "Fellowship credited monthly"
+    ]
+  },
+  {
+    "id": "up-kanya-sumangala",
+    "scheme_name": "UP Mukhyamantri Kanya Sumangala Yojana",
+    "level": "State",
+    "state": "Uttar Pradesh",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 22,
+      "income_limit": 300000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Up to ₹25,000 across life stages for a girl child",
+    "benefit_annual_inr": 5000,
+    "documents": ["Aadhaar", "Income Certificate", "Girl Child Birth Certificate", "Bank Passbook"],
+    "apply_url": "https://mksy.up.gov.in",
+    "steps": [
+      "Register on mksy.up.gov.in",
+      "Select the applicable benefit stage",
+      "Upload income and birth documents",
+      "Benefit credited to bank account"
+    ]
+  },
+  {
+    "id": "up-pension-oldage",
+    "scheme_name": "UP Old Age Pension Scheme",
+    "level": "State",
+    "state": "Uttar Pradesh",
+    "category": "Senior Citizens",
+    "eligibility": {
+      "min_age": 60,
+      "max_age": 120,
+      "income_limit": 200000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹1,000 per month pension for eligible senior citizens",
+    "benefit_annual_inr": 12000,
+    "documents": ["Aadhaar", "Age Proof", "Income Certificate", "Bank Passbook"],
+    "apply_url": "https://sspy-up.gov.in",
+    "steps": [
+      "Register on sspy-up.gov.in",
+      "Fill the old-age pension form",
+      "Upload age and income documents",
+      "Pension credited after verification"
+    ]
+  },
+  {
+    "id": "up-widow-pension",
+    "scheme_name": "UP Widow Pension (Nirashrit Mahila Pension)",
+    "level": "State",
+    "state": "Uttar Pradesh",
+    "category": "Women",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 60,
+      "income_limit": 200000,
+      "gender": "Female",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "₹500 per month pension for widowed/destitute women",
+    "benefit_annual_inr": 6000,
+    "documents": ["Aadhaar", "Husband's Death Certificate", "Income Certificate", "Bank Passbook"],
+    "apply_url": "https://sspy-up.gov.in",
+    "steps": [
+      "Register on sspy-up.gov.in",
+      "Fill the widow pension form",
+      "Upload required certificates",
+      "Pension credited after verification"
+    ]
+  },
+  {
+    "id": "central-nsap-disability-pension",
+    "scheme_name": "Indira Gandhi National Disability Pension (IGNDPS)",
+    "level": "Central",
+    "state": "All",
+    "category": "Health",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 79,
+      "income_limit": 120000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": true
+    },
+    "benefit_text": "Monthly pension for BPL persons with severe disability",
+    "benefit_annual_inr": 4800,
+    "documents": ["Aadhaar", "Disability Certificate", "BPL Card", "Bank Passbook"],
+    "apply_url": "https://nsap.nic.in",
+    "steps": [
+      "Apply at the Block/Panchayat office",
+      "Submit disability and BPL proof",
+      "Verification by local authority",
+      "Pension credited monthly"
+    ]
+  },
+  {
+    "id": "central-svanidhi",
+    "scheme_name": "PM SVANidhi (Street Vendor Loan)",
+    "level": "Central",
+    "state": "All",
+    "category": "Employment",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 70,
+      "income_limit": 500000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Self-Employed", "Business", "Vendor"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Collateral-free working-capital loan starting ₹10,000",
+    "benefit_annual_inr": 10000,
+    "documents": ["Aadhaar", "Vending Certificate/ID", "Bank Passbook"],
+    "apply_url": "https://pmsvanidhi.mohua.gov.in",
+    "steps": [
+      "Register on the PM SVANidhi portal",
+      "Submit vending ID and Aadhaar",
+      "Loan sanctioned by lender",
+      "Repay to unlock higher loan limits"
+    ]
+  },
+  {
+    "id": "central-atal-pension",
+    "scheme_name": "Atal Pension Yojana (APY)",
+    "level": "Central",
+    "state": "All",
+    "category": "Employment",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 40,
+      "income_limit": 500000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Guaranteed ₹1,000-₹5,000 monthly pension after age 60",
+    "benefit_annual_inr": 24000,
+    "documents": ["Aadhaar", "Bank Passbook", "Mobile Number"],
+    "apply_url": "https://www.npscra.nsdl.co.in",
+    "steps": [
+      "Visit your bank or use net banking",
+      "Fill the APY registration form",
+      "Choose your monthly pension amount",
+      "Contributions auto-debited monthly"
+    ]
+  },
+  {
+    "id": "central-nps-vatsalya",
+    "scheme_name": "NPS Vatsalya (Child Pension Savings)",
+    "level": "Central",
+    "state": "All",
+    "category": "Education",
+    "eligibility": {
+      "min_age": 0,
+      "max_age": 18,
+      "income_limit": 100000000,
+      "gender": "Any",
+      "education": ["Any"],
+      "occupation": ["Any"],
+      "social_category": ["Any"],
+      "requires_land": false,
+      "disability_only": false
+    },
+    "benefit_text": "Long-term pension savings account opened for a minor",
+    "benefit_annual_inr": 10000,
+    "documents": ["Child Aadhaar/Birth Certificate", "Guardian Aadhaar", "Bank Passbook"],
+    "apply_url": "https://enps.nsdl.com",
+    "steps": [
+      "Open an NPS Vatsalya account online or at a bank",
+      "Submit guardian and child KYC",
+      "Contribute a minimum yearly amount",
+      "Account converts to standard NPS at 18"
+    ]
+  }
+]
