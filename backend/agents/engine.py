@@ -106,8 +106,11 @@ class AgentEngine:
     # ------------------------------------------------------------------ #
     # True ADK orchestration (agentic showcase)
     # ------------------------------------------------------------------ #
-    def run_orchestrator(self, message: str, lang: str = "en") -> Dict:
+    def run_orchestrator(self, message: str, lang: str = "en", base_profile: Optional[UserProfile] = None) -> Dict:
         profile = self.extract_profile(message)
+        if base_profile is not None:
+            # Explicit Citizen Profile form selections win over text-inferred fields.
+            profile = profile.merged_with(base_profile)
         if not self.adk_ready:
             rec = self.recommend(profile, message, lang)
             return {
@@ -189,15 +192,14 @@ class AgentEngine:
     def _explain(self, profile: UserProfile, schemes: List[Dict], query: Optional[str], lang: str) -> str:
         if not schemes:
             return (
-                "आपकी वर्तमान प्रोफ़ाइल के लिए कोई योजना नहीं मिली। कृपया राज्य, आय या व्यवसाय जैसी अधिक जानकारी दें।"
+                "आपकी वर्तमान जानकारी के लिए अभी कोई योजना नहीं मिली। कृपया राज्य, आयु, आय, "
+                "लिंग या व्यवसाय जैसी थोड़ी और जानकारी जोड़ें ताकि मैं सही योजनाएँ सुझा सकूँ।"
                 if lang == "hi"
-                else "No matching schemes were found for your current profile. "
-                "Try adding more details (state, income, occupation)."
+                else "I couldn't match a scheme to the details given yet. Add a little more "
+                "(state, age, income, gender or occupation) and I'll find the right schemes for you."
             )
         if not self.settings.gemini_enabled:
-            head = "आप निम्न योजनाओं के लिए पात्र हैं:" if lang == "hi" else "You appear eligible for:"
-            body = "\n".join(f"• {s['scheme_name']} — {s['benefit_text']}" for s in schemes)
-            return f"{head}\n{body}"
+            return self._template_explanation(profile, schemes, lang)
 
         lang_name = "Hindi (Devanagari)" if lang == "hi" else "English"
         context = "\n".join(
@@ -206,10 +208,17 @@ class AgentEngine:
             for s in schemes
         )
         prompt = (
-            "You are SarkarSathi, an expert assistant on Indian government welfare schemes.\n"
+            "You are SarkarSathi, a warm and knowledgeable assistant that helps every Indian "
+            "citizen — students, farmers, women, senior citizens, entrepreneurs, persons with "
+            "disability and the general public — understand the government welfare schemes they "
+            "qualify for.\n"
             "Rules:\n- Use ONLY the schemes listed below. Do NOT invent schemes or eligibility.\n"
-            "- Cite each scheme by its exact name.\n- For each, briefly state WHY the user qualifies "
-            "using the provided reasons.\n- Be warm, concise and encouraging. "
+            "- Open with a short, friendly sentence acknowledging who the citizen is.\n"
+            "- Group your answer by scheme category (e.g. Education, Farmers, Women, Health, "
+            "Senior Citizens) when there is more than one.\n"
+            "- Cite each scheme by its exact name and briefly state WHY the user qualifies "
+            "using the provided reasons, plus the benefit amount.\n"
+            "- End with one encouraging next-step line. Be concise. "
             f"Respond entirely in {lang_name}.\n\n"
             f"User profile: {profile.as_dict()}\n"
             f"User question: {query or 'Which schemes am I eligible for?'}\n\n"
@@ -219,9 +228,49 @@ class AgentEngine:
         try:
             return self._gemini_text(prompt).strip()
         except Exception as exc:  # pragma: no cover
-            head = "आप निम्न योजनाओं के लिए पात्र हैं:" if lang == "hi" else "You appear eligible for:"
-            body = "\n".join(f"• {s['scheme_name']} — {s['benefit_text']}" for s in schemes)
-            return f"{head}\n{body}\n\n(Note: live AI explanation unavailable: {exc})"
+            return f"{self._template_explanation(profile, schemes, lang)}\n\n(AI explanation offline: {exc})"
+
+    @staticmethod
+    def _template_explanation(profile: UserProfile, schemes: List[Dict], lang: str) -> str:
+        """Warm, organised offline answer — grouped by category, useful to any citizen."""
+        total = sum(int(s.get("benefit_annual_inr", 0)) for s in schemes)
+
+        # Greeting tailored to who the citizen is.
+        who: List[str] = []
+        if profile.age is not None and profile.age >= 60:
+            who.append("वरिष्ठ नागरिक" if lang == "hi" else "senior citizen")
+        if profile.occupation:
+            occ_hi = {"Student": "छात्र", "Farmer": "किसान", "Entrepreneur": "उद्यमी",
+                      "Self-Employed": "स्वरोज़गार", "Unemployed": "रोज़गार की तलाश में"}
+            who.append(occ_hi.get(profile.occupation, profile.occupation) if lang == "hi" else profile.occupation.lower())
+        if profile.gender == "Female" and "किसान" not in who and "farmer" not in who:
+            who.append("महिला" if lang == "hi" else "woman")
+
+        # Group schemes by category.
+        groups: Dict[str, List[Dict]] = {}
+        for s in schemes:
+            groups.setdefault(s.get("category", "Other"), []).append(s)
+
+        lines: List[str] = []
+        if lang == "hi":
+            role = (" (" + ", ".join(who) + ")") if who else ""
+            lines.append(f"नमस्ते! आपकी जानकारी{role} के आधार पर आप इन योजनाओं के लिए पात्र दिख रहे हैं:")
+            for category, items in groups.items():
+                lines.append(f"\n📌 {category}")
+                for s in items:
+                    lines.append(f"  • {s['scheme_name']} — {s['benefit_text']}")
+            lines.append(f"\nकुल अनुमानित वार्षिक लाभ: ₹{total:,}।")
+            lines.append("किसी भी योजना पर 'Apply' दबाकर आवेदन शुरू करें या 'Docs' से ज़रूरी दस्तावेज़ देखें।")
+        else:
+            role = (" (" + ", ".join(who) + ")") if who else ""
+            lines.append(f"Hello! Based on your details{role}, you appear eligible for these schemes:")
+            for category, items in groups.items():
+                lines.append(f"\n📌 {category}")
+                for s in items:
+                    lines.append(f"  • {s['scheme_name']} — {s['benefit_text']}")
+            lines.append(f"\nEstimated combined annual benefit: ₹{total:,}.")
+            lines.append("Tap 'Apply' on any card to begin, or 'Docs' to see the documents you'll need.")
+        return "\n".join(lines)
 
     # ------------------------------------------------------------------ #
     # Helpers

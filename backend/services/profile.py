@@ -32,6 +32,18 @@ class UserProfile:
         allowed = {f for f in cls.__dataclass_fields__}  # type: ignore[attr-defined]
         return cls(**{k: v for k, v in (data or {}).items() if k in allowed and v is not None})
 
+    def merged_with(self, override: "UserProfile") -> "UserProfile":
+        """Return a new profile where non-None fields of `override` take precedence.
+
+        Used to let explicit Citizen Profile form selections (the override)
+        win over fields inferred from free text, so the chosen filters always
+        apply (e.g. Gender = Female must exclude male-only schemes)."""
+        merged = asdict(self)
+        for key, value in asdict(override).items():
+            if value is not None:
+                merged[key] = value
+        return UserProfile(**merged)
+
 
 _STATES = [
     "uttar pradesh", "bihar", "maharashtra", "karnataka", "kerala", "tamil nadu",
@@ -59,20 +71,31 @@ def heuristic_profile(message: str) -> UserProfile:
 
     if any(w in msg for w in ["student", "b.tech", "btech", "bsc", "b.sc", "college", "छात्र"]):
         p.occupation, p.education = "Student", "UG"
-    if any(w in msg for w in ["farmer", "किसान", "kisan"]):
+    if any(w in msg for w in ["farmer", "किसान", "kisan", "kheti", "खेती"]):
         p.occupation = "Farmer"
-    if any(w in msg for w in ["entrepreneur", "business", "startup", "shop", "व्यवसाय"]):
+    if any(w in msg for w in ["entrepreneur", "business", "startup", "shop", "व्यवसाय", "उद्यमी", "दुकान"]):
         p.occupation = "Entrepreneur"
-    if any(w in msg for w in ["girl", "woman", "female", "महिला", "लड़की", "daughter"]):
+    if any(w in msg for w in ["self employed", "self-employed", "freelanc", "स्वरोज़गार", "स्वरोजगार"]):
+        p.occupation = "Self-Employed"
+    if any(w in msg for w in ["unemployed", "jobless", "no job", "looking for work", "बेरोज़गार", "बेरोजगार"]):
+        p.occupation = "Unemployed"
+    if any(w in msg for w in ["girl", "woman", "female", "महिला", "लड़की", "daughter", "widow", "विधवा",
+                              "housewife", "homemaker", "गृहिणी", "बेटी", "mahila"]):
         p.gender = "Female"
-    elif any(w in msg for w in [" man ", "male", "boy", "पुरुष", "लड़का"]):
+    elif any(w in msg for w in [" man ", "male", "boy", "पुरुष", "लड़का", "बेटा"]):
         p.gender = "Male"
     if any(w in msg for w in ["pregnant", "expecting", "new mother", "गर्भवती", "प्रसूत"]):
         p.maternity, p.gender = True, "Female"
-    if any(w in msg for w in ["disabled", "disability", "divyang", "दिव्यांग"]):
+    if any(w in msg for w in ["disabled", "disability", "divyang", "दिव्यांग", "handicap", "विकलांग"]):
         p.disability = True
-    if any(w in msg for w in ["own land", "land owner", "farmland", "खेत", "जमीन"]):
+    if any(w in msg for w in ["own land", "land owner", "farmland", "खेत", "जमीन", "ज़मीन"]):
         p.land_owner = True
+    # Senior citizens: infer a qualifying age when only descriptive words are given.
+    if p.age is None and any(
+        w in msg for w in ["senior citizen", "old age", "elderly", "retired", "pensioner",
+                            "वरिष्ठ नागरिक", "बुज़ुर्ग", "बुजुर्ग", "वृद्ध", "पेंशन"]
+    ):
+        p.age = 65
     for cat in ["sc", "st", "obc", "general"]:
         if re.search(rf"\b{cat}\b", msg):
             p.social_category = cat.upper()

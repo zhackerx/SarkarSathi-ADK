@@ -94,7 +94,8 @@ def agent():
     message = (body.get("message") or "").strip()
     if not message:
         return jsonify({"error": "message is required"}), 400
-    return jsonify(engine.run_orchestrator(message, body.get("lang", "en")))
+    base_profile = UserProfile.from_dict(body.get("profile") or {})
+    return jsonify(engine.run_orchestrator(message, body.get("lang", "en"), base_profile))
 
 
 @app.post("/api/documents/check")

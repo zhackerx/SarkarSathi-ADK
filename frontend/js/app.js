@@ -105,7 +105,9 @@ async function askAgents() {
   animatePipeline();
   try {
     // /api/agent runs the real ADK Orchestrator (falls back gracefully).
-    const res = await postJSON("/api/agent", { message, lang: lang() });
+    // Send the Citizen Profile form too, so any filters selected there
+    // (state, gender, income, etc.) are applied to the recommendation.
+    const res = await postJSON("/api/agent", { message, profile: readProfile(), lang: lang() });
     render({
       explanation: res.reply,
       schemes: res.schemes,
