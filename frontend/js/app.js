@@ -243,7 +243,7 @@ function render(res) {
 
 function schemeCard(s) {
   const col = document.createElement("div");
-  col.className = "col-md-6";
+  col.className = "col-md-6 col-xl-4";
   const reasons = (s.reasons || [])
     .filter((r) => r.startsWith("✓"))
     .map((r) => `<div class="reason pass">${r}</div>`)
