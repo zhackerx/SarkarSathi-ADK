@@ -79,8 +79,9 @@ def heuristic_profile(message: str) -> UserProfile:
         p.occupation = "Self-Employed"
     if any(w in msg for w in ["unemployed", "jobless", "no job", "looking for work", "बेरोज़गार", "बेरोजगार"]):
         p.occupation = "Unemployed"
-    if any(w in msg for w in ["girl", "woman", "female", "महिला", "लड़की", "daughter", "widow", "विधवा",
-                              "housewife", "homemaker", "गृहिणी", "बेटी", "mahila"]):
+    if any(w in msg for w in ["girl", "woman", "women", "female", "महिला", "महिलाओं", "लड़की",
+                              "daughter", "widow", "विधवा", "housewife", "homemaker", "गृहिणी",
+                              "बेटी", "mahila", "ladies", "lady"]):
         p.gender = "Female"
     elif any(w in msg for w in [" man ", "male", "boy", "पुरुष", "लड़का", "बेटा"]):
         p.gender = "Male"

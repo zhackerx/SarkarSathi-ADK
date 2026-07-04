@@ -124,6 +124,20 @@ class AgentEngine:
                 "used_adk": False,
                 "mode": self.status()["mode"],
             }
+        # General information questions (e.g. "tell me about the schemes") with no
+        # personal details are informational, not a personalised eligibility check —
+        # give an overview and DON'T show a personalised combined-benefit total.
+        if self._is_general_info(message, profile):
+            rec = self.recommend(profile, message, lang)
+            return {
+                "reply": self._overview_reply(rec["schemes"], lang),
+                "profile": profile.as_dict(),
+                "schemes": rec["schemes"],
+                "total_benefit_inr": 0,
+                "used_adk": False,
+                "mode": rec["mode"],
+                "general_info": True,
+            }
         if not self.adk_ready:
             rec = self.recommend(profile, message, lang)
             return {
@@ -209,6 +223,46 @@ class AgentEngine:
             "Citizen Profile form on the left (age, state, income, gender, occupation) to get "
             "matched instantly."
         )
+
+    @staticmethod
+    def _is_general_info(message: str, profile: UserProfile) -> bool:
+        """True for general 'tell me about the schemes' questions with no personal
+        details — an informational overview rather than a personalised match."""
+        if profile.as_dict():
+            return False
+        text = (message or "").strip().lower()
+        scheme_words = ("scheme", "schemes", "yojana", "yojna", "yojanas",
+                        "योजना", "योजनाओं", "योजनाएं", "योजनाएँ", "योजनाये")
+        return any(w in text for w in scheme_words)
+
+    @staticmethod
+    def _overview_reply(schemes: List[Dict], lang: str) -> str:
+        """A general, non-personalised overview grouped by category."""
+        groups: Dict[str, List[Dict]] = {}
+        for s in schemes:
+            groups.setdefault(s.get("category", "Other"), []).append(s)
+
+        if lang == "hi":
+            lines = ["ज़रूर! भारत सरकार की योजनाएँ इन श्रेणियों में उपलब्ध हैं:"]
+            for cat, items in groups.items():
+                names = ", ".join(x["scheme_name"] for x in items[:3])
+                lines.append(f"\n📌 {cat} ({len(items)}): {names}" + (" आदि" if len(items) > 3 else ""))
+            lines.append(
+                "\nयह एक सामान्य सूची है। अपनी सटीक पात्रता और अनुमानित लाभ जानने के लिए कृपया अपनी आयु, "
+                "राज्य, आय, लिंग या व्यवसाय बताएं — या बाईं ओर दिया फ़ॉर्म भरें।"
+            )
+            return "\n".join(lines)
+
+        lines = ["Sure! Government schemes are available across these categories:"]
+        for cat, items in groups.items():
+            names = ", ".join(x["scheme_name"] for x in items[:3])
+            lines.append(f"\n📌 {cat} ({len(items)}): {names}" + (" and more" if len(items) > 3 else ""))
+        lines.append(
+            "\nThis is a general list. To see which ones YOU qualify for and your estimated "
+            "benefit, tell me your age, state, income, gender or occupation — or fill the "
+            "Citizen Profile form on the left."
+        )
+        return "\n".join(lines)
 
     def _run_adk(self, message: str, lang: str) -> str:
         from google.adk.runners import Runner
