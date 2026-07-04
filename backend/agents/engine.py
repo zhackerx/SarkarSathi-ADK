@@ -226,14 +226,20 @@ class AgentEngine:
 
     @staticmethod
     def _is_general_info(message: str, profile: UserProfile) -> bool:
-        """True for general 'tell me about the schemes' questions with no personal
-        details — an informational overview rather than a personalised match."""
-        if profile.as_dict():
-            return False
+        """True for general 'tell me about the schemes' questions.
+
+        A personalised benefit estimate is only shown once the citizen gives a
+        concrete identifier (age, income or state) or uses the profile form.
+        A category/gender word alone (e.g. 'women schemes') stays an overview."""
         text = (message or "").strip().lower()
         scheme_words = ("scheme", "schemes", "yojana", "yojna", "yojanas",
                         "योजना", "योजनाओं", "योजनाएं", "योजनाएँ", "योजनाये")
-        return any(w in text for w in scheme_words)
+        if not any(w in text for w in scheme_words):
+            return False
+        has_personal_detail = (
+            profile.age is not None or profile.income is not None or profile.state is not None
+        )
+        return not has_personal_detail
 
     @staticmethod
     def _overview_reply(schemes: List[Dict], lang: str) -> str:
