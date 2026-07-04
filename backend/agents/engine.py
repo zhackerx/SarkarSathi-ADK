@@ -111,6 +111,19 @@ class AgentEngine:
         if base_profile is not None:
             # Explicit Citizen Profile form selections win over text-inferred fields.
             profile = profile.merged_with(base_profile)
+        # Conversational / informational questions (e.g. "what is this?", "hi",
+        # "who are you") are NOT scheme requests — answer them directly instead
+        # of dumping every scheme and a combined benefit total.
+        meta = self._meta_reply(message, profile, lang)
+        if meta is not None:
+            return {
+                "reply": meta,
+                "profile": profile.as_dict(),
+                "schemes": [],
+                "total_benefit_inr": 0,
+                "used_adk": False,
+                "mode": self.status()["mode"],
+            }
         if not self.adk_ready:
             rec = self.recommend(profile, message, lang)
             return {
@@ -143,6 +156,50 @@ class AgentEngine:
                 "mode": rec["mode"],
                 "adk_error": str(exc),
             }
+
+    @staticmethod
+    def _meta_reply(message: str, profile: UserProfile, lang: str) -> Optional[str]:
+        """Return a friendly intro for greetings / 'what is this' style questions.
+
+        Only triggers when the citizen gave no eligibility details, so genuine
+        scheme requests (even short ones) still run the recommendation pipeline."""
+        text = (message or "").strip().lower()
+        if not text or profile.as_dict():
+            return None
+
+        # A message that mentions schemes/benefits is a real request, not small talk.
+        scheme_words = ("scheme", "yojana", "योजना", "benefit", "लाभ", "eligible", "पात्र",
+                        "scholarship", "pension", "loan", "subsidy", "apply", "money", "help me")
+        if any(w in text for w in scheme_words):
+            return None
+
+        greetings = ("hi", "hii", "hello", "hey", "namaste", "namaskar", "नमस्ते", "नमस्कार", "हाय")
+        about = ("what is this", "what's this", "whats this", "what is sarkarsathi", "who are you",
+                 "what can you do", "what do you do", "how does this work", "how do you work",
+                 "what is it", "help", "यह क्या है", "ये क्या है", "आप कौन", "क्या कर सकते",
+                 "कैसे काम")
+        is_greeting = text in greetings or any(text.startswith(g + " ") for g in greetings)
+        is_about = any(a in text for a in about)
+        if not (is_greeting or is_about):
+            return None
+
+        if lang == "hi":
+            return (
+                "नमस्ते! मैं SarkarSathi हूँ — भारत सरकार की कल्याणकारी योजनाओं के लिए आपका सहायक। "
+                "मैं छात्रों, किसानों, महिलाओं, वरिष्ठ नागरिकों, उद्यमियों और आम नागरिकों को उनके लिए उपयुक्त "
+                "योजनाएँ खोजने में मदद करता हूँ।\n\n"
+                "बस अपने बारे में थोड़ा बताइए — जैसे: \"मैं उत्तर प्रदेश से 19 वर्षीय छात्रा हूँ, पारिवारिक आय ₹2 लाख\"। "
+                "आप बाईं ओर दिए फ़ॉर्म में आयु, राज्य, आय, लिंग आदि भरकर भी योजनाएँ पा सकते हैं।"
+            )
+        return (
+            "Hello! I'm SarkarSathi — your assistant for Indian government welfare schemes. "
+            "I help students, farmers, women, senior citizens, entrepreneurs and the general "
+            "public find the schemes they're eligible for and how to apply.\n\n"
+            "Just tell me a little about yourself — for example: \"I'm a 19-year-old girl from "
+            "Uttar Pradesh pursuing B.Tech, family income ₹2 lakh\". You can also fill the "
+            "Citizen Profile form on the left (age, state, income, gender, occupation) to get "
+            "matched instantly."
+        )
 
     def _run_adk(self, message: str, lang: str) -> str:
         from google.adk.runners import Runner
