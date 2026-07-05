@@ -439,6 +439,7 @@ class AgentEngine:
             "apply_url": s["apply_url"],
             "steps": s["steps"],
             "reasons": s.get("reasons", []),
+            "match_percent": s.get("match_percent", 100),
             "score": s.get("score", 0.0),
         }
 

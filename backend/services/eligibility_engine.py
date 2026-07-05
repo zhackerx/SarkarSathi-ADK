@@ -120,5 +120,47 @@ def filter_eligible(profile: UserProfile, schemes: List[Dict]) -> List[Dict]:
         if eligible:
             enriched = dict(scheme)
             enriched["reasons"] = reasons
+            enriched["match_percent"] = match_percent(profile, scheme)
             results.append(enriched)
     return results
+
+
+def match_percent(profile: UserProfile, scheme: Dict) -> int:
+    """Confidence score (65-100%) showing how strongly the profile corroborates
+    an (already eligible) scheme. 100% when every restrictive criterion the
+    scheme defines was positively verified from the profile."""
+    e = scheme.get("eligibility", {})
+    total = 0
+    met = 0
+
+    def check(is_restrictive: bool, is_met: bool) -> None:
+        nonlocal total, met
+        if is_restrictive:
+            total += 1
+            if is_met:
+                met += 1
+
+    check(e.get("min_age", 0) > 0 or e.get("max_age", 120) < 120,
+          profile.age is not None and e.get("min_age", 0) <= profile.age <= e.get("max_age", 120))
+    check(scheme.get("state", "All") != "All",
+          bool(profile.state) and profile.state.strip().lower() == scheme.get("state", "").strip().lower())
+    check(e.get("income_limit") is not None,
+          profile.income is not None and e.get("income_limit") is not None and profile.income <= e["income_limit"])
+    check(e.get("gender", "Any") not in ("Any", None),
+          bool(profile.gender) and profile.gender.strip().lower() == str(e.get("gender", "")).strip().lower())
+    edu = [x.lower() for x in e.get("education", [])]
+    check(bool(edu) and "any" not in edu,
+          bool(profile.education) and profile.education.strip().lower() in edu)
+    occ = [x.lower() for x in e.get("occupation", [])]
+    check(bool(occ) and "any" not in occ,
+          bool(profile.occupation) and profile.occupation.strip().lower() in occ)
+    cat = [x.lower() for x in e.get("social_category", [])]
+    check(bool(cat) and "any" not in cat,
+          bool(profile.social_category) and profile.social_category.strip().lower() in cat)
+    check(bool(e.get("requires_land")), profile.land_owner is True)
+    check(bool(e.get("disability_only")), profile.disability is True)
+    check(bool(e.get("requires_maternity")), profile.maternity is True)
+
+    if total == 0:
+        return 100
+    return max(65, round(100 - 35 * (total - met) / total))

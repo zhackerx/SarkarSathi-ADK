@@ -50,8 +50,8 @@ const GUIDE = {
 // Field values that the engine needs (Male, UG, state names, etc.) stay English;
 // only labels, headings, buttons, hints and placeholders are translated.
 const I18N = {
-  en: { langLabel: "Language", askTitle: "Ask in your own words", askBtn: "Ask the Agents", askPlaceholder: "e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech", holdSpeak: "Hold & Speak", listening: "Listening… release to stop", guideBtn: "How to use — Listen & learn", citizenProfile: "Citizen Profile", trySample: "Try sample", age: "Age", income: "Annual income (₹)", state: "State", gender: "Gender", education: "Education", occupation: "Occupation", category: "Social category", land: "Owns land", disability: "Disability", maternity: "Pregnant / new mother", findSchemes: "Find my schemes", pipelineTitle: "ADK Agent Pipeline", aiTitle: "AI Decision Intelligence", placeholder: "Fill the profile or ask a question to discover the government schemes you qualify for.", working: "Agents are working on your request…", docTitle: "Document Readiness", docHelp: "Type the documents you already have (comma separated), e.g. Aadhaar, Income Certificate.", docCheck: "Check readiness" },
-  hi: { langLabel: "भाषा", askTitle: "अपने शब्दों में पूछें", askBtn: "एजेंट्स से पूछें", askPlaceholder: "उदा. मैं बिहार से 65 वर्ष का सेवानिवृत्त व्यक्ति हूँ", holdSpeak: "दबाकर बोलें", listening: "सुन रहा हूँ… छोड़ें", guideBtn: "उपयोग कैसे करें — सुनें और सीखें", citizenProfile: "नागरिक प्रोफ़ाइल", trySample: "नमूना आज़माएँ", age: "आयु", income: "वार्षिक आय (₹)", state: "राज्य", gender: "लिंग", education: "शिक्षा", occupation: "व्यवसाय", category: "सामाजिक वर्ग", land: "भूमि है", disability: "दिव्यांगता", maternity: "गर्भवती / नई माँ", findSchemes: "मेरी योजनाएँ खोजें", pipelineTitle: "ADK एजेंट पाइपलाइन", aiTitle: "एआई निर्णय बुद्धिमत्ता", placeholder: "योजनाएँ जानने के लिए प्रोफ़ाइल भरें या प्रश्न पूछें।", working: "एजेंट्स आपके अनुरोध पर काम कर रहे हैं…", docTitle: "दस्तावेज़ तैयारी", docHelp: "आपके पास मौजूद दस्तावेज़ लिखें (कॉमा से अलग), जैसे आधार, आय प्रमाणपत्र।", docCheck: "तैयारी जाँचें" },
+  en: { langLabel: "Language", askTitle: "Ask in your own words", askBtn: "Ask the Agents", askPlaceholder: "e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech", holdSpeak: "Hold & Speak", listening: "Listening… release to stop", guideBtn: "How to use — Listen & learn", citizenProfile: "Citizen Profile", trySample: "Try sample", age: "Age", income: "Annual income (₹)", state: "State", gender: "Gender", education: "Education", occupation: "Occupation", category: "Social category", land: "Owns land", disability: "Disability", maternity: "Pregnant / new mother", findSchemes: "Find my schemes", pipelineTitle: "ADK Agent Pipeline", aiTitle: "AI Decision Intelligence", placeholder: "Fill the profile or ask a question to discover the government schemes you qualify for.", working: "Agents are working on your request…", docTitle: "Document Readiness", docHelp: "Type the documents you already have (comma separated), e.g. Aadhaar, Income Certificate.", docCheck: "Check readiness", recommendedBecause: "Recommended because:", eligibilityMatch: "Eligibility Match", applicationSteps: "Application steps", printPdf: "Print / Save PDF", download: "Download", share: "Share", historyTitle: "Past questions", historySearchPh: "Search past questions…", historyEmpty: "Your recent questions will appear here.", ocrScanning: "Scanning documents…", reportTitle: "Citizen Summary — SarkarSathi", rpProfile: "Your profile", rpSchemes: "Eligible schemes", rpDocs: "Documents required", rpNextSteps: "Next steps", rpLinks: "Application links", stage1: "Analyzing your query…", stage2: "Searching eligible schemes…", stage3: "Checking documents…", stage4: "Preparing your response…" },
+  hi: { langLabel: "भाषा", askTitle: "अपने शब्दों में पूछें", askBtn: "एजेंट्स से पूछें", askPlaceholder: "उदा. मैं बिहार से 65 वर्ष का सेवानिवृत्त व्यक्ति हूँ", holdSpeak: "दबाकर बोलें", listening: "सुन रहा हूँ… छोड़ें", guideBtn: "उपयोग कैसे करें — सुनें और सीखें", citizenProfile: "नागरिक प्रोफ़ाइल", trySample: "नमूना आज़माएँ", age: "आयु", income: "वार्षिक आय (₹)", state: "राज्य", gender: "लिंग", education: "शिक्षा", occupation: "व्यवसाय", category: "सामाजिक वर्ग", land: "भूमि है", disability: "दिव्यांगता", maternity: "गर्भवती / नई माँ", findSchemes: "मेरी योजनाएँ खोजें", pipelineTitle: "ADK एजेंट पाइपलाइन", aiTitle: "एआई निर्णय बुद्धिमत्ता", placeholder: "योजनाएँ जानने के लिए प्रोफ़ाइल भरें या प्रश्न पूछें।", working: "एजेंट्स आपके अनुरोध पर काम कर रहे हैं…", docTitle: "दस्तावेज़ तैयारी", docHelp: "आपके पास मौजूद दस्तावेज़ लिखें (कॉमा से अलग), जैसे आधार, आय प्रमाणपत्र।", docCheck: "तैयारी जाँचें", recommendedBecause: "अनुशंसित क्योंकि:", eligibilityMatch: "पात्रता मिलान", applicationSteps: "आवेदन के चरण", printPdf: "प्रिंट / PDF सहेजें", download: "डाउनलोड", share: "साझा करें", historyTitle: "पिछले प्रश्न", historySearchPh: "पिछले प्रश्न खोजें…", historyEmpty: "आपके हाल के प्रश्न यहाँ दिखेंगे।", ocrScanning: "दस्तावेज़ स्कैन हो रहे हैं…", reportTitle: "नागरिक सारांश — सरकारसाथी", rpProfile: "आपकी प्रोफ़ाइल", rpSchemes: "पात्र योजनाएँ", rpDocs: "आवश्यक दस्तावेज़", rpNextSteps: "अगले कदम", rpLinks: "आवेदन लिंक", stage1: "आपका प्रश्न समझ रहे हैं…", stage2: "पात्र योजनाएँ खोज रहे हैं…", stage3: "दस्तावेज़ जाँच रहे हैं…", stage4: "आपका उत्तर तैयार कर रहे हैं…" },
   bn: { langLabel: "ভাষা", askTitle: "নিজের ভাষায় জিজ্ঞাসা করুন", askBtn: "এজেন্টদের জিজ্ঞাসা করুন", askPlaceholder: "যেমন আমি বিহারের 65 বছর বয়সী অবসরপ্রাপ্ত ব্যক্তি", holdSpeak: "চেপে ধরে বলুন", listening: "শুনছি… ছেড়ে দিন", guideBtn: "কীভাবে ব্যবহার করবেন — শুনুন ও শিখুন", citizenProfile: "নাগরিক প্রোফাইল", trySample: "নমুনা দেখুন", age: "বয়স", income: "বার্ষিক আয় (₹)", state: "রাজ্য", gender: "লিঙ্গ", education: "শিক্ষা", occupation: "পেশা", category: "সামাজিক শ্রেণি", land: "জমি আছে", disability: "প্রতিবন্ধকতা", maternity: "গর্ভবতী / নতুন মা", findSchemes: "আমার প্রকল্প খুঁজুন", pipelineTitle: "ADK এজেন্ট পাইপলাইন", aiTitle: "এআই সিদ্ধান্ত বুদ্ধিমত্তা", placeholder: "প্রকল্প জানতে প্রোফাইল পূরণ করুন বা প্রশ্ন করুন।", working: "এজেন্টরা আপনার অনুরোধে কাজ করছে…", docTitle: "নথি প্রস্তুতি", docHelp: "আপনার কাছে থাকা নথিগুলি লিখুন (কমা দিয়ে আলাদা), যেমন আধার, আয় শংসাপত্র।", docCheck: "প্রস্তুতি যাচাই করুন" },
   ta: { langLabel: "மொழி", askTitle: "உங்கள் சொந்த வார்த்தைகளில் கேளுங்கள்", askBtn: "முகவர்களிடம் கேளுங்கள்", askPlaceholder: "எ.கா. நான் பீகாரைச் சேர்ந்த 65 வயது ஓய்வுபெற்றவர்", holdSpeak: "அழுத்திப் பேசுங்கள்", listening: "கேட்கிறேன்… விடுங்கள்", guideBtn: "எப்படி பயன்படுத்துவது — கேட்டு அறியுங்கள்", citizenProfile: "குடிமகன் சுயவிவரம்", trySample: "மாதிரியை முயற்சி செய்", age: "வயது", income: "ஆண்டு வருமானம் (₹)", state: "மாநிலம்", gender: "பாலினம்", education: "கல்வி", occupation: "தொழில்", category: "சமூகப் பிரிவு", land: "நிலம் உள்ளது", disability: "மாற்றுத்திறன்", maternity: "கர்ப்பிணி / புதிய தாய்", findSchemes: "எனது திட்டங்களைத் தேடு", pipelineTitle: "ADK முகவர் பைப்லைன்", aiTitle: "AI முடிவு நுண்ணறிவு", placeholder: "திட்டங்களை அறிய சுயவிவரத்தை நிரப்பவும் அல்லது கேளுங்கள்.", working: "முகவர்கள் உங்கள் கோரிக்கையில் வேலை செய்கிறார்கள்…", docTitle: "ஆவண தயார்நிலை", docHelp: "உங்களிடம் உள்ள ஆவணங்களை எழுதுங்கள் (கமாவால் பிரிக்கவும்), எ.கா. ஆதார், வருமானச் சான்று.", docCheck: "தயார்நிலையைச் சரிபார்க்கவும்" },
   te: { langLabel: "భాష", askTitle: "మీ స్వంత మాటల్లో అడగండి", askBtn: "ఏజెంట్లను అడగండి", askPlaceholder: "ఉదా. నేను బీహార్‌కు చెందిన 65 సంవత్సరాల విశ్రాంత వ్యక్తిని", holdSpeak: "నొక్కి మాట్లాడండి", listening: "వింటున్నాను… వదిలేయండి", guideBtn: "ఎలా ఉపయోగించాలి — విని నేర్చుకోండి", citizenProfile: "పౌర ప్రొఫైల్", trySample: "నమూనా ప్రయత్నించండి", age: "వయస్సు", income: "వార్షిక ఆదాయం (₹)", state: "రాష్ట్రం", gender: "లింగం", education: "విద్య", occupation: "వృత్తి", category: "సామాజిక వర్గం", land: "భూమి ఉంది", disability: "వికలాంగత్వం", maternity: "గర్భిణి / కొత్త తల్లి", findSchemes: "నా పథకాలను కనుగొనండి", pipelineTitle: "ADK ఏజెంట్ పైప్‌లైన్", aiTitle: "AI నిర్ణయ మేధస్సు", placeholder: "పథకాలు తెలుసుకోవడానికి ప్రొఫైల్ నింపండి లేదా ప్రశ్న అడగండి.", working: "ఏజెంట్లు మీ అభ్యర్థనపై పని చేస్తున్నారు…", docTitle: "పత్రాల సంసిద్ధత", docHelp: "మీ వద్ద ఉన్న పత్రాలను రాయండి (కామాతో వేరు చేయండి), ఉదా. ఆధార్, ఆదాయ ధృవీకరణ పత్రం.", docCheck: "సంసిద్ధతను తనిఖీ చేయండి" },
@@ -95,13 +95,18 @@ let currentDocScheme = null;
 let docModal = null;
 let recognition = null;   // active SpeechRecognition (hold-to-speak)
 let recording = false;
+let lastResult = null;    // last rendered result (for the report)
+let lastQuery = "";       // last user question (for history)
+let stageTimer = null;    // loading-stage cycler
 
 // ---------------- init ----------------
 document.addEventListener("DOMContentLoaded", () => {
   docModal = new bootstrap.Modal(el("docModal"));
   renderPipeline([]);
   loadHealth();
+  initTheme();
   applyI18n();
+  renderHistory();
 
   el("profileForm").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -112,14 +117,21 @@ document.addEventListener("DOMContentLoaded", () => {
   el("docCheckBtn").addEventListener("click", runDocCheck);
   el("guideBtn").addEventListener("click", toggleGuide);
   el("guideStopBtn").addEventListener("click", stopGuide);
+  el("themeToggle").addEventListener("click", toggleTheme);
+  el("printBtn").addEventListener("click", () => { buildReport(); window.print(); });
+  el("downloadBtn").addEventListener("click", downloadReport);
+  el("shareBtn").addEventListener("click", shareReport);
+  el("historySearch").addEventListener("input", renderHistory);
   initHoldToSpeak();
-  // Translate the whole interface + refresh guide when the language changes.
+  // Translate the whole interface + refresh guide/history when the language changes.
   el("langSelect").addEventListener("change", () => {
     stopGuide();
     applyI18n();
+    renderHistory();
     if (!el("voiceGuide").classList.contains("d-none")) renderGuide();
   });
 });
+
 
 
 
@@ -179,6 +191,7 @@ function readProfile() {
 }
 
 async function recommendFromForm() {
+  lastQuery = t("citizenProfile");
   setBusy(true);
   animatePipeline();
   try {
@@ -191,6 +204,7 @@ async function recommendFromForm() {
 async function askAgents() {
   const message = el("freeText").value.trim();
   if (!message) { el("freeText").focus(); return; }
+  lastQuery = message;
   setBusy(true);
   animatePipeline();
   try {
@@ -214,6 +228,7 @@ async function askAgents() {
 // ---------------- render ----------------
 function render(res) {
   renderPipeline(AGENTS);
+  lastResult = res;
 
   const banner = el("benefitBanner");
   if (res.total_benefit_inr && res.schemes && res.schemes.length) {
@@ -239,15 +254,28 @@ function render(res) {
   wrap.innerHTML = "";
   (res.schemes || []).forEach((s) => wrap.appendChild(schemeCard(s)));
   el("placeholder").classList.add("d-none");
+
+  // Show report actions when there's something worth keeping.
+  const hasContent = (res.schemes && res.schemes.length) || res.explanation;
+  el("reportActions").classList.toggle("d-none", !hasContent);
+
+  if (hasContent) saveHistory(res);
 }
 
 function schemeCard(s) {
   const col = document.createElement("div");
   col.className = "col-md-6 col-xl-4";
-  const reasons = (s.reasons || [])
-    .filter((r) => r.startsWith("✓"))
-    .map((r) => `<div class="reason pass">${r}</div>`)
-    .join("");
+  const reasonItems = (s.reasons || []).filter((r) => r.startsWith("✓"));
+  const reasons = reasonItems.map((r) => `<div class="reason pass">${r}</div>`).join("");
+  const recommended = reasonItems.length
+    ? `<div class="recommended-title mt-1 mb-1"><i class="bi bi-patch-check-fill me-1"></i>${t("recommendedBecause")}</div>${reasons}`
+    : "";
+  const match = Number(s.match_percent != null ? s.match_percent : 100);
+  const matchBar = `
+    <div class="match-wrap">
+      <div class="match-head"><span>${t("eligibilityMatch")}</span><span class="match-label">${match}%</span></div>
+      <div class="match-bar"><div class="match-fill" style="width:${match}%"></div></div>
+    </div>`;
   const docs = (s.documents || [])
     .map((d) => `<span class="badge text-bg-light border doc-pill">${d}</span>`)
     .join("");
@@ -259,12 +287,13 @@ function schemeCard(s) {
           <h6 class="fw-bold mb-1">${s.scheme_name}</h6>
           <span class="badge text-bg-primary level-badge">${s.level}</span>
         </div>
-        <div class="text-muted small mb-2">${s.category} · ${s.state}</div>
+        <div class="text-muted small mb-2"><i class="bi ${categoryIcon(s.category)} me-1"></i>${s.category} · ${s.state}</div>
         <p class="mb-2 small"><i class="bi bi-gift text-success me-1"></i>${s.benefit_text}
           <span class="benefit-amount">(≈ ₹${Number(s.benefit_annual_inr).toLocaleString("en-IN")}/yr)</span></p>
-        <div class="mb-2">${reasons}</div>
-        <details class="mb-2">
-          <summary class="small text-primary">Application steps</summary>
+        <div class="mb-1">${recommended}</div>
+        ${matchBar}
+        <details class="mb-2 mt-2">
+          <summary class="small text-primary">${t("applicationSteps")}</summary>
           <ol class="step-list mt-2">${steps}</ol>
         </details>
         <div class="mb-2">${docs}</div>
@@ -279,6 +308,16 @@ function schemeCard(s) {
   return col;
 }
 
+// Category → icon (better, contextual icons)
+function categoryIcon(category) {
+  const map = {
+    Education: "bi-mortarboard-fill", Farmers: "bi-tractor", Startups: "bi-rocket-takeoff-fill",
+    Women: "bi-gender-female", Health: "bi-heart-pulse-fill", "Senior Citizens": "bi-person-hearts",
+    Housing: "bi-house-heart-fill", Employment: "bi-briefcase-fill", Energy: "bi-lightning-charge-fill",
+  };
+  return map[category] || "bi-award-fill";
+}
+
 // ---------------- document readiness ----------------
 window.openDoc = function (schemeId) {
   currentDocScheme = schemeId;
@@ -289,20 +328,37 @@ window.openDoc = function (schemeId) {
 
 async function runDocCheck() {
   if (!currentDocScheme) return;
-  const res = await postJSON("/api/documents/check", {
-    scheme_id: currentDocScheme,
-    uploaded: el("docInput").value,
-    lang: lang(),
-  });
-  const missing = res.missing.map((d) => `<li>${d}</li>`).join("") || "<li>None 🎉</li>";
-  el("docResult").innerHTML = `
-    <div class="progress mb-2" style="height:22px;">
-      <div class="progress-bar bg-success" style="width:${res.readiness_percent}%">${res.readiness_percent}%</div>
-    </div>
-    <p class="small mb-1"><strong>${res.note}</strong></p>
-    <p class="small mb-1 text-success">Present: ${res.present.join(", ") || "—"}</p>
-    <p class="small mb-0 text-danger">Still needed:</p>
-    <ul class="small text-danger">${missing}</ul>`;
+  // Animated OCR-style progress bar while we check.
+  const prog = el("docProgress");
+  const bar = el("docProgressBar");
+  el("docResult").innerHTML = "";
+  prog.classList.remove("d-none");
+  bar.style.width = "0%";
+  let pct = 0;
+  const timer = setInterval(() => { pct = Math.min(90, pct + 12); bar.style.width = pct + "%"; }, 120);
+  try {
+    const res = await postJSON("/api/documents/check", {
+      scheme_id: currentDocScheme,
+      uploaded: el("docInput").value,
+      lang: lang(),
+    });
+    clearInterval(timer);
+    bar.style.width = "100%";
+    setTimeout(() => prog.classList.add("d-none"), 350);
+    const missing = res.missing.map((d) => `<li>${d}</li>`).join("") || "<li>None 🎉</li>";
+    el("docResult").innerHTML = `
+      <div class="progress mb-2" style="height:22px;">
+        <div class="progress-bar bg-success" style="width:${res.readiness_percent}%">${res.readiness_percent}%</div>
+      </div>
+      <p class="small mb-1"><strong>${res.note}</strong></p>
+      <p class="small mb-1 text-success">Present: ${res.present.join(", ") || "—"}</p>
+      <p class="small mb-0 text-danger">Still needed:</p>
+      <ul class="small text-danger">${missing}</ul>`;
+  } catch (e) {
+    clearInterval(timer);
+    prog.classList.add("d-none");
+    el("docResult").innerHTML = `<p class="small text-danger mb-0">${e.message}</p>`;
+  }
 }
 
 // ---------------- voice (Hold & Speak) ----------------
@@ -457,16 +513,183 @@ async function postJSON(path, body) {
 
 function setBusy(b) {
   el("spinner").classList.toggle("d-none", !b);
+  el("reportActions").classList.add("d-none");
   if (b) {
     el("placeholder").classList.add("d-none");
     el("schemes").innerHTML = "";
     el("benefitBanner").classList.add("d-none");
-    el("explanationCard").classList.add("d-none");
+    // Typing indicator in the answer area
+    el("explanationCard").classList.remove("d-none");
+    el("explanation").innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+    startStages();
+  } else {
+    stopStages();
   }
 }
 
+// Cycle through friendly loading stages instead of a static "Loading…"
+function startStages() {
+  const stages = ["stage1", "stage2", "stage3", "stage4"];
+  const p = el("spinner").querySelector("p");
+  let i = 0;
+  const show = () => {
+    p.textContent = t(stages[Math.min(i, stages.length - 1)]);
+    p.classList.remove("stage-line"); void p.offsetWidth; p.classList.add("stage-line");
+    i++;
+  };
+  show();
+  stageTimer = setInterval(() => { if (i < stages.length) show(); }, 900);
+}
+function stopStages() { if (stageTimer) { clearInterval(stageTimer); stageTimer = null; } }
+
 function showError(e) {
+  el("explanationCard").classList.add("d-none");
+  el("reportActions").classList.add("d-none");
   el("placeholder").classList.remove("d-none");
   el("placeholder").innerHTML =
     `<i class="bi bi-exclamation-triangle display-4 d-block mb-3 text-warning"></i>${e.message}`;
+}
+
+// ---------------- dark mode ----------------
+function initTheme() {
+  const saved = localStorage.getItem("ss_theme") || "light";
+  applyTheme(saved);
+}
+function toggleTheme() {
+  const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  localStorage.setItem("ss_theme", next);
+  applyTheme(next);
+}
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  const icon = el("themeToggle").querySelector("i");
+  icon.className = theme === "dark" ? "bi bi-sun-fill" : "bi bi-moon-stars-fill";
+}
+
+// ---------------- history (search past conversations) ----------------
+function esc(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function loadHistoryStore() {
+  try { return JSON.parse(localStorage.getItem("ss_history") || "[]"); } catch { return []; }
+}
+function saveHistory(res) {
+  const store = loadHistoryStore();
+  const entry = {
+    q: lastQuery || t("citizenProfile"),
+    ts: Date.now(),
+    lang: lang(),
+    count: (res.schemes || []).length,
+    res,
+  };
+  store.unshift(entry);
+  localStorage.setItem("ss_history", JSON.stringify(store.slice(0, 20)));
+  renderHistory();
+}
+function renderHistory() {
+  const list = el("historyList");
+  const empty = el("historyEmpty");
+  if (!list) return;
+  const term = (el("historySearch").value || "").trim().toLowerCase();
+  let items = loadHistoryStore();
+  if (term) {
+    items = items.filter((it) => {
+      const names = (it.res.schemes || []).map((s) => s.scheme_name).join(" ");
+      return (it.q + " " + names).toLowerCase().includes(term);
+    });
+  }
+  list.innerHTML = "";
+  empty.classList.toggle("d-none", items.length > 0);
+  items.forEach((it, idx) => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    const when = new Date(it.ts).toLocaleString();
+    div.innerHTML = `<div class="h-q">${esc(it.q)}</div>
+      <div class="h-meta"><i class="bi bi-clock me-1"></i>${esc(when)} · ${it.count} scheme(s)</div>`;
+    div.addEventListener("click", () => {
+      render(it.res);
+      if (it.res.profile) reflectProfile(it.res.profile);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    list.appendChild(div);
+  });
+}
+
+// ---------------- downloadable / printable report ----------------
+function buildReport() {
+  if (!lastResult) return "";
+  const res = lastResult;
+  const p = res.profile || {};
+  const profileRows = Object.keys(p).length
+    ? Object.entries(p).map(([k, v]) => `<li><strong>${esc(k)}:</strong> ${esc(v)}</li>`).join("")
+    : "<li>—</li>";
+  const schemesHtml = (res.schemes || []).map((s) => `
+    <div class="rp-scheme">
+      <strong>${esc(s.scheme_name)}</strong> (${esc(s.level)} · ${esc(s.category)})<br>
+      ${esc(s.benefit_text)} — ≈ ₹${Number(s.benefit_annual_inr).toLocaleString("en-IN")}/yr<br>
+      <em>${t("eligibilityMatch")}: ${s.match_percent != null ? s.match_percent : 100}%</em><br>
+      ${(s.reasons || []).filter((r) => r.startsWith("✓")).map(esc).join("<br>")}
+    </div>`).join("");
+  const docs = [...new Set((res.schemes || []).flatMap((s) => s.documents || []))];
+  const docsHtml = docs.length ? docs.map((d) => `<li>${esc(d)}</li>`).join("") : "<li>—</li>";
+  const steps = (res.schemes && res.schemes[0] && res.schemes[0].steps) || [];
+  const stepsHtml = steps.length ? steps.map((s) => `<li>${esc(s)}</li>`).join("") : "<li>—</li>";
+  const linksHtml = (res.schemes || [])
+    .map((s) => `<li>${esc(s.scheme_name)}: <a href="${esc(s.apply_url)}">${esc(s.apply_url)}</a></li>`)
+    .join("") || "<li>—</li>";
+
+  const html = `
+    <h1>🇮🇳 ${t("reportTitle")}</h1>
+    <p>${esc(new Date().toLocaleString())}</p>
+    ${res.explanation ? `<p>${esc(res.explanation)}</p>` : ""}
+    <h3>${t("rpProfile")}</h3><ul>${profileRows}</ul>
+    <h3>${t("rpSchemes")} (${(res.schemes || []).length})</h3>${schemesHtml || "<p>—</p>"}
+    <h3>${t("rpDocs")}</h3><ul>${docsHtml}</ul>
+    <h3>${t("rpNextSteps")}</h3><ol>${stepsHtml}</ol>
+    <h3>${t("rpLinks")}</h3><ul>${linksHtml}</ul>`;
+  el("reportArea").innerHTML = html;
+  return html;
+}
+
+function downloadReport() {
+  const inner = buildReport();
+  if (!inner) return;
+  const doc = `<!DOCTYPE html><html lang="${lang()}"><head><meta charset="UTF-8">
+    <title>${t("reportTitle")}</title>
+    <style>body{font-family:system-ui,"Noto Sans","Noto Sans Devanagari",sans-serif;max-width:800px;margin:24px auto;padding:0 16px;color:#16233f;line-height:1.6}
+    h1{color:#0b3d91}h3{color:#138808;margin-top:1.2rem;border-bottom:2px solid #eee;padding-bottom:4px}
+    .rp-scheme{border:1px solid #ccc;border-radius:8px;padding:10px 14px;margin-bottom:10px}
+    a{color:#0b3d91}</style></head><body>${inner}</body></html>`;
+  const blob = new Blob([doc], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "SarkarSathi-Report.html";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+async function shareReport() {
+  if (!lastResult) return;
+  const res = lastResult;
+  const lines = [
+    `${t("reportTitle")}`,
+    res.explanation ? res.explanation : "",
+    "",
+    `${t("rpSchemes")}:`,
+    ...(res.schemes || []).map((s) => `• ${s.scheme_name} — ≈ ₹${Number(s.benefit_annual_inr).toLocaleString("en-IN")}/yr (${s.match_percent != null ? s.match_percent : 100}%)`),
+  ].filter(Boolean);
+  const text = lines.join("\n");
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: t("reportTitle"), text });
+    } else {
+      await navigator.clipboard.writeText(text);
+      alert("Copied summary to clipboard.");
+    }
+  } catch (_) { /* user cancelled */ }
 }

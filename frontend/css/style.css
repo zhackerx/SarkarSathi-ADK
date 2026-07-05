@@ -251,6 +251,107 @@ body {
   }
 }
 
+/* ============ Eligibility match (why recommended) ============ */
+.recommended-title { font-weight: 800; color: var(--brand); font-size: 0.9rem; }
+.match-wrap { margin-top: 0.5rem; }
+.match-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.86rem; }
+.match-label { font-weight: 800; color: var(--brand-3); }
+.match-bar { height: 9px; border-radius: 6px; background: #e6ebf5; overflow: hidden; margin-top: 0.25rem; }
+.match-fill {
+  height: 100%; border-radius: 6px;
+  background: linear-gradient(90deg, var(--brand-3), #1ec00c);
+  transition: width 0.9s ease;
+}
+
+/* ============ Staggered scheme card entrance ============ */
+#schemes > div { animation: fadeIn 0.45s ease both; }
+#schemes > div:nth-child(2) { animation-delay: 0.06s; }
+#schemes > div:nth-child(3) { animation-delay: 0.12s; }
+#schemes > div:nth-child(4) { animation-delay: 0.18s; }
+#schemes > div:nth-child(5) { animation-delay: 0.24s; }
+#schemes > div:nth-child(6) { animation-delay: 0.30s; }
+#schemes > div:nth-child(n+7) { animation-delay: 0.36s; }
+
+/* ============ Voice wave (while listening) ============ */
+.voice-wave { display: none; align-items: flex-end; gap: 3px; height: 20px; }
+#voiceBtn.recording .voice-wave { display: inline-flex; }
+#voiceBtn.recording .mic-icon { display: none; }
+.voice-wave span {
+  width: 3px; height: 6px; background: currentColor; border-radius: 2px;
+  animation: wave 1s infinite ease-in-out;
+}
+.voice-wave span:nth-child(2) { animation-delay: 0.15s; }
+.voice-wave span:nth-child(3) { animation-delay: 0.30s; }
+.voice-wave span:nth-child(4) { animation-delay: 0.45s; }
+.voice-wave span:nth-child(5) { animation-delay: 0.60s; }
+@keyframes wave { 0%, 100% { height: 5px; } 50% { height: 18px; } }
+
+/* ============ Typing indicator ============ */
+.typing { display: inline-flex; gap: 6px; align-items: center; padding: 0.3rem 0; }
+.typing span {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--brand);
+  animation: blink 1.2s infinite both;
+}
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%, 100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-5px); } }
+
+/* ============ Loading stages ============ */
+.stage-line { animation: fadeIn 0.35s ease; }
+
+/* ============ History panel ============ */
+.history-item {
+  border: 1px solid var(--line); border-radius: 0.7rem; padding: 0.55rem 0.75rem;
+  cursor: pointer; transition: all 0.2s ease; background: rgba(255,255,255,0.7);
+}
+.history-item:hover { border-color: var(--brand); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.history-item .h-q { font-weight: 700; font-size: 0.9rem; }
+.history-item .h-meta { font-size: 0.76rem; color: var(--muted); }
+
+/* ============ Dark mode ============ */
+[data-theme="dark"] {
+  --ink: #e8edf7;
+  --muted: #aab4cc;
+  --line: #2a3350;
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 14px 38px rgba(0, 0, 0, 0.55);
+}
+[data-theme="dark"] body {
+  background:
+    radial-gradient(900px 480px at 100% -8%, rgba(255, 153, 51, 0.12), transparent 60%),
+    radial-gradient(820px 460px at -8% 108%, rgba(19, 136, 8, 0.12), transparent 60%),
+    #0b1020;
+}
+[data-theme="dark"] .card { background: rgba(22, 29, 51, 0.92); border-color: #2a3350; }
+[data-theme="dark"] .ask-card { background: linear-gradient(160deg, #1a2340 0%, #141b33 100%); }
+[data-theme="dark"] #freeText,
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background: #111830; color: var(--ink); border-color: #2a3350;
+}
+[data-theme="dark"] .form-control::placeholder { color: #8894b3; }
+[data-theme="dark"] .agent-chip { background: #141b33; color: #aab4cc; border-color: #2a3350; }
+[data-theme="dark"] .agent-chip.active { background: linear-gradient(90deg, #10331d, #123024); color: #4be07b; }
+[data-theme="dark"] .voice-guide { background: linear-gradient(160deg, #2a2213 0%, #1a2340 100%); border-color: #4a3a1a; }
+[data-theme="dark"] .voice-guide .example { background: #2a2213; color: #ffd8a8; }
+[data-theme="dark"] #benefitBanner { background: linear-gradient(90deg, #10331d 0%, #123024 100%); }
+[data-theme="dark"] .text-muted { color: #aab4cc !important; }
+[data-theme="dark"] .doc-pill { background: #111830 !important; color: #cdd6ea !important; border-color: #2a3350 !important; }
+[data-theme="dark"] .modal-content { background: #141b33; color: var(--ink); }
+[data-theme="dark"] .history-item { background: rgba(17, 24, 48, 0.7); }
+[data-theme="dark"] .match-bar { background: #2a3350; }
+
+/* ============ Print / PDF report ============ */
+#reportArea { position: absolute; left: -9999px; top: 0; width: 800px; }
+#reportArea h1 { font-size: 1.6rem; }
+#reportArea .rp-scheme { border: 1px solid #ccc; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; }
+@media print {
+  body * { visibility: hidden !important; }
+  #reportArea, #reportArea * { visibility: visible !important; }
+  #reportArea { position: static; left: 0; width: 100%; padding: 10px 20px; color: #000; }
+  .no-print { display: none !important; }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
