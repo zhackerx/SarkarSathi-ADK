@@ -68,6 +68,8 @@ class AgentEngine:
         all_schemes = load_schemes()
         eligible = filter_eligible(profile, all_schemes)  # Eligibility Agent's tool
         ranked = rank_schemes(query or self._profile_query(profile), eligible)  # Recommendation Agent
+        # Best-matching schemes first: sort by eligibility match %, then relevance.
+        ranked.sort(key=lambda s: (s.get("match_percent", 0), s.get("score", 0.0)), reverse=True)
         total = calculate_total_benefit(ranked)
         summary = benefit_summary(ranked, lang)
         explanation = self._explain(profile, ranked, query, lang)  # Explainability + Multilingual
