@@ -208,10 +208,24 @@ body {
 
 /* ============ Explanation ============ */
 .explanation {
-  white-space: pre-wrap;
   line-height: 1.75;
   font-size: 1.05rem;
 }
+.explanation p { margin: 0 0 0.85rem; }
+.explanation p:last-child { margin-bottom: 0; }
+.explanation h3, .explanation h4, .explanation h5 {
+  margin: 1.1rem 0 0.5rem;
+  font-weight: 700;
+}
+.explanation h3:first-child, .explanation h4:first-child, .explanation h5:first-child {
+  margin-top: 0;
+}
+.explanation ul {
+  margin: 0 0 0.85rem;
+  padding-left: 1.3rem;
+}
+.explanation li { margin-bottom: 0.35rem; }
+.explanation strong { font-weight: 700; }
 
 /* ============ Scheme cards ============ */
 .scheme-card {
