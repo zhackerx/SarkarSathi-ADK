@@ -315,14 +315,28 @@ body {
   --line: #2a3350;
   --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 14px 38px rgba(0, 0, 0, 0.55);
+  /* Override Bootstrap component text colours so cards aren't black-on-dark */
+  --bs-body-color: #e8edf7;
+  --bs-body-bg: #0b1020;
+  --bs-emphasis-color: #ffffff;
+  --bs-secondary-color: #aab4cc;
 }
 [data-theme="dark"] body {
   background:
     radial-gradient(900px 480px at 100% -8%, rgba(255, 153, 51, 0.12), transparent 60%),
     radial-gradient(820px 460px at -8% 108%, rgba(19, 136, 8, 0.12), transparent 60%),
     #0b1020;
+  color: var(--ink);
 }
-[data-theme="dark"] .card { background: rgba(22, 29, 51, 0.92); border-color: #2a3350; }
+[data-theme="dark"] .card { background: rgba(22, 29, 51, 0.92); border-color: #2a3350; color: var(--ink); }
+[data-theme="dark"] .card h6,
+[data-theme="dark"] .explanation,
+[data-theme="dark"] .scheme-card { color: var(--ink); }
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .recommended-title { color: #7ab0ff; }
+[data-theme="dark"] .benefit-amount,
+[data-theme="dark"] .match-label,
+[data-theme="dark"] .reason.pass { color: #4be07b; }
 [data-theme="dark"] .ask-card { background: linear-gradient(160deg, #1a2340 0%, #141b33 100%); }
 [data-theme="dark"] #freeText,
 [data-theme="dark"] .form-control,
@@ -333,12 +347,13 @@ body {
 [data-theme="dark"] .agent-chip { background: #141b33; color: #aab4cc; border-color: #2a3350; }
 [data-theme="dark"] .agent-chip.active { background: linear-gradient(90deg, #10331d, #123024); color: #4be07b; }
 [data-theme="dark"] .voice-guide { background: linear-gradient(160deg, #2a2213 0%, #1a2340 100%); border-color: #4a3a1a; }
+[data-theme="dark"] .voice-guide h6 { color: #ffcf87; }
 [data-theme="dark"] .voice-guide .example { background: #2a2213; color: #ffd8a8; }
-[data-theme="dark"] #benefitBanner { background: linear-gradient(90deg, #10331d 0%, #123024 100%); }
+[data-theme="dark"] #benefitBanner { background: linear-gradient(90deg, #10331d 0%, #123024 100%); color: #dbffe4; }
 [data-theme="dark"] .text-muted { color: #aab4cc !important; }
 [data-theme="dark"] .doc-pill { background: #111830 !important; color: #cdd6ea !important; border-color: #2a3350 !important; }
 [data-theme="dark"] .modal-content { background: #141b33; color: var(--ink); }
-[data-theme="dark"] .history-item { background: rgba(17, 24, 48, 0.7); }
+[data-theme="dark"] .history-item { background: rgba(17, 24, 48, 0.7); color: var(--ink); }
 [data-theme="dark"] .match-bar { background: #2a3350; }
 
 /* ============ Print / PDF report ============ */
