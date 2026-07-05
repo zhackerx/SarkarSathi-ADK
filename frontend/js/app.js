@@ -4,6 +4,92 @@ const API = ""; // same origin (Flask serves this page)
 const el = (id) => document.getElementById(id);
 const lang = () => (el("langSelect") ? el("langSelect").value : "en");
 
+// Escapes HTML special chars before we inject any AI-generated text as HTML.
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// Some AI responses put every bullet inline on one line, e.g.
+// "...qualify for: **Education** * **UP Post-Matric Scholarship**: ... * **AICTE...**: ..."
+// instead of putting each "* " on its own line. If we detect no real
+// (line-starting) bullets, we synthesize them from inline " * " markers so
+// the parser below can turn them into an actual list instead of showing
+// literal asterisks.
+function normalizeInlineBullets(raw) {
+  const hasRealBulletLines = /(^|\n)[ \t]*[*-][ \t]+\S/.test(raw);
+  if (hasRealBulletLines) return raw; // already well-formatted, leave as-is
+
+  let text = raw;
+  // "**Category Name** * **Item**" -> a heading line followed by a bullet.
+  text = text.replace(/(\*\*[^*]+\*\*) \* (?=\*\*)/g, (_, headingBold) => {
+    const headingText = headingBold.replace(/\*\*/g, "").trim();
+    return `\n\n### ${headingText}\n* `;
+  });
+  // Any remaining inline " * " markers become new bullet lines.
+  text = text.replace(/ \* (?=\S)/g, "\n* ");
+  return text;
+}
+
+// Minimal, safe Markdown -> HTML renderer for AI explanation text.
+// Supports: ### headings, **bold**, *italic*, bullet lists (with nesting
+// via leading spaces), and paragraph breaks on blank lines. All text is
+// HTML-escaped first, so this cannot inject markup from the AI response.
+function renderMarkdown(raw) {
+  const lines = escapeHtml(normalizeInlineBullets(raw)).split("\n");
+  let html = "";
+  let inList = false;
+  let paragraph = [];
+
+  const flushParagraph = () => {
+    if (paragraph.length) {
+      html += `<p>${paragraph.join(" ")}</p>`;
+      paragraph = [];
+    }
+  };
+  const closeList = () => {
+    if (inList) {
+      html += "</ul>";
+      inList = false;
+    }
+  };
+  const inline = (s) =>
+    s
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd();
+    const heading = line.match(/^(#{1,4})\s+(.*)$/);
+    const bullet = line.match(/^(\s*)[*-]\s+(.*)$/);
+
+    if (heading) {
+      flushParagraph();
+      closeList();
+      const level = Math.min(heading[1].length + 2, 6); // ### -> h5, keep it modest
+      html += `<h${level}>${inline(heading[2])}</h${level}>`;
+    } else if (bullet) {
+      flushParagraph();
+      if (!inList) {
+        html += "<ul>";
+        inList = true;
+      }
+      html += `<li>${inline(bullet[2])}</li>`;
+    } else if (line.trim() === "") {
+      flushParagraph();
+      closeList();
+    } else {
+      closeList();
+      paragraph.push(inline(line.trim()));
+    }
+  }
+  flushParagraph();
+  closeList();
+  return html;
+}
+
 // Supported languages: display name + speech locale (for voice input & guide).
 const LANGS = {
   en: { name: "English", locale: "en-IN" },
@@ -349,7 +435,7 @@ function render(res) {
   const exp = el("explanationCard");
   if (res.explanation) {
     exp.classList.remove("d-none");
-    el("explanation").textContent = res.explanation;
+    el("explanation").innerHTML = renderMarkdown(res.explanation);
   } else {
     exp.classList.add("d-none");
   }
