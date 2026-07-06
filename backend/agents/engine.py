@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import inspect
 import json
+import logging
 import uuid
 from typing import Dict, List, Optional
 
@@ -25,6 +26,8 @@ from services.eligibility_engine import filter_eligible
 from services.knowledge_base import load_schemes
 from services.profile import UserProfile, heuristic_profile
 from services.rag import rank_schemes
+
+logger = logging.getLogger(__name__)
 
 
 class AgentEngine:
@@ -363,7 +366,19 @@ class AgentEngine:
         try:
             return self._gemini_text(prompt).strip()
         except Exception as exc:  # pragma: no cover
-            return f"{self._template_explanation(profile, schemes, lang)}\n\n(AI explanation offline: {exc})"
+            # Never show the raw API error (rate limits, invalid key, etc.) to the
+            # user. Log it for debugging, and fall back to the same clean,
+            # template-based explanation used when Gemini is disabled.
+            logger.warning("Gemini explanation failed, using offline fallback: %s", exc)
+            note = (
+                "\n\n(नोट: व्यक्तिगत AI विवरण अभी अस्थायी रूप से उपलब्ध नहीं है। ऊपर दिखाई गई "
+                "योजनाएँ हमारे सत्यापित डेटाबेस से सही तरीके से निकाली गई हैं।)"
+                if lang == "hi"
+                else "\n\n(Note: the personalized AI explanation is temporarily unavailable. "
+                "The schemes shown above are still accurate — they come from our verified "
+                "government scheme database.)"
+            )
+            return f"{self._template_explanation(profile, schemes, lang)}{note}"
 
     @staticmethod
     def _template_explanation(profile: UserProfile, schemes: List[Dict], lang: str) -> str:
