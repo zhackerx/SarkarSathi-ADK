@@ -24,8 +24,6 @@
       <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-about')" title="About" aria-label="About">
         <i class="bi bi-info-circle-fill"></i>
       </button>
-      <!-- Mode badge - desktop only -->
-      <span id="modeBadge" class="badge rounded-pill text-bg-secondary d-none d-lg-inline nav-badge">connecting</span>
       <!-- Theme toggle -->
       <button id="themeToggle" class="btn btn-sm nav-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
         <i class="bi bi-moon-stars-fill"></i>
@@ -257,12 +255,13 @@
       </div>
 
       <div class="row g-4">
-        <!-- Left: Ask the Agents -->
+        <!-- Left column: Ask, Profile, History (stacked) -->
         <div class="col-lg-5">
-          <div class="card shadow-sm ask-card">
+          <!-- Ask Card -->
+          <div class="card shadow-sm ask-card mb-4">
             <div class="card-body">
               <h6 class="fw-bold text-uppercase section-title small mb-2">
-                <i class="bi bi-stars me-1"></i> <span data-i18n="askTitle">Ask the Agents</span>
+                <i class="bi bi-stars me-1"></i> <span data-i18n="askTitle">Ask in your own words</span>
               </h6>
               <p class="small text-muted mb-3">Describe yourself in your own words</p>
               <textarea id="freeText" class="form-control mb-3" rows="4" data-i18n-ph="askPlaceholder" placeholder="e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech"></textarea>
@@ -281,65 +280,65 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Right: Citizen Profile -->
-        <div class="col-lg-7">
-          <div class="card shadow-sm">
+          <!-- Citizen Profile Card -->
+          <div class="card shadow-sm mb-4">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-person-vcard me-1"></i><span data-i18n="citizenProfile">Your Profile</span></h6>
+                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-person-vcard me-1"></i><span data-i18n="citizenProfile">Citizen Profile</span></h6>
                 <button id="sampleBtn" class="btn btn-sm btn-link p-0 small" data-i18n="trySample">Try sample</button>
               </div>
               <p class="small text-muted mb-3">Tell us about yourself to find matching schemes</p>
-              <form id="profileForm" class="row g-3">
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="age">Age</label><input type="number" class="form-control" name="age" min="0" max="120" placeholder="18" /></div>
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="gender">Gender</label><select class="form-select" name="gender"><option value="">Any</option><option>Male</option><option>Female</option></select></div>
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="state">State</label><input type="text" class="form-control" name="state" list="stateList" placeholder="Select" /><datalist id="stateList"><option>Uttar Pradesh</option><option>Bihar</option><option>Maharashtra</option><option>Karnataka</option><option>Kerala</option><option>Tamil Nadu</option><option>Rajasthan</option><option>Gujarat</option><option>Punjab</option><option>Haryana</option><option>Delhi</option><option>West Bengal</option><option>Andhra Pradesh</option><option>Telangana</option><option>Odisha</option></datalist></div>
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="income">Income (₹)</label><input type="number" class="form-control" name="income" min="0" placeholder="0" /></div>
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="education">Education</label><select class="form-select" name="education"><option value="">Any</option><option>School</option><option>UG</option><option>PG</option><option>Diploma</option></select></div>
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="occupation">Occupation</label><select class="form-select" name="occupation"><option value="">Any</option><option>Student</option><option>Farmer</option><option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option></select></div>
-                <div class="col-6 col-sm-4"><label class="form-label small fw-600" data-i18n="category">Category</label><select class="form-select" name="social_category"><option value="">General</option><option>SC</option><option>ST</option><option>OBC</option></select></div>
-                <div class="col-12"><label class="form-label small fw-600"><i class="bi bi-toggles"></i> Conditions</label><div class="btn-group w-100" role="group"><input type="checkbox" class="btn-check" name="land_owner" id="land"><label class="btn btn-outline-secondary btn-sm" for="land" title="Own land"><i class="bi bi-house"></i> Land</label><input type="checkbox" class="btn-check" name="disability" id="dis"><label class="btn btn-outline-secondary btn-sm" for="dis" title="Disability"><i class="bi bi-accessibility"></i> Disability</label><input type="checkbox" class="btn-check" name="maternity" id="mat"><label class="btn btn-outline-secondary btn-sm" for="mat" title="Pregnant/new mother"><i class="bi bi-heart"></i> Maternity</label></div></div>
-                <div class="col-12 mt-2"><button type="submit" class="btn btn-success btn-lg-senior w-100"><i class="bi bi-search me-1"></i><span data-i18n="findSchemes">Find Schemes</span></button></div>
+              <form id="profileForm" class="row g-2">
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="age">Age</label><input type="number" class="form-control" name="age" min="0" max="120" placeholder="18" /></div>
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="gender">Gender</label><select class="form-select" name="gender"><option value="">Any</option><option>Male</option><option>Female</option></select></div>
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="state">State</label><input type="text" class="form-control" name="state" list="stateList" placeholder="Select" /><datalist id="stateList"><option>Uttar Pradesh</option><option>Bihar</option><option>Maharashtra</option><option>Karnataka</option><option>Kerala</option><option>Tamil Nadu</option><option>Rajasthan</option><option>Gujarat</option><option>Punjab</option><option>Haryana</option><option>Delhi</option><option>West Bengal</option><option>Andhra Pradesh</option><option>Telangana</option><option>Odisha</option></datalist></div>
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="income">Income (₹)</label><input type="number" class="form-control" name="income" min="0" placeholder="0" /></div>
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="education">Education</label><select class="form-select" name="education"><option value="">Any</option><option>School</option><option>UG</option><option>PG</option><option>Diploma</option></select></div>
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="occupation">Occupation</label><select class="form-select" name="occupation"><option value="">Any</option><option>Student</option><option>Farmer</option><option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option></select></div>
+                <div class="col-6"><label class="form-label small fw-600" data-i18n="category">Category</label><select class="form-select" name="social_category"><option value="">General</option><option>SC</option><option>ST</option><option>OBC</option></select></div>
+                <div class="col-6 d-flex flex-column justify-content-end">
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"><label class="form-check-label small" for="land" data-i18n="land">Owns land</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"><label class="form-check-label small" for="dis" data-i18n="disability">Disability</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"><label class="form-check-label small" for="mat" data-i18n="maternity">Pregnant / new mother</label></div>
+                </div>
+                <div class="col-12 mt-2">
+                  <button type="submit" class="btn btn-success btn-lg-senior w-100"><i class="bi bi-search me-1"></i><span data-i18n="findSchemes">Find my schemes</span></button>
+                </div>
               </form>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Full-width sections below -->
-      <div class="row g-4 mt-2">
-        <div class="col-12">
-          <div class="card shadow-sm">
+          <!-- History Card -->
+          <div class="card shadow-sm" id="historyCard">
             <div class="card-body">
-              <h6 class="fw-bold text-uppercase section-title small mb-3"><i class="bi bi-diagram-3 me-1"></i><span data-i18n="pipelineTitle">Agent Pipeline</span></h6>
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-clock-history me-1"></i><span data-i18n="historyTitle">Past questions</span></h6>
+                <button id="historyClear" class="btn btn-sm btn-link text-danger p-0 d-none" data-i18n="clearAll">Clear all</button>
+              </div>
+              <input type="text" id="historySearch" class="form-control form-control-sm mb-2" data-i18n-ph="historySearchPh" placeholder="Search past questions..." />
+              <div id="historyList" class="d-flex flex-column gap-2"></div>
+              <p id="historyEmpty" class="text-muted small mb-0" data-i18n="historyEmpty">Your recent questions will appear here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: Agent Pipeline + Results -->
+        <div class="col-lg-7">
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h6 class="fw-bold text-uppercase section-title small mb-3"><i class="bi bi-diagram-3 me-1"></i><span data-i18n="pipelineTitle">ADK Agent Pipeline</span></h6>
               <div id="pipeline" class="d-flex flex-wrap gap-2"></div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="row g-4 mt-2">
-        <div class="col-12">
-          <div class="card shadow-sm" id="historyCard">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-clock-history me-1"></i><span data-i18n="historyTitle">Recent Questions</span></h6>
-                <button id="historyClear" class="btn btn-sm btn-link text-danger p-0 d-none" data-i18n="clearAll">Clear</button>
-              </div>
-              <input type="text" id="historySearch" class="form-control form-control-sm mb-3" data-i18n-ph="historySearchPh" placeholder="Search history..." />
-              <div id="historyList" class="d-grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));"></div>
-              <p id="historyEmpty" class="text-muted small mb-0 text-center py-3" data-i18n="historyEmpty">Your questions will appear here</p>
-            </div>
+          <div id="placeholder" class="text-center text-muted py-5">
+            <i class="bi bi-file-earmark-text display-4 d-block mb-3"></i>
+            <span data-i18n="placeholder">Fill the profile or ask a question to discover the government schemes you qualify for.</span>
           </div>
-        </div>
-      </div>
-
-      <div class="row g-4 mt-2">
-        <div class="col-12">
-          <div id="placeholder" class="text-center text-muted py-5"><i class="bi bi-file-earmark-text display-4 d-block mb-3"></i><span data-i18n="placeholder">Fill the profile or ask a question to discover schemes you qualify for.</span></div>
-          <div id="spinner" class="text-center py-5 d-none"><div class="spinner-border text-primary" role="status"></div><p class="text-muted mt-3 mb-0" data-i18n="working">Agents are working on your request...</p></div>
+          <div id="spinner" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-muted mt-3 mb-0" data-i18n="working">Agents are working on your request...</p>
+          </div>
         </div>
       </div>
     </div>
