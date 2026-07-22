@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,20 +9,39 @@
   <link href="css/style.css" rel="stylesheet" />
 </head>
 <body>
+
   <!-- ============ Navbar ============ -->
   <nav class="navbar navbar-dark px-3 px-md-4 sticky-top brand-bar">
-    <span class="navbar-brand mb-0 d-flex align-items-center gap-2">
+    <button class="navbar-brand mb-0 d-flex align-items-center gap-2" onclick="handleLogoClick()" style="background:none;border:none;cursor:pointer;">
       <span class="brand-logo"><i class="bi bi-bank2 fs-5"></i></span>
       <span>SarkarSathi <span class="badge text-bg-light text-dark ms-1">ADK</span></span>
-    </span>
-    <div class="d-flex align-items-center gap-3">
-      <span id="modeBadge" class="badge rounded-pill text-bg-secondary">connecting…</span>
+    </button>
+    <div class="d-flex align-items-center gap-2 gap-md-3 flex-wrap">
+      <div id="navLinks" class="d-flex align-items-center gap-1">
+        <button class="btn btn-sm nav-pill-btn" onclick="handleLogoClick()">
+          <i class="bi bi-house-fill me-1"></i><span class="d-none d-sm-inline">Home</span>
+        </button>
+        <button class="btn btn-sm nav-pill-btn" onclick="showPage('page-about')">
+          <i class="bi bi-info-circle-fill me-1"></i><span class="d-none d-sm-inline">About</span>
+        </button>
+      </div>
+      <div id="navAuthArea" class="d-flex align-items-center gap-2">
+        <button id="navLoginBtn" class="btn btn-sm btn-warning fw-bold px-3" onclick="showPage('page-login')">
+          <i class="bi bi-phone-fill me-1"></i>Login
+        </button>
+        <div id="navUserInfo" class="d-none d-flex align-items-center gap-2">
+          <span class="badge bg-light text-dark border rounded-pill px-2 py-1 d-none d-md-flex align-items-center gap-1" id="navUserBadge">
+            <i class="bi bi-person-check-fill text-success"></i><span id="navMobileText"></span>
+          </span>
+          <button id="navLogoutBtn" class="btn btn-sm btn-outline-light fw-bold" onclick="handleLogout()">
+            <i class="bi bi-box-arrow-right me-1"></i><span class="d-none d-sm-inline">Sign Out</span>
+          </button>
+        </div>
+      </div>
+      <span id="modeBadge" class="badge rounded-pill text-bg-secondary d-none d-lg-inline">connecting</span>
       <button id="themeToggle" class="btn btn-sm btn-light rounded-circle" title="Toggle dark mode" aria-label="Toggle dark mode" style="width:36px;height:36px;">
         <i class="bi bi-moon-stars-fill"></i>
       </button>
-      <label for="langSelect" class="text-white small mb-0 d-none d-md-inline">
-        <i class="bi bi-translate me-1"></i><span data-i18n="langLabel">Language</span>
-      </label>
       <select id="langSelect" class="form-select form-select-sm lang-select" aria-label="Choose language">
         <option value="en" selected>English</option>
         <option value="hi">हिंदी (Hindi)</option>
@@ -40,188 +59,527 @@
   </nav>
   <div class="tricolor-strip"></div>
 
-
-  <div class="container-fluid py-4 px-md-4">
-    <div class="row g-4">
-      <!-- ============ Left column: input ============ -->
-      <div class="col-lg-4 input-col">
-        <div class="card shadow-sm mb-4 ask-card">
-          <div class="card-body">
-            <h6 class="fw-bold text-uppercase section-title small mb-3">
-              <i class="bi bi-chat-dots me-1"></i> <span data-i18n="askTitle">Ask in your own words</span>
-            </h6>
-            <div class="input-group mb-2">
-              <textarea id="freeText" class="form-control" rows="3"
-                data-i18n-ph="askPlaceholder"
-                placeholder="e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech"></textarea>
+  <!-- ========== PAGE: HOME ========== -->
+  <div id="page-home" class="ss-page">
+    <div class="hero-wrap">
+      <div class="container py-5">
+        <div class="row align-items-center gy-5">
+          <div class="col-lg-7">
+            <div class="mb-3">
+              <span class="badge rounded-pill px-3 py-2 hero-tag">
+                🇮🇳 ADK-Powered Government Scheme Assistant
+              </span>
             </div>
-            <div class="d-grid gap-2">
-              <button id="askBtn" class="btn btn-primary btn-lg-senior">
-                <i class="bi bi-stars me-1"></i> <span data-i18n="askBtn">Ask the Agents</span>
+            <h1 class="hero-title">Discover Government Schemes <span class="hero-highlight">Made for You</span></h1>
+            <p class="hero-subtitle">AI-powered eligibility matching across 1000+ Central and State government schemes. Find scholarships, subsidies, healthcare, housing benefits and more — in your own language.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <button onclick="showPage('page-login')" class="btn btn-warning btn-lg fw-bold px-4 shadow-sm">
+                <i class="bi bi-phone-fill me-2"></i>Get Started — Login with OTP
               </button>
-              <button id="voiceBtn" class="btn btn-voice btn-lg-senior" title="Press and hold, then speak" aria-label="Hold and speak your question">
-                <span class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span>
-                <i class="bi bi-mic-fill me-1 mic-icon"></i> <span id="voiceLabel" data-i18n="holdSpeak">Hold &amp; Speak</span>
+              <button onclick="showPage('page-about')" class="btn btn-outline-light btn-lg px-4">
+                <i class="bi bi-play-circle me-2"></i>How it Works
               </button>
             </div>
-
-            <!-- Voice guide for senior citizens -->
-            <div class="mt-3 d-grid">
-              <button id="guideBtn" class="btn btn-guide btn-lg-senior" aria-controls="voiceGuide" aria-expanded="false">
-                <i class="bi bi-volume-up-fill me-1"></i>
-                <span id="guideBtnText" data-i18n="guideBtn">How to use — Listen &amp; learn</span>
-              </button>
-            </div>
-            <div id="voiceGuide" class="voice-guide p-3 mt-3 d-none">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-bold mb-0"><i class="bi bi-info-circle me-1"></i><span id="guideHeading">How to use SarkarSathi</span></h6>
-                <button id="guideStopBtn" class="btn btn-sm btn-outline-secondary" title="Stop voice">
-                  <i class="bi bi-stop-fill"></i>
-                </button>
-              </div>
-              <ol id="guideSteps" class="guide-steps mb-2 ps-3"></ol>
-              <div id="guideExample" class="example small"></div>
+            <div class="hero-stats mt-5">
+              <div class="stat-item"><span class="stat-num">1000+</span><span class="stat-label">Schemes</span></div>
+              <div class="stat-item"><span class="stat-num">11</span><span class="stat-label">Languages</span></div>
+              <div class="stat-item"><span class="stat-num">7</span><span class="stat-label">AI Agents</span></div>
+              <div class="stat-item"><span class="stat-num">₹50K+</span><span class="stat-label">Avg Benefit</span></div>
             </div>
           </div>
-        </div>
-
-
-        <div class="card shadow-sm">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h6 class="fw-bold text-uppercase section-title small mb-0">
-                <i class="bi bi-person-badge me-1"></i> <span data-i18n="citizenProfile">Citizen Profile</span>
-              </h6>
-              <button id="sampleBtn" class="btn btn-sm btn-link p-0" data-i18n="trySample">Try sample</button>
-            </div>
-            <form id="profileForm" class="row g-2">
-              <div class="col-6">
-                <label class="form-label small" data-i18n="age">Age</label>
-                <input type="number" class="form-control form-control-sm" name="age" min="0" max="120" />
+          <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+            <div class="hero-illustration">
+              <div class="hero-trophy-center">
+                <i class="bi bi-trophy-fill" style="font-size:3.5rem;color:#ffd700;filter:drop-shadow(0 4px 18px rgba(255,215,0,0.5));"></i>
+                <div class="mt-2 fw-bold text-white fs-6">Your Best Matches</div>
               </div>
-              <div class="col-6">
-                <label class="form-label small" data-i18n="income">Annual income (₹)</label>
-                <input type="number" class="form-control form-control-sm" name="income" min="0" />
+              <div class="hero-card-float hc-1">
+                <i class="bi bi-mortarboard-fill text-primary"></i>
+                <div><div class="fw-bold" style="font-size:0.8rem;">NSP Scholarship</div><div class="text-muted" style="font-size:0.7rem;">₹50,000/yr</div></div>
+                <span class="badge bg-success rounded-pill">✓ Eligible</span>
               </div>
-              <div class="col-6">
-                <label class="form-label small" data-i18n="state">State</label>
-                <input type="text" class="form-control form-control-sm" name="state" list="stateList" />
-                <datalist id="stateList">
-                  <option>Uttar Pradesh</option><option>Bihar</option><option>Maharashtra</option>
-                  <option>Karnataka</option><option>Kerala</option><option>Tamil Nadu</option>
-                  <option>Rajasthan</option><option>Gujarat</option><option>Punjab</option>
-                  <option>Haryana</option><option>Delhi</option>
-                </datalist>
+              <div class="hero-card-float hc-2">
+                <i class="bi bi-heart-pulse-fill text-danger"></i>
+                <div><div class="fw-bold" style="font-size:0.8rem;">Ayushman Bharat</div><div class="text-muted" style="font-size:0.7rem;">₹5L cover</div></div>
+                <span class="badge bg-success rounded-pill">✓ Eligible</span>
               </div>
-              <div class="col-6">
-                <label class="form-label small" data-i18n="gender">Gender</label>
-                <select class="form-select form-select-sm" name="gender">
-                  <option value="">Any</option><option>Male</option><option>Female</option>
-                </select>
+              <div class="hero-card-float hc-3">
+                <i class="bi bi-house-heart-fill text-warning"></i>
+                <div><div class="fw-bold" style="font-size:0.8rem;">PM Awas Yojana</div><div class="text-muted" style="font-size:0.7rem;">₹2.67L grant</div></div>
+                <span class="badge bg-warning text-dark rounded-pill">⚠ Near</span>
               </div>
-              <div class="col-6">
-                <label class="form-label small" data-i18n="education">Education</label>
-                <select class="form-select form-select-sm" name="education">
-                  <option value="">Any</option><option>School</option><option>UG</option>
-                  <option>PG</option><option>Diploma</option>
-                </select>
-              </div>
-              <div class="col-6">
-                <label class="form-label small" data-i18n="occupation">Occupation</label>
-                <select class="form-select form-select-sm" name="occupation">
-                  <option value="">Any</option><option>Student</option><option>Farmer</option>
-                  <option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option>
-                </select>
-              </div>
-              <div class="col-6">
-                <label class="form-label small" data-i18n="category">Social category</label>
-                <select class="form-select form-select-sm" name="social_category">
-                  <option value="">General / Any</option><option>SC</option><option>ST</option>
-                  <option>OBC</option><option>General</option>
-                </select>
-              </div>
-              <div class="col-6 d-flex flex-column justify-content-end">
-                <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"><label class="form-check-label small" for="land" data-i18n="land">Owns land</label></div>
-                <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"><label class="form-check-label small" for="dis" data-i18n="disability">Disability</label></div>
-                <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"><label class="form-check-label small" for="mat" data-i18n="maternity">Pregnant / new mother</label></div>
-              </div>
-              <div class="col-12 mt-3">
-                <button type="submit" class="btn btn-success btn-lg-senior w-100">
-                  <i class="bi bi-search me-1"></i> <span data-i18n="findSchemes">Find my schemes</span>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- ============ History (search past conversations) ============ -->
-        <div class="card shadow-sm mt-4" id="historyCard">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="fw-bold text-uppercase section-title small mb-0">
-                <i class="bi bi-clock-history me-1"></i> <span data-i18n="historyTitle">Past questions</span>
-              </h6>
-              <button id="historyClear" class="btn btn-sm btn-link text-danger p-0 d-none" data-i18n="clearAll">Clear all</button>
-            </div>
-            <input type="text" id="historySearch" class="form-control form-control-sm mb-2" data-i18n-ph="historySearchPh" placeholder="Search past questions…" />
-            <div id="historyList" class="d-flex flex-column gap-2"></div>
-            <p id="historyEmpty" class="text-muted small mb-0" data-i18n="historyEmpty">Your recent questions will appear here.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ Right column: results ============ -->
-      <div class="col-lg-8">
-        <!-- Agent pipeline -->
-        <div class="card shadow-sm mb-4">
-          <div class="card-body">
-            <h6 class="fw-bold text-uppercase section-title small mb-3">
-              <i class="bi bi-diagram-3 me-1"></i> <span data-i18n="pipelineTitle">ADK Agent Pipeline</span>
-            </h6>
-            <div id="pipeline" class="d-flex flex-wrap gap-2"></div>
-          </div>
-        </div>
-
-        <!-- Benefit banner -->
-        <div id="benefitBanner" class="alert alert-success d-none align-items-center shadow-sm" role="alert"></div>
-
-        <!-- Explanation -->
-        <div id="explanationCard" class="card shadow-sm mb-4 d-none">
-          <div class="card-body">
-            <h6 class="fw-bold text-uppercase section-title small mb-2">
-              <i class="bi bi-robot me-1"></i> <span data-i18n="aiTitle">AI Decision Intelligence</span>
-            </h6>
-            <div id="explanation" class="explanation"></div>
-            <div id="schemesAction" class="d-none mt-3 no-print">
-              <button id="viewSchemesBtn" class="btn btn-sm btn-primary">
-                <i class="bi bi-eye me-1"></i><span data-i18n="viewSchemes">View Schemes</span>
-              </button>
-            </div>
-            <div id="reportActions" class="report-actions d-none d-flex flex-wrap gap-2 mt-3 no-print">
-              <button id="printBtn" class="btn btn-sm btn-outline-primary"><i class="bi bi-printer me-1"></i><span data-i18n="printPdf">Print / Save PDF</span></button>
-              <button id="downloadBtn" class="btn btn-sm btn-outline-success"><i class="bi bi-download me-1"></i><span data-i18n="download">Download</span></button>
-              <button id="shareBtn" class="btn btn-sm btn-outline-secondary"><i class="bi bi-share me-1"></i><span data-i18n="share">Share</span></button>
             </div>
           </div>
-        </div>
-
-        <!-- Placeholder / spinner -->
-        <div id="placeholder" class="text-center text-muted py-5">
-          <i class="bi bi-file-earmark-text display-4 d-block mb-3"></i>
-          <span data-i18n="placeholder">Fill the profile or ask a question to discover the government schemes you qualify for.</span>
-        </div>
-        <div id="spinner" class="text-center py-5 d-none">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="text-muted mt-3 mb-0" data-i18n="working">Agents are working on your request…</p>
         </div>
       </div>
     </div>
 
-    <!-- ============ Scheme cards (full width) ============ -->
-    <div class="row g-3 mt-1" id="schemes"></div>
+    <!-- Features -->
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold">Everything you need to access government benefits</h2>
+        <p class="text-muted">SarkarSathi uses Google ADK multi-agent technology to make welfare scheme discovery simple.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon fi-blue"><i class="bi bi-stars"></i></div><h5>AI-Powered Matching</h5><p class="text-muted small">7 specialized agents analyze your profile across 7 eligibility dimensions.</p></div></div>
+        <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon fi-green"><i class="bi bi-trophy-fill"></i></div><h5>Ranked Recommendations</h5><p class="text-muted small">Schemes ranked by benefit score — most valuable options always first.</p></div></div>
+        <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon fi-orange"><i class="bi bi-signpost-split-fill"></i></div><h5>Near-Eligibility Guidance</h5><p class="text-muted small">See schemes where you're just one criterion away with clear guidance.</p></div></div>
+        <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon fi-purple"><i class="bi bi-translate"></i></div><h5>11 Indian Languages</h5><p class="text-muted small">Hindi, Bengali, Tamil, Telugu, Marathi, Kannada and 5 more languages.</p></div></div>
+        <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon fi-red"><i class="bi bi-mic-fill"></i></div><h5>Voice Input</h5><p class="text-muted small">Hold to speak your profile — perfect for senior citizens and first-time users.</p></div></div>
+        <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon fi-teal"><i class="bi bi-shield-check-fill"></i></div><h5>Privacy First</h5><p class="text-muted small">No server storage. Your profile stays in your browser only.</p></div></div>
+      </div>
+    </div>
+
+    <!-- How it works -->
+    <div class="how-bg py-5">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">How It Works</h2>
+          <p class="text-muted">From login to recommendations in under 30 seconds</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-3 text-center"><div class="step-num">1</div><i class="bi bi-phone-fill step-icon"></i><h6 class="fw-bold mt-2">Login with OTP</h6><p class="text-muted small">Quick mobile OTP — no password needed.</p></div>
+          <div class="col-md-3 text-center"><div class="step-num">2</div><i class="bi bi-person-badge-fill step-icon"></i><h6 class="fw-bold mt-2">Fill Your Profile</h6><p class="text-muted small">Age, income, state — or just describe yourself in a sentence.</p></div>
+          <div class="col-md-3 text-center"><div class="step-num">3</div><i class="bi bi-cpu-fill step-icon"></i><h6 class="fw-bold mt-2">AI Analyzes</h6><p class="text-muted small">7 ADK agents evaluate eligibility across all schemes.</p></div>
+          <div class="col-md-3 text-center"><div class="step-num">4</div><i class="bi bi-award-fill step-icon"></i><h6 class="fw-bold mt-2">See Results</h6><p class="text-muted small">Top 3, eligible, near-eligible and bookmarked schemes.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center text-muted small py-4">
+      Built with Google ADK · Gemini 2.5 Flash · Flask · Bootstrap — prototype knowledge base is illustrative sample data. &nbsp;|&nbsp;
+      <a href="#" onclick="showPage('page-about')" class="text-muted">About</a>
+    </footer>
   </div>
 
-  <!-- ============ Document readiness modal ============ -->
+  <!-- ========== PAGE: LOGIN ========== -->
+  <div id="page-login" class="ss-page d-none">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-icon ai-blue"><i class="bi bi-phone-fill"></i></div>
+        <h3 class="fw-bold mt-3">Login with Mobile OTP</h3>
+        <p class="text-muted mb-4">Enter your 10-digit mobile number to receive an OTP</p>
+        <div class="mb-3">
+          <div class="input-group input-group-lg">
+            <span class="input-group-text fw-bold">+91</span>
+            <input type="tel" id="mobileInput" class="form-control" placeholder="10-digit mobile number"
+              maxlength="10" inputmode="numeric" onkeypress="return /[0-9]/.test(event.key)"
+              onkeydown="if(event.key==='Enter') document.getElementById('sendOtpBtn').click()" />
+          </div>
+          <div id="mobileError" class="text-danger small mt-1 d-none"></div>
+        </div>
+        <button id="sendOtpBtn" class="btn btn-primary btn-lg w-100 fw-bold">
+          <i class="bi bi-send-fill me-2"></i>Send OTP
+        </button>
+        <div class="mt-4 text-center">
+          <button class="btn btn-link text-muted" onclick="showPage('page-home')">
+            <i class="bi bi-arrow-left me-1"></i>Back to Home
+          </button>
+        </div>
+        <div class="mt-3 p-3 rounded-3 bg-light-subtle border border-dashed">
+          <p class="small text-muted mb-0">
+            <i class="bi bi-shield-lock-fill me-2 text-primary"></i>
+            <strong>Privacy:</strong> Your number is stored locally in your browser only. No server storage.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: OTP ========== -->
+  <div id="page-otp" class="ss-page d-none">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-icon ai-green"><i class="bi bi-shield-check-fill"></i></div>
+        <h3 class="fw-bold mt-3">Verify OTP</h3>
+        <p class="text-muted mb-1">OTP sent to <strong id="otpMobileDisplay">+91 XXXXXXXXXX</strong></p>
+        <div class="alert alert-info d-flex align-items-center gap-2 py-2 px-3 mb-4 mt-3">
+          <i class="bi bi-info-circle-fill flex-shrink-0"></i>
+          <div class="small"><strong>Demo Mode:</strong> Use OTP <strong class="fs-5 ms-1">123456</strong></div>
+        </div>
+        <div class="otp-input-row mb-2" id="otpInputRow">
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" autocomplete="one-time-code" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
+        </div>
+        <div id="otpError" class="text-danger small mb-3 d-none"></div>
+        <button id="verifyOtpBtn" class="btn btn-success btn-lg w-100 fw-bold">
+          <i class="bi bi-check-circle-fill me-2"></i>Verify &amp; Login
+        </button>
+        <div class="mt-3 d-flex justify-content-center gap-4 small">
+          <a href="#" id="resendOtpLink" class="text-decoration-none"><i class="bi bi-arrow-clockwise me-1"></i>Resend OTP</a>
+          <a href="#" onclick="showPage('page-login')" class="text-decoration-none text-muted"><i class="bi bi-pencil me-1"></i>Change Number</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: MAIN APP ========== -->
+  <div id="page-main" class="ss-page d-none">
+    <div class="container-fluid py-3 px-md-4">
+      <div class="welcome-bar mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-2">
+          <span class="fs-5">👋</span>
+          <span class="fw-semibold">Welcome, <strong id="welcomeName" class="text-primary"></strong>!</span>
+          <span class="text-muted small d-none d-md-inline">Fill your profile to find schemes you qualify for.</span>
+        </div>
+        <button id="viewLastResultsBtn" class="btn btn-sm btn-outline-primary d-none" onclick="showPage('page-results')">
+          <i class="bi bi-eye me-1"></i>Last Results
+        </button>
+      </div>
+
+      <div class="row g-4">
+        <!-- Left column -->
+        <div class="col-lg-4 input-col">
+          <div class="card shadow-sm mb-4 ask-card">
+            <div class="card-body">
+              <h6 class="fw-bold text-uppercase section-title small mb-3">
+                <i class="bi bi-chat-dots me-1"></i> <span data-i18n="askTitle">Ask in your own words</span>
+              </h6>
+              <div class="input-group mb-2">
+                <textarea id="freeText" class="form-control" rows="3"
+                  data-i18n-ph="askPlaceholder"
+                  placeholder="e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech"></textarea>
+              </div>
+              <div class="d-grid gap-2">
+                <button id="askBtn" class="btn btn-primary btn-lg-senior">
+                  <i class="bi bi-stars me-1"></i> <span data-i18n="askBtn">Ask the Agents</span>
+                </button>
+                <button id="voiceBtn" class="btn btn-voice btn-lg-senior" title="Press and hold, then speak" aria-label="Hold and speak your question">
+                  <span class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span>
+                  <i class="bi bi-mic-fill me-1 mic-icon"></i> <span id="voiceLabel" data-i18n="holdSpeak">Hold &amp; Speak</span>
+                </button>
+              </div>
+              <div class="mt-3 d-grid">
+                <button id="guideBtn" class="btn btn-guide btn-lg-senior" aria-controls="voiceGuide" aria-expanded="false">
+                  <i class="bi bi-volume-up-fill me-1"></i>
+                  <span id="guideBtnText" data-i18n="guideBtn">How to use — Listen &amp; learn</span>
+                </button>
+              </div>
+              <div id="voiceGuide" class="voice-guide p-3 mt-3 d-none">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="fw-bold mb-0"><i class="bi bi-info-circle me-1"></i><span id="guideHeading">How to use SarkarSathi</span></h6>
+                  <button id="guideStopBtn" class="btn btn-sm btn-outline-secondary" title="Stop voice"><i class="bi bi-stop-fill"></i></button>
+                </div>
+                <ol id="guideSteps" class="guide-steps mb-2 ps-3"></ol>
+                <div id="guideExample" class="example small"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-uppercase section-title small mb-0">
+                  <i class="bi bi-person-badge me-1"></i> <span data-i18n="citizenProfile">Citizen Profile</span>
+                </h6>
+                <button id="sampleBtn" class="btn btn-sm btn-link p-0" data-i18n="trySample">Try sample</button>
+              </div>
+              <form id="profileForm" class="row g-2">
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="age">Age</label>
+                  <input type="number" class="form-control form-control-sm" name="age" min="0" max="120" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="income">Annual income (Rs)</label>
+                  <input type="number" class="form-control form-control-sm" name="income" min="0" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="state">State</label>
+                  <input type="text" class="form-control form-control-sm" name="state" list="stateList" />
+                  <datalist id="stateList">
+                    <option>Uttar Pradesh</option><option>Bihar</option><option>Maharashtra</option>
+                    <option>Karnataka</option><option>Kerala</option><option>Tamil Nadu</option>
+                    <option>Rajasthan</option><option>Gujarat</option><option>Punjab</option>
+                    <option>Haryana</option><option>Delhi</option><option>West Bengal</option>
+                    <option>Andhra Pradesh</option><option>Telangana</option><option>Odisha</option>
+                  </datalist>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="gender">Gender</label>
+                  <select class="form-select form-select-sm" name="gender">
+                    <option value="">Any</option><option>Male</option><option>Female</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="education">Education</label>
+                  <select class="form-select form-select-sm" name="education">
+                    <option value="">Any</option><option>School</option><option>UG</option>
+                    <option>PG</option><option>Diploma</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="occupation">Occupation</label>
+                  <select class="form-select form-select-sm" name="occupation">
+                    <option value="">Any</option><option>Student</option><option>Farmer</option>
+                    <option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option>
+                  </select>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small" data-i18n="category">Social category</label>
+                  <select class="form-select form-select-sm" name="social_category">
+                    <option value="">General / Any</option><option>SC</option><option>ST</option>
+                    <option>OBC</option><option>General</option>
+                  </select>
+                </div>
+                <div class="col-6 d-flex flex-column justify-content-end">
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"><label class="form-check-label small" for="land" data-i18n="land">Owns land</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"><label class="form-check-label small" for="dis" data-i18n="disability">Disability</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"><label class="form-check-label small" for="mat" data-i18n="maternity">Pregnant / new mother</label></div>
+                </div>
+                <div class="col-12 mt-3">
+                  <button type="submit" class="btn btn-success btn-lg-senior w-100">
+                    <i class="bi bi-search me-1"></i> <span data-i18n="findSchemes">Find my schemes</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card shadow-sm mt-4" id="historyCard">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold text-uppercase section-title small mb-0">
+                  <i class="bi bi-clock-history me-1"></i> <span data-i18n="historyTitle">Past questions</span>
+                </h6>
+                <button id="historyClear" class="btn btn-sm btn-link text-danger p-0 d-none" data-i18n="clearAll">Clear all</button>
+              </div>
+              <input type="text" id="historySearch" class="form-control form-control-sm mb-2" data-i18n-ph="historySearchPh" placeholder="Search past questions..." />
+              <div id="historyList" class="d-flex flex-column gap-2"></div>
+              <p id="historyEmpty" class="text-muted small mb-0" data-i18n="historyEmpty">Your recent questions will appear here.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div class="col-lg-8">
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h6 class="fw-bold text-uppercase section-title small mb-3">
+                <i class="bi bi-diagram-3 me-1"></i> <span data-i18n="pipelineTitle">ADK Agent Pipeline</span>
+              </h6>
+              <div id="pipeline" class="d-flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+          <div id="placeholder" class="text-center text-muted py-5">
+            <i class="bi bi-file-earmark-text display-4 d-block mb-3"></i>
+            <span data-i18n="placeholder">Fill the profile or ask a question to discover the government schemes you qualify for.</span>
+          </div>
+          <div id="spinner" class="text-center py-5 d-none">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="text-muted mt-3 mb-0" data-i18n="working">Agents are working on your request...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: RESULTS ========== -->
+  <div id="page-results" class="ss-page d-none">
+    <div class="container-fluid py-3 px-md-4">
+      <!-- Top bar -->
+      <div class="results-topbar mb-4">
+        <div class="d-flex align-items-center flex-wrap gap-3 justify-content-between">
+          <button onclick="showPage('page-main')" class="btn btn-outline-primary fw-bold">
+            <i class="bi bi-arrow-left me-1"></i>New Search
+          </button>
+          <div class="text-center flex-grow-1">
+            <h4 class="fw-bold mb-0">Your Scheme Recommendations</h4>
+            <div id="resultsMeta" class="mt-1 small text-muted"></div>
+          </div>
+          <div class="d-flex gap-2">
+            <button id="printBtnR" class="btn btn-sm btn-outline-secondary" title="Print"><i class="bi bi-printer me-1"></i><span class="d-none d-md-inline">Print</span></button>
+            <button id="downloadBtnR" class="btn btn-sm btn-outline-success" title="Download"><i class="bi bi-download me-1"></i><span class="d-none d-md-inline">Save</span></button>
+            <button id="shareBtnR" class="btn btn-sm btn-outline-secondary" title="Share"><i class="bi bi-share me-1"></i><span class="d-none d-md-inline">Share</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Explanation -->
+      <div id="resultsExplanationWrap" class="d-none mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h6 class="fw-bold text-uppercase section-title small mb-0">
+                <i class="bi bi-robot me-1"></i> <span data-i18n="aiTitle">AI Decision Intelligence</span>
+              </h6>
+              <button class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#resultsExplBody" aria-expanded="true">
+                <i class="bi bi-chevron-up" id="explToggleIcon"></i>
+              </button>
+            </div>
+            <div id="resultsExplBody" class="collapse show mt-2">
+              <div id="resultsExplanation" class="explanation"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: TOP RECOMMENDED -->
+      <section id="topSchemesSection" class="results-section mb-5">
+        <div class="section-hdr section-hdr-gold">
+          <div class="section-hdr-left">
+            <h3 class="fw-bold mb-1">🏆 Top Recommended Schemes</h3>
+            <p class="mb-0 opacity-75">Ranked by overall benefit value, financial assistance and eligibility match</p>
+          </div>
+          <span id="topSchemesBadge" class="section-count-badge badge-gold"></span>
+        </div>
+        <div id="topSchemeCards" class="row g-4 mt-1"></div>
+      </section>
+
+      <!-- SECTION 2: ELIGIBLE -->
+      <section id="eligibleSection" class="results-section mb-5">
+        <div class="section-hdr section-hdr-green">
+          <div class="section-hdr-left">
+            <h4 class="fw-bold mb-1">✅ Eligible Schemes</h4>
+            <p class="mb-0 opacity-75">All schemes you fully qualify for</p>
+          </div>
+          <span id="eligibleBadge" class="section-count-badge badge-green"></span>
+        </div>
+        <div id="eligibleCards" class="row g-3 mt-1"></div>
+        <div id="eligibleEmpty" class="d-none text-center text-muted py-4">
+          <i class="bi bi-emoji-neutral display-6 d-block mb-2"></i>
+          No fully eligible schemes found. Try adjusting your profile criteria.
+        </div>
+      </section>
+
+      <!-- SECTION 3: NEARLY ELIGIBLE -->
+      <section id="nearlySection" class="results-section mb-5 d-none">
+        <div class="section-hdr section-hdr-warning">
+          <div class="section-hdr-left">
+            <h4 class="fw-bold mb-1">⚠️ Nearly Eligible Schemes</h4>
+            <p class="mb-0 opacity-75">You satisfy all but one requirement — see exactly what is missing</p>
+          </div>
+          <span id="nearlyBadge" class="section-count-badge badge-warning"></span>
+        </div>
+        <div id="nearlyCards" class="row g-3 mt-1"></div>
+      </section>
+
+      <!-- SECTION 4: SAVED -->
+      <section id="savedSection" class="results-section mb-5">
+        <div class="section-hdr section-hdr-blue">
+          <div class="section-hdr-left">
+            <h4 class="fw-bold mb-1">📄 Saved / Bookmarked Schemes</h4>
+            <p class="mb-0 opacity-75">Schemes you have saved for later reference</p>
+          </div>
+          <span id="savedBadge" class="section-count-badge badge-blue"></span>
+        </div>
+        <div id="savedCards" class="row g-3 mt-1"></div>
+        <div id="savedEmpty" class="text-center text-muted py-4">
+          <i class="bi bi-bookmark display-6 d-block mb-2"></i>
+          No saved schemes yet. Click the bookmark icon on any scheme to save it here.
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: ABOUT ========== -->
+  <div id="page-about" class="ss-page d-none">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <div class="brand-logo mx-auto mb-3" style="width:72px;height:72px;font-size:2rem;"><i class="bi bi-bank2"></i></div>
+        <h2 class="fw-bold">About SarkarSathi ADK</h2>
+        <p class="text-muted fs-5">Bridging the gap between citizens and government welfare schemes using AI</p>
+      </div>
+
+      <div class="row g-4 mb-5">
+        <div class="col-md-6">
+          <div class="about-card about-problem">
+            <div class="about-card-icon"><i class="bi bi-exclamation-triangle-fill text-warning fs-3"></i></div>
+            <h5 class="fw-bold mt-3">The Problem</h5>
+            <p>India has 1000+ welfare schemes — yet most eligible citizens never discover or apply for them. Barriers include language, literacy, complex eligibility, and lack of awareness.</p>
+            <ul class="small text-muted ps-3">
+              <li>~70% of eligible citizens don't claim benefits they're entitled to</li>
+              <li>Schemes are spread across dozens of Central and State portals</li>
+              <li>Eligibility criteria are complex and multi-dimensional</li>
+              <li>Limited regional language and rural support</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="about-card about-solution">
+            <div class="about-card-icon"><i class="bi bi-lightbulb-fill text-success fs-3"></i></div>
+            <h5 class="fw-bold mt-3">Our Solution</h5>
+            <p>SarkarSathi uses Google's ADK to deploy 7 specialized AI agents that evaluate eligibility, rank schemes by benefit value, and provide transparent recommendations in your language.</p>
+            <ul class="small text-muted ps-3">
+              <li>AI matching across age, income, state, gender, education, occupation and category</li>
+              <li>Ranked recommendations with benefit score and "why recommended" explanations</li>
+              <li>Near-eligibility guidance — shows exactly what's missing</li>
+              <li>11 Indian languages with voice input support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="fw-bold mb-4">How Recommendation Works</h3>
+      <div class="row g-3 mb-5">
+        <div class="col-md-6 col-lg-3"><div class="how-step-card"><span class="how-step-n">1</span><h6 class="fw-bold mt-2">Profile Analysis</h6><p class="small text-muted">The Profile Agent extracts structured data from free-text or form input using Gemini 2.5 Flash.</p></div></div>
+        <div class="col-md-6 col-lg-3"><div class="how-step-card"><span class="how-step-n">2</span><h6 class="fw-bold mt-2">Eligibility Checking</h6><p class="small text-muted">The Eligibility Agent runs deterministic rules — no hallucinations, guaranteed accuracy.</p></div></div>
+        <div class="col-md-6 col-lg-3"><div class="how-step-card"><span class="how-step-n">3</span><h6 class="fw-bold mt-2">Benefit Ranking</h6><p class="small text-muted">The Recommendation Agent scores schemes by financial value, subsidies, scholarships and user relevance.</p></div></div>
+        <div class="col-md-6 col-lg-3"><div class="how-step-card"><span class="how-step-n">4</span><h6 class="fw-bold mt-2">Multilingual Reply</h6><p class="small text-muted">The Explainability and Multilingual agents produce a grounded, transparent explanation in the citizen's language.</p></div></div>
+      </div>
+
+      <h3 class="fw-bold mb-4">Key Features</h3>
+      <div class="row g-2 mb-5">
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-trophy-fill text-warning me-2"></i>Top 3 Ranked Scheme Recommendations</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-check-circle-fill text-success me-2"></i>Full Eligible Scheme List with Match %</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Near-Eligibility Guidance</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-bookmark-fill text-primary me-2"></i>Save and Bookmark Schemes</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-phone-fill text-info me-2"></i>OTP-Based Mobile Authentication</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-mic-fill text-danger me-2"></i>Voice Input (Hold and Speak)</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-translate me-2" style="color:#6f42c1;"></i>11 Indian Languages</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-moon-stars-fill text-secondary me-2"></i>Dark Mode</div></div>
+        <div class="col-sm-6 col-lg-4"><div class="feature-pill"><i class="bi bi-download me-2 text-success"></i>Download / Print Reports</div></div>
+      </div>
+
+      <h3 class="fw-bold mb-4">Technology Stack</h3>
+      <div class="row g-3 mb-5">
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-cpu-fill fs-3 text-primary mb-2"></i><div class="fw-bold small">Google ADK</div><div class="text-muted" style="font-size:0.75rem;">Multi-Agent Framework</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-stars fs-3 text-warning mb-2"></i><div class="fw-bold small">Gemini 2.5 Flash</div><div class="text-muted" style="font-size:0.75rem;">LLM and Reasoning</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-server fs-3 text-success mb-2"></i><div class="fw-bold small">Flask + Python</div><div class="text-muted" style="font-size:0.75rem;">Backend API</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-layout-text-window fs-3 text-info mb-2"></i><div class="fw-bold small">Bootstrap 5</div><div class="text-muted" style="font-size:0.75rem;">Responsive UI</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-search fs-3 text-danger mb-2"></i><div class="fw-bold small">RAG Pipeline</div><div class="text-muted" style="font-size:0.75rem;">Scheme Retrieval</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-mic-fill fs-3 text-orange mb-2"></i><div class="fw-bold small">Web Speech API</div><div class="text-muted" style="font-size:0.75rem;">Voice Recognition</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-hdd-fill fs-3 text-secondary mb-2"></i><div class="fw-bold small">localStorage</div><div class="text-muted" style="font-size:0.75rem;">Privacy-first Storage</div></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="bi bi-box-seam fs-3 mb-2"></i><div class="fw-bold small">Docker</div><div class="text-muted" style="font-size:0.75rem;">Containerization</div></div></div>
+      </div>
+
+      <div class="hackathon-card mb-5">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <h4 class="fw-bold mb-2">🚀 Built for Hackathon 2026</h4>
+            <p class="mb-2">SarkarSathi ADK was built to demonstrate how Google ADK's multi-agent framework can solve real civic problems at scale.</p>
+            <p class="mb-0 small text-muted"><strong>Goal:</strong> Make government welfare accessible to every Indian citizen, regardless of language, literacy or technical ability.</p>
+          </div>
+          <div class="col-md-4 text-center mt-3 mt-md-0">
+            <div class="d-flex flex-column align-items-center gap-2">
+              <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold fs-6">Hackathon 2026</span>
+              <span class="badge bg-primary px-3 py-2 rounded-pill">Google ADK Challenge</span>
+              <span class="badge bg-success px-3 py-2 rounded-pill">Civic Tech Track</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button onclick="isLoggedIn() ? showPage('page-main') : showPage('page-login')" class="btn btn-primary btn-lg px-5 fw-bold shadow">
+          <i class="bi bi-rocket-takeoff-fill me-2"></i>Try SarkarSathi Now
+        </button>
+        <div class="mt-3">
+          <button onclick="showPage('page-home')" class="btn btn-link text-muted small">
+            <i class="bi bi-arrow-left me-1"></i>Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+    <footer class="text-center text-muted small py-4">
+      Built with Google ADK · Gemini 2.5 Flash · Flask · Bootstrap — prototype knowledge base is illustrative sample data.
+    </footer>
+  </div>
+
+  <!-- Document readiness modal -->
   <div class="modal fade" id="docModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -234,7 +592,7 @@
           <input type="text" id="docInput" class="form-control mb-3" placeholder="Aadhaar, Bank Passbook" />
           <button id="docCheckBtn" class="btn btn-primary btn-sm mb-3" data-i18n="docCheck">Check readiness</button>
           <div id="docProgress" class="d-none mb-3">
-            <div class="small text-muted mb-1" data-i18n="ocrScanning">Scanning documents…</div>
+            <div class="small text-muted mb-1" data-i18n="ocrScanning">Scanning documents...</div>
             <div class="progress" style="height:8px;">
               <div id="docProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
             </div>
@@ -245,11 +603,6 @@
     </div>
   </div>
 
-  <footer class="text-center text-muted small py-4">
-    Built with Google ADK · Gemini 2.5 Flash · Flask · Bootstrap — prototype knowledge base is illustrative sample data.
-  </footer>
-
-  <!-- Printable / downloadable report (populated by JS) -->
   <div id="reportArea"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
