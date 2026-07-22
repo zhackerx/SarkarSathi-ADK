@@ -179,18 +179,20 @@
     <div class="auth-wrap">
       <div class="auth-card">
         <div class="auth-icon ai-blue"><i class="bi bi-phone-fill"></i></div>
-        <h3 class="fw-bold mt-3">Login with Mobile OTP</h3>
-        <p class="text-muted mb-4">Enter your 10-digit mobile number to receive an OTP</p>
-        <div class="mb-3">
+        <h3 class="fw-bold mt-3 auth-title">Login with Mobile OTP</h3>
+        <p class="text-muted mb-4 small">Enter your 10-digit mobile number to receive an OTP</p>
+        <div class="mb-4">
+          <label class="form-label">Mobile Number</label>
           <div class="input-group input-group-lg">
-            <span class="input-group-text fw-bold">+91</span>
-            <input type="tel" id="mobileInput" class="form-control" placeholder="10-digit mobile number"
-              maxlength="10" inputmode="numeric" onkeypress="return /[0-9]/.test(event.key)"
+            <span class="input-group-text fw-bold" style="min-width:auto;">+91</span>
+            <input type="tel" id="mobileInput" class="form-control" placeholder="9876543210"
+              maxlength="10" inputmode="numeric" autocomplete="tel" 
+              onkeypress="return /[0-9]/.test(event.key)"
               onkeydown="if(event.key==='Enter') document.getElementById('sendOtpBtn').click()" />
           </div>
-          <div id="mobileError" class="text-danger small mt-1 d-none"></div>
+          <div id="mobileError" class="text-danger small mt-2 d-none"></div>
         </div>
-        <button id="sendOtpBtn" class="btn btn-primary btn-lg w-100 fw-bold">
+        <button id="sendOtpBtn" class="btn btn-primary btn-lg w-100 fw-bold" style="min-height:48px;">
           <i class="bi bi-send-fill me-2"></i>Send OTP
         </button>
         <div class="mt-4 text-center">
@@ -219,16 +221,17 @@
           <i class="bi bi-info-circle-fill flex-shrink-0"></i>
           <div class="small"><strong>Demo Mode:</strong> Use OTP <strong class="fs-5 ms-1">123456</strong></div>
         </div>
-        <div class="otp-input-row mb-2" id="otpInputRow">
-          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" autocomplete="one-time-code" />
-          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
-          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
-          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
-          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
-          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" />
+        <label class="form-label mb-3">Enter 6-Digit OTP</label>
+        <div class="otp-input-row mb-3" id="otpInputRow">
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" autocomplete="one-time-code" aria-label="OTP digit 1" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" aria-label="OTP digit 2" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" aria-label="OTP digit 3" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" aria-label="OTP digit 4" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" aria-label="OTP digit 5" />
+          <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" aria-label="OTP digit 6" />
         </div>
         <div id="otpError" class="text-danger small mb-3 d-none"></div>
-        <button id="verifyOtpBtn" class="btn btn-success btn-lg w-100 fw-bold">
+        <button id="verifyOtpBtn" class="btn btn-success btn-lg w-100 fw-bold mb-3" style="min-height:48px;">
           <i class="bi bi-check-circle-fill me-2"></i>Verify &amp; Login
         </button>
         <div class="mt-3 d-flex justify-content-center gap-4 small">
@@ -305,13 +308,13 @@
                   <label class="form-label small" data-i18n="age">Age</label>
                   <input type="number" class="form-control form-control-sm" name="age" min="0" max="120" />
                 </div>
-                <div class="col-6">
-                  <label class="form-label small" data-i18n="income">Annual income (Rs)</label>
-                  <input type="number" class="form-control form-control-sm" name="income" min="0" />
+                <div class="col-6 col-md-6">
+                  <label class="form-label small fw-600" data-i18n="income">Annual income (Rs)</label>
+                  <input type="number" class="form-control" name="income" min="0" placeholder="0" />
                 </div>
-                <div class="col-6">
-                  <label class="form-label small" data-i18n="state">State</label>
-                  <input type="text" class="form-control form-control-sm" name="state" list="stateList" />
+                <div class="col-6 col-md-6">
+                  <label class="form-label small fw-600" data-i18n="state">State</label>
+                  <input type="text" class="form-control" name="state" list="stateList" placeholder="Select state" />
                   <datalist id="stateList">
                     <option>Uttar Pradesh</option><option>Bihar</option><option>Maharashtra</option>
                     <option>Karnataka</option><option>Kerala</option><option>Tamil Nadu</option>
@@ -320,29 +323,29 @@
                     <option>Andhra Pradesh</option><option>Telangana</option><option>Odisha</option>
                   </datalist>
                 </div>
-                <div class="col-6">
-                  <label class="form-label small" data-i18n="gender">Gender</label>
-                  <select class="form-select form-select-sm" name="gender">
+                <div class="col-6 col-md-6">
+                  <label class="form-label small fw-600" data-i18n="gender">Gender</label>
+                  <select class="form-select" name="gender">
                     <option value="">Any</option><option>Male</option><option>Female</option>
                   </select>
                 </div>
-                <div class="col-6">
-                  <label class="form-label small" data-i18n="education">Education</label>
-                  <select class="form-select form-select-sm" name="education">
+                <div class="col-6 col-md-6">
+                  <label class="form-label small fw-600" data-i18n="education">Education</label>
+                  <select class="form-select" name="education">
                     <option value="">Any</option><option>School</option><option>UG</option>
                     <option>PG</option><option>Diploma</option>
                   </select>
                 </div>
-                <div class="col-6">
-                  <label class="form-label small" data-i18n="occupation">Occupation</label>
-                  <select class="form-select form-select-sm" name="occupation">
+                <div class="col-6 col-md-6">
+                  <label class="form-label small fw-600" data-i18n="occupation">Occupation</label>
+                  <select class="form-select" name="occupation">
                     <option value="">Any</option><option>Student</option><option>Farmer</option>
                     <option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option>
                   </select>
                 </div>
-                <div class="col-6">
-                  <label class="form-label small" data-i18n="category">Social category</label>
-                  <select class="form-select form-select-sm" name="social_category">
+                <div class="col-6 col-md-6">
+                  <label class="form-label small fw-600" data-i18n="category">Social category</label>
+                  <select class="form-select" name="social_category">
                     <option value="">General / Any</option><option>SC</option><option>ST</option>
                     <option>OBC</option><option>General</option>
                   </select>

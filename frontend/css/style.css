@@ -854,12 +854,140 @@ a:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visi
 [data-theme="dark"] .nearly-card { background: rgba(20,27,51,0.92) !important; color: var(--ink); }
 [data-theme="dark"] .hero-card-float { background: rgba(11,61,145,0.35); border-color: rgba(100,140,255,0.3); }
 
-/* ============ RESPONSIVE ============ */
-@media (max-width: 767px) {
-  .hero-stats { gap: 1rem; }
-  .stat-num { font-size: 1.25rem; }
+/* ============ MOBILE & RESPONSIVE ============ */
+/* Touch-friendly minimum sizes for all buttons and inputs */
+button, a.btn, input[type=\"button\"], input[type=\"submit\"] {
+  min-height: 44px;
+  touch-action: manipulation;
+}
+.form-control, .form-select {
+  min-height: 44px;
+  font-size: 16px; /* Prevents unwanted zoom on iOS */
+  padding: 0.6rem 0.75rem;
+}
+
+/* Mobile-first: Smallest screens (phones) */
+@media (max-width: 575px) {
+  /* Navbar - compact mobile */
+  .brand-bar { padding: 0.5rem !important; }
+  .navbar { min-height: 56px; }
+  .navbar-brand { font-size: 1rem; }
+  
+  /* Hero section */
+  .hero-wrap { padding: 1.5rem 1rem; min-height: auto; }
+  .hero-title { font-size: 1.75rem; line-height: 1.4; margin-bottom: 0.5rem; }
+  .hero-subtitle { font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .hero-stats { gap: 0.75rem; flex-wrap: wrap; }
+  .stat-item { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+  .stat-num { font-size: 1.1rem; }
+  .hero-illustration { display: none; }
+  \n  /* Forms - mobile optimized */\n  .form-label { font-size: 0.85rem; font-weight: 600; }
+  .form-control, .form-select { font-size: 16px; padding: 0.6rem 0.75rem; border-radius: 0.6rem; }
+  .form-control:focus, .form-select:focus { border-color: var(--brand); box-shadow: 0 0 0 0.2rem rgba(11,61,145,0.15); }
+  \n  /* Cards & spacing */\n  .card { margin-bottom: 1rem; border-radius: 0.75rem; }
+  .scheme-card, .nearly-card { margin-bottom: 0.75rem; padding: 0.9rem; }
+  \n  /* Buttons */\n  .btn-sm { min-height: 40px; font-size: 0.9rem; padding: 0.5rem 0.8rem; }
+  .btn { padding: 0.55rem 1rem; border-radius: 0.6rem; }
+  .btn-lg-senior { padding: 0.65rem 1rem; font-size: 0.95rem; }
+  \n  /* Auth pages */\n  .auth-wrap { padding: 1rem; }
+  .auth-card { padding: 1.5rem 1rem; border-radius: 1.25rem; }
+  .auth-icon { width: 60px; height: 60px; font-size: 1.5rem; }
+  .auth-title { font-size: 1.3rem; }
+  \n  /* OTP input */\n  .otp-input-row { gap: 0.4rem; }
+  .otp-digit { width: 38px; height: 46px; font-size: 1.1rem; border-radius: 0.6rem; }
+  .otp-digit:focus { border-color: var(--brand); box-shadow: 0 0 0 0.2rem rgba(11,61,145,0.15); }
+  \n  /* Main app */\n  .welcome-bar { padding: 0.6rem 0.85rem; margin-bottom: 1rem; border-radius: 0.75rem; }
+  .input-col { margin-bottom: 1.5rem; }
+  \n  /* Results page */\n  .results-topbar { padding: 0.75rem; margin-bottom: 1rem; }
+  .results-topbar h4 { font-size: 1.1rem; }
+  .results-topbar button { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+  .top-scheme-card { padding: 0.9rem; }
+  .rank-medal { font-size: 1.8rem; }
+  .benefit-score-sm { font-size: 0.75rem; }
+  .section-hdr { padding: 0.8rem 1rem; margin-bottom: 0.75rem; }
+  .section-hdr h3, .section-hdr h4 { font-size: 1rem; margin: 0; }
+  \n  /* About page */\n  .about-wrap { padding: 1rem; }
+  .about-card, .how-step-card, .feature-pill, .tech-card { padding: 1.1rem; }
+  .about-card-icon { font-size: 1.6rem; }
+  .hackathon-card { padding: 1.5rem; }
+  \n  /* Text & typography */\n  .explanation { font-size: 0.95rem; line-height: 1.6; }
+  .text-muted.small { font-size: 0.8rem; }
+  body { font-size: 0.95rem; }
+}
+
+/* Tablets (small) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .hero-title { font-size: 1.9rem; }
+  .hero-subtitle { font-size: 0.98rem; }
   .auth-card { padding: 1.75rem 1.25rem; }
   .otp-digit { width: 42px; height: 50px; font-size: 1.3rem; }
   .top-scheme-card { padding: 1.1rem; }
   .section-hdr { padding: 0.9rem 1rem; }
+  .form-control, .form-select { font-size: 15px; }
 }
+
+/* Tablets (large) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-title { font-size: 2.2rem; }
+  .hero-subtitle { font-size: 1.05rem; }
+  .auth-card { padding: 2rem 1.5rem; }
+  .otp-digit { width: 45px; height: 52px; }
+  .input-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-label { font-size: 0.9rem; }
+}
+
+/* Desktop (small) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .hero-title { font-size: 2.5rem; }
+  .container-fluid { max-width: 1000px; margin: 0 auto; }
+}
+
+/* Desktop (large) */
+@media (min-width: 1200px) {
+  .container-fluid { max-width: 1400px; margin: 0 auto; }
+  .hero-title { font-size: 3rem; }
+  .input-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+}
+
+/* Ultra-wide displays */
+@media (min-width: 1600px) {
+  .container-fluid { max-width: 1600px; margin: 0 auto; }
+  .hero-title { font-size: 3.5rem; }
+}
+
+/* ============ ACCESSIBILITY & MOTION ============ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============ TOUCH DEVICE OPTIMIZATIONS ============ */
+@media (hover: none) and (pointer: coarse) {
+  /* Mobile/touch devices don't have hover */
+  button:active { transform: scale(0.98); opacity: 0.9; }
+  .btn:active { opacity: 0.9; }
+  .form-control:focus, .form-select:focus { box-shadow: 0 0 0 0.3rem rgba(11,61,145,0.2); }
+  input, textarea, select { font-size: 16px; } /* Prevents iOS zoom */
+}
+
+/* ============ HIGH DPI DISPLAYS ============ */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  button, .btn { border-width: 1px; }
+  .navbar { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+}
+
+/* ============ LANDSCAPE MODE (mobile) ============ */
+@media (max-height: 600px) and (orientation: landscape) {
+  .navbar { min-height: 48px; padding: 0.25rem !important; }
+  .navbar-brand { font-size: 0.9rem; }
+  .auth-wrap { min-height: auto; padding: 0.75rem; }
+  .auth-card { padding: 1rem 0.75rem; }
+  .hero-title { font-size: 1.4rem; }
+}
+
+/* ============ DARK MODE RESPONSIVE ============ */
+[data-theme=\"dark\"] button:active { background: rgba(100,140,255,0.2); }
+[data-theme=\"dark\"] .form-control:focus, [data-theme=\"dark\"] .form-select:focus { border-color: #7ab0ff; box-shadow: 0 0 0 0.2rem rgba(100,140,255,0.15); }
