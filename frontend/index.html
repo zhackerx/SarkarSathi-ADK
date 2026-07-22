@@ -577,23 +577,50 @@
 
   <!-- Document readiness modal -->
   <div class="modal fade" id="docModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title"><i class="bi bi-folder-check me-2"></i><span data-i18n="docTitle">Document Readiness</span></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <p class="text-muted small mb-2" data-i18n="docHelp">Type the documents you already have (comma separated), e.g. <em>Aadhaar, Income Certificate</em>.</p>
-          <input type="text" id="docInput" class="form-control mb-3" placeholder="Aadhaar, Bank Passbook" />
-          <button id="docCheckBtn" class="btn btn-primary btn-sm mb-3" data-i18n="docCheck">Check readiness</button>
+          <div class="mb-3">
+            <p class="fw-bold mb-2">Required Documents:</p>
+            <div id="docRequiredList" class="mb-3 p-3 rounded border bg-light" style="max-height: 200px; overflow-y: auto;"></div>
+          </div>
+
+          <div class="mb-3">
+            <p class="fw-bold mb-2">Upload Documents:</p>
+            <div class="mb-2">
+              <div class="input-group">
+                <input type="file" id="docFileInput" class="form-control" accept=".pdf,.jpg,.jpeg,.png" title="Upload PDF or image files (JPG, PNG)">
+                <button class="btn btn-primary" type="button" id="docUploadBtn" title="Upload selected document file">
+                  <i class="bi bi-cloud-arrow-up me-1"></i>Upload
+                </button>
+              </div>
+              <small class="text-muted d-block mt-1">Supported: PDF, JPG, PNG (max 5MB each)</small>
+            </div>
+          </div>
+
+          <div id="docUploadedList" class="mb-3">
+            <p class="fw-bold mb-2">Uploaded Files:</p>
+            <div id="uploadedFilesList" class="list-group" style="max-height: 250px; overflow-y: auto;"></div>
+            <p id="noFilesText" class="text-muted small mt-2">No files uploaded yet</p>
+          </div>
+
           <div id="docProgress" class="d-none mb-3">
-            <div class="small text-muted mb-1" data-i18n="ocrScanning">Scanning documents...</div>
+            <div class="small text-muted mb-1">Processing file...</div>
             <div class="progress" style="height:8px;">
               <div id="docProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%"></div>
             </div>
           </div>
           <div id="docResult"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" id="docReadyBtn" title="Confirm all documents are ready">
+            <i class="bi bi-check-circle me-1"></i>Mark Ready
+          </button>
         </div>
       </div>
     </div>

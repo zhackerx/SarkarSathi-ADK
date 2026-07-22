@@ -348,6 +348,16 @@ document.addEventListener("DOMContentLoaded", () => {
   el("askBtn").addEventListener("click", askAgents);
   el("sampleBtn").addEventListener("click", fillSample);
   el("docCheckBtn").addEventListener("click", runDocCheck);
+  el("docUploadBtn").addEventListener("click", handleDocUpload);
+  el("docReadyBtn").addEventListener("click", () => {
+    const schemeFiles = getUploadedDocs()[currentDocScheme] || [];
+    if (schemeFiles.length > 0) {
+      el("docResult").innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="bi bi-check-circle-fill me-2"></i>Document readiness confirmed! You have ${schemeFiles.length} file(s) ready.</div>`;
+      setTimeout(() => { docModal.hide(); }, 2000);
+    } else {
+      alert("Please upload at least one document first");
+    }
+  });
   el("guideBtn").addEventListener("click", toggleGuide);
   el("guideStopBtn").addEventListener("click", stopGuide);
   el("themeToggle").addEventListener("click", toggleTheme);
@@ -820,13 +830,124 @@ function categoryIcon(category) {
 }
 
 // ============================================================
-// DOCUMENT READINESS
+// DOCUMENT UPLOAD & READINESS
 // ============================================================
+function getUploadedDocs() {
+  try { return JSON.parse(localStorage.getItem("ss_uploaded_docs") || "{}"); } catch { return {}; }
+}
+
+function saveUploadedDocs(docs) { localStorage.setItem("ss_uploaded_docs", JSON.stringify(docs)); }
+
+function addUploadedDoc(schemeId, file) {
+  const docs = getUploadedDocs();
+  if (!docs[schemeId]) docs[schemeId] = [];
+  docs[schemeId].unshift({
+    name: file.name,
+    size: file.size,
+    type: file.type,
+    uploadTime: Date.now(),
+    id: Math.random().toString(36).substr(2, 9)
+  });
+  if (docs[schemeId].length > 20) docs[schemeId] = docs[schemeId].slice(0, 20);
+  saveUploadedDocs(docs);
+}
+
+function removeUploadedDoc(schemeId, docId) {
+  const docs = getUploadedDocs();
+  if (docs[schemeId]) {
+    docs[schemeId] = docs[schemeId].filter(d => d.id !== docId);
+  }
+  saveUploadedDocs(docs);
+}
+
+function displayUploadedFiles(schemeId) {
+  const docs = getUploadedDocs();
+  const schemeFiles = docs[schemeId] || [];
+  const list = el("uploadedFilesList");
+  const noFiles = el("noFilesText");
+  
+  if (!list) return;
+  
+  if (schemeFiles.length === 0) {
+    list.innerHTML = "";
+    if (noFiles) noFiles.classList.remove("d-none");
+    return;
+  }
+  
+  if (noFiles) noFiles.classList.add("d-none");
+  list.innerHTML = schemeFiles.map(doc => {
+    const date = new Date(doc.uploadTime).toLocaleDateString();
+    const sizeKB = (doc.size / 1024).toFixed(1);
+    return `
+      <div class="list-group-item d-flex justify-content-between align-items-center py-2">
+        <div>
+          <div class="small fw-500"><i class="bi bi-file-earmark me-1"></i>${escapeHtml(doc.name)}</div>
+          <div class="text-muted small">${sizeKB} KB · ${date}</div>
+        </div>
+        <button class="btn btn-sm btn-outline-danger" onclick="removeUploadedDoc('${schemeId}', '${doc.id}'); displayUploadedFiles('${schemeId}')" title="Delete this file">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>`;
+  }).join("");
+}
+
 window.openDoc = function(schemeId) {
   currentDocScheme = schemeId;
-  el("docInput").value = "";
+  const scheme = schemeMap[schemeId];
+  
+  // Display required documents
+  const docList = el("docRequiredList");
+  if (docList && scheme && scheme.documents) {
+    docList.innerHTML = (scheme.documents || []).map(d => 
+      `<div class="list-group-item py-1"><i class="bi bi-file-pdf me-2 text-danger"></i>${escapeHtml(d)}</div>`
+    ).join("") || `<p class="text-muted small mb-0">No specific documents listed</p>`;
+  }
+  
+  // Display uploaded files for this scheme
+  displayUploadedFiles(schemeId);
+  
+  el("docFileInput").value = "";
   el("docResult").innerHTML = "";
   docModal.show();
+};
+
+// Handle file upload
+window.handleDocUpload = function() {
+  if (!currentDocScheme) return;
+  
+  const input = el("docFileInput");
+  const file = input.files[0];
+  if (!file) return;
+  
+  // Validate file type
+  const allowed = ["application/pdf", "image/jpeg", "image/png"];
+  if (!allowed.includes(file.type)) {
+    alert("Only PDF and image files (JPG, PNG) are supported");
+    return;
+  }
+  
+  // Validate file size (5MB max)
+  if (file.size > 5 * 1024 * 1024) {
+    alert("File size must be less than 5MB");
+    return;
+  }
+  
+  // Add to uploaded docs
+  addUploadedDoc(currentDocScheme, file);
+  displayUploadedFiles(currentDocScheme);
+  
+  // Show success message
+  const result = el("docResult");
+  if (result) {
+    result.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="bi bi-check-circle me-2"></i>File uploaded: ${escapeHtml(file.name)}</div>`;
+    setTimeout(() => { result.innerHTML = ""; }, 3000);
+  }
+  
+  input.value = "";
+};
+
+window.removeUploadedDoc = function(schemeId, docId) {
+  removeUploadedDoc(schemeId, docId);
 };
 
 async function runDocCheck() {
