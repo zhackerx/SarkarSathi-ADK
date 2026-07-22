@@ -11,52 +11,74 @@
 <body>
 
   <!-- ============ Navbar ============ -->
-  <nav class="navbar navbar-dark px-3 px-md-4 sticky-top brand-bar">
+  <nav class="navbar navbar-dark px-2 px-md-3 sticky-top brand-bar">
     <button class="navbar-brand mb-0 d-flex align-items-center gap-2" onclick="handleLogoClick()" style="background:none;border:none;cursor:pointer;">
       <span class="brand-logo"><i class="bi bi-bank2 fs-5"></i></span>
-      <span>SarkarSathi <span class="badge text-bg-light text-dark ms-1">ADK</span></span>
+      <span class="fw-bold d-none d-sm-inline">SarkarSathi</span>
     </button>
-    <div class="d-flex align-items-center gap-2 gap-md-3 flex-wrap">
-      <div id="navLinks" class="d-flex align-items-center gap-1">
-        <button class="btn btn-sm nav-pill-btn" onclick="handleLogoClick()">
-          <i class="bi bi-house-fill me-1"></i><span class="d-none d-sm-inline">Home</span>
+    <div class="d-flex align-items-center gap-1 gap-sm-2 ms-auto">
+      <!-- Nav links - hidden on mobile -->
+      <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="handleLogoClick()" title="Home" aria-label="Home">
+        <i class="bi bi-house-fill"></i>
+      </button>
+      <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-about')" title="About" aria-label="About">
+        <i class="bi bi-info-circle-fill"></i>
+      </button>
+      <!-- Mode badge - desktop only -->
+      <span id="modeBadge" class="badge rounded-pill text-bg-secondary d-none d-lg-inline nav-badge">connecting</span>
+      <!-- Theme toggle -->
+      <button id="themeToggle" class="btn btn-sm nav-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
+        <i class="bi bi-moon-stars-fill"></i>
+      </button>
+      <!-- Language dropdown - compact -->
+      <div class="dropdown">
+        <button class="btn btn-sm nav-icon-btn dropdown-toggle" type="button" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Language" aria-label="Choose language">
+          <i class="bi bi-globe"></i>
         </button>
-        <button class="btn btn-sm nav-pill-btn" onclick="showPage('page-about')">
-          <i class="bi bi-info-circle-fill me-1"></i><span class="d-none d-sm-inline">About</span>
-        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='en'; el('langSelect').dispatchEvent(new Event('change')); return false;">English</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='hi'; el('langSelect').dispatchEvent(new Event('change')); return false;">हिंदी</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='bn'; el('langSelect').dispatchEvent(new Event('change')); return false;">বাংলা</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='ta'; el('langSelect').dispatchEvent(new Event('change')); return false;">தமிழ்</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='te'; el('langSelect').dispatchEvent(new Event('change')); return false;">తెలుగు</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='mr'; el('langSelect').dispatchEvent(new Event('change')); return false;">मराठी</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='kn'; el('langSelect').dispatchEvent(new Event('change')); return false;">ಕನ್ನಡ</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='gu'; el('langSelect').dispatchEvent(new Event('change')); return false;">ગુજરાતી</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='pa'; el('langSelect').dispatchEvent(new Event('change')); return false;">ਪੰਜਾਬੀ</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='ml'; el('langSelect').dispatchEvent(new Event('change')); return false;">മലയാളം</a></li>
+          <li><a class="dropdown-item" href="#" onclick="el('langSelect').value='or'; el('langSelect').dispatchEvent(new Event('change')); return false;">ଓଡ଼ିଆ</a></li>
+        </ul>
       </div>
-      <div id="navAuthArea" class="d-flex align-items-center gap-2">
-        <button id="navLoginBtn" class="btn btn-sm btn-warning fw-bold px-3" onclick="showPage('page-login')">
-          <i class="bi bi-phone-fill me-1"></i>Login
+      <!-- Auth area -->
+      <div id="navAuthArea" class="d-flex align-items-center gap-1 gap-sm-2 ms-1 ms-sm-2" style="border-left:1px solid rgba(255,255,255,0.2); padding-left:0.75rem;">
+        <button id="navLoginBtn" class="btn btn-sm btn-warning fw-bold px-2 px-sm-3" onclick="showPage('page-login')">
+          <i class="bi bi-phone-fill me-1"></i><span class="d-none d-sm-inline">Login</span>
         </button>
-        <div id="navUserInfo" class="d-none d-flex align-items-center gap-2">
-          <span class="badge bg-light text-dark border rounded-pill px-2 py-1 d-none d-md-flex align-items-center gap-1" id="navUserBadge">
-            <i class="bi bi-person-check-fill text-success"></i><span id="navMobileText"></span>
+        <div id="navUserInfo" class="d-none d-flex align-items-center gap-1 gap-sm-2">
+          <span class="badge bg-success text-white rounded-pill px-2 py-1 d-none d-md-inline small" id="navUserBadge">
+            <i class="bi bi-check-circle-fill me-1"></i><span id="navMobileText"></span>
           </span>
-          <button id="navLogoutBtn" class="btn btn-sm btn-outline-light fw-bold" onclick="handleLogout()">
-            <i class="bi bi-box-arrow-right me-1"></i><span class="d-none d-sm-inline">Sign Out</span>
+          <button id="navLogoutBtn" class="btn btn-sm btn-outline-light fw-bold" onclick="handleLogout()" title="Sign Out">
+            <i class="bi bi-box-arrow-right"></i>
           </button>
         </div>
       </div>
-      <span id="modeBadge" class="badge rounded-pill text-bg-secondary d-none d-lg-inline">connecting</span>
-      <button id="themeToggle" class="btn btn-sm btn-light rounded-circle" title="Toggle dark mode" aria-label="Toggle dark mode" style="width:36px;height:36px;">
-        <i class="bi bi-moon-stars-fill"></i>
-      </button>
-      <select id="langSelect" class="form-select form-select-sm lang-select" aria-label="Choose language">
-        <option value="en" selected>English</option>
-        <option value="hi">हिंदी (Hindi)</option>
-        <option value="bn">বাংলা (Bengali)</option>
-        <option value="ta">தமிழ் (Tamil)</option>
-        <option value="te">తెలుగు (Telugu)</option>
-        <option value="mr">मराठी (Marathi)</option>
-        <option value="kn">ಕನ್ನಡ (Kannada)</option>
-        <option value="gu">ગુજરાતી (Gujarati)</option>
-        <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
-        <option value="ml">മലയാളം (Malayalam)</option>
-        <option value="or">ଓଡ଼ିଆ (Odia)</option>
-      </select>
     </div>
   </nav>
+  <!-- Hidden select for language state management -->
+  <select id="langSelect" class="d-none" aria-label="Choose language">
+    <option value="en" selected>English</option>
+    <option value="hi">हिंदी</option>
+    <option value="bn">বাংলা</option>
+    <option value="ta">தமிழ்</option>
+    <option value="te">తెలుగు</option>
+    <option value="mr">मराठी</option>
+    <option value="kn">ಕನ್ನಡ</option>
+    <option value="gu">ગુજરાતી</option>
+    <option value="pa">ਪੰਜਾਬੀ</option>
+    <option value="ml">മലയാളം</option>
+    <option value="or">ଓଡ଼ିଆ</option>
+  </select>
   <div class="tricolor-strip"></div>
 
   <!-- ========== PAGE: HOME ========== -->
