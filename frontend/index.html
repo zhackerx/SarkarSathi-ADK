@@ -49,14 +49,14 @@
       </div>
       <!-- Auth area -->
       <div id="navAuthArea" class="d-flex align-items-center gap-1 gap-sm-2 ms-1 ms-sm-2" style="border-left:1px solid rgba(255,255,255,0.2); padding-left:0.75rem;">
-        <button id="navLoginBtn" class="btn btn-sm btn-warning fw-bold px-2 px-sm-3" onclick="showPage('page-login')">
+        <button id="navLoginBtn" class="btn btn-sm btn-warning fw-bold px-2 px-sm-3" onclick="showPage('page-login')" title="Login with mobile OTP">
           <i class="bi bi-phone-fill me-1"></i><span class="d-none d-sm-inline">Login</span>
         </button>
         <div id="navUserInfo" class="d-none d-flex align-items-center gap-1 gap-sm-2">
           <span class="badge bg-success text-white rounded-pill px-2 py-1 d-none d-md-inline small" id="navUserBadge">
             <i class="bi bi-check-circle-fill me-1"></i><span id="navMobileText"></span>
           </span>
-          <button id="navLogoutBtn" class="btn btn-sm btn-outline-light fw-bold" onclick="handleLogout()" title="Sign Out">
+          <button id="navLogoutBtn" class="btn btn-sm btn-outline-light fw-bold" onclick="handleLogout()" title="Sign out and clear profile">
             <i class="bi bi-box-arrow-right"></i>
           </button>
         </div>
@@ -93,7 +93,7 @@
             <h1 class="hero-title">Discover Government Schemes <span class="hero-highlight">Made for You</span></h1>
             <p class="hero-subtitle">AI-powered eligibility matching across 1000+ Central and State government schemes. Find scholarships, subsidies, healthcare, housing benefits and more — in your own language.</p>
             <div class="d-flex flex-wrap gap-3 mt-4">
-              <button onclick="showPage('page-login')" class="btn btn-warning btn-lg fw-bold px-4 shadow-sm">
+              <button onclick="showPage('page-login')" class="btn btn-warning btn-lg fw-bold px-4 shadow-sm" title="Begin the login process with your mobile number">
                 <i class="bi bi-phone-fill me-2"></i>Get Started — Login with OTP
               </button>
               <button onclick="showPage('page-about')" class="btn btn-outline-light btn-lg px-4">
@@ -190,7 +190,7 @@
           </div>
           <div id="mobileError" class="text-danger small mt-2 d-none"></div>
         </div>
-        <button id="sendOtpBtn" class="btn btn-primary btn-lg w-100 fw-bold" style="min-height:48px;">
+        <button id="sendOtpBtn" class="btn btn-primary btn-lg w-100 fw-bold" style="min-height:48px;" title="Send 6-digit OTP to your mobile number">
           <i class="bi bi-send-fill me-2"></i>Send OTP
         </button>
         <div class="mt-4 text-center">
@@ -229,12 +229,38 @@
           <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" aria-label="OTP digit 6" />
         </div>
         <div id="otpError" class="text-danger small mb-3 d-none"></div>
-        <button id="verifyOtpBtn" class="btn btn-success btn-lg w-100 fw-bold mb-3" style="min-height:48px;">
+        <button id="verifyOtpBtn" class="btn btn-success btn-lg w-100 fw-bold mb-3" style="min-height:48px;" title="Verify OTP and login to your account">
           <i class="bi bi-check-circle-fill me-2"></i>Verify &amp; Login
         </button>
         <div class="mt-3 d-flex justify-content-center gap-4 small">
           <a href="#" id="resendOtpLink" class="text-decoration-none"><i class="bi bi-arrow-clockwise me-1"></i>Resend OTP</a>
           <a href="#" onclick="showPage('page-login')" class="text-decoration-none text-muted"><i class="bi bi-pencil me-1"></i>Change Number</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: NAME SETUP ========== -->
+  <div id="page-name-setup" class="ss-page d-none">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <div class="auth-icon ai-purple"><i class="bi bi-person-badge-fill"></i></div>
+        <h3 class="fw-bold mt-3">What's your name?</h3>
+        <p class="text-muted mb-4 small">Help us personalize your experience</p>
+        <div class="mb-4">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="nameInput" class="form-control form-control-lg" placeholder="Enter your full name" 
+            autocomplete="name" maxlength="60"
+            onkeydown="if(event.key==='Enter') document.getElementById('continueNameBtn').click()" />
+          <div id="nameError" class="text-danger small mt-2 d-none"></div>
+        </div>
+        <button id="continueNameBtn" class="btn btn-primary btn-lg w-100 fw-bold" style="min-height:48px;" title="Continue to scheme search">
+          <i class="bi bi-arrow-right me-2"></i>Continue
+        </button>
+        <div class="mt-3 text-center">
+          <button class="btn btn-link btn-sm text-muted" onclick="handleLogout()">
+            <i class="bi bi-arrow-left me-1"></i>Logout
+          </button>
         </div>
       </div>
     </div>
@@ -266,10 +292,10 @@
               <p class="small text-muted mb-3">Describe yourself in your own words</p>
               <textarea id="freeText" class="form-control mb-3" rows="4" data-i18n-ph="askPlaceholder" placeholder="e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech"></textarea>
               <div class="d-grid gap-2 mb-3">
-                <button id="askBtn" class="btn btn-primary btn-lg-senior"><i class="bi bi-send-fill me-1"></i><span data-i18n="askBtn">Ask Agents</span></button>
-                <button id="voiceBtn" class="btn btn-voice btn-lg-senior" title="Press and hold, then speak"><span class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span><i class="bi bi-mic-fill me-1 mic-icon"></i><span id="voiceLabel" data-i18n="holdSpeak">Hold &amp; Speak</span></button>
+                <button id="askBtn" class="btn btn-primary btn-lg-senior" title="Send your description to AI agents for analysis"><i class="bi bi-send-fill me-1"></i><span data-i18n="askBtn">Ask Agents</span></button>
+                <button id="voiceBtn" class="btn btn-voice btn-lg-senior" title="Press and hold to speak your profile in your own words"><span class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span><i class="bi bi-mic-fill me-1 mic-icon"></i><span id="voiceLabel" data-i18n="holdSpeak">Hold &amp; Speak</span></button>
               </div>
-              <button id="guideBtn" class="btn btn-link btn-sm w-100 text-muted" aria-controls="voiceGuide"><i class="bi bi-volume-up-fill me-1"></i><span id="guideBtnText" data-i18n="guideBtn">How to use</span></button>
+              <button id="guideBtn" class="btn btn-link btn-sm w-100 text-muted" aria-controls="voiceGuide" title="Learn how to use voice input"><i class="bi bi-volume-up-fill me-1"></i><span id="guideBtnText" data-i18n="guideBtn">How to use</span></button>
               <div id="voiceGuide" class="voice-guide p-2 mt-2 d-none rounded bg-light">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <h6 class="fw-bold mb-0 small"><i class="bi bi-info-circle me-1"></i><span id="guideHeading">How to use</span></h6>
@@ -286,7 +312,7 @@
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-person-vcard me-1"></i><span data-i18n="citizenProfile">Citizen Profile</span></h6>
-                <button id="sampleBtn" class="btn btn-sm btn-link p-0 small" data-i18n="trySample">Try sample</button>
+                <button id="sampleBtn" class="btn btn-sm btn-link p-0 small" data-i18n="trySample" title="Auto-fill with sample profile">Try sample</button>
               </div>
               <p class="small text-muted mb-3">Tell us about yourself to find matching schemes</p>
               <form id="profileForm" class="row g-2">
@@ -298,12 +324,12 @@
                 <div class="col-6"><label class="form-label small fw-600" data-i18n="occupation">Occupation</label><select class="form-select" name="occupation"><option value="">Any</option><option>Student</option><option>Farmer</option><option>Entrepreneur</option><option>Self-Employed</option><option>Unemployed</option></select></div>
                 <div class="col-6"><label class="form-label small fw-600" data-i18n="category">Category</label><select class="form-select" name="social_category"><option value="">General</option><option>SC</option><option>ST</option><option>OBC</option></select></div>
                 <div class="col-6 d-flex flex-column justify-content-end">
-                  <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"><label class="form-check-label small" for="land" data-i18n="land">Owns land</label></div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"><label class="form-check-label small" for="dis" data-i18n="disability">Disability</label></div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"><label class="form-check-label small" for="mat" data-i18n="maternity">Pregnant / new mother</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land" title="Select if you own agricultural or residential land"><label class="form-check-label small" for="land" data-i18n="land">Owns land</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis" title="Select if you have any registered disability"><label class="form-check-label small" for="dis" data-i18n="disability">Disability</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat" title="Select if you are pregnant or a new mother"><label class="form-check-label small" for="mat" data-i18n="maternity">Pregnant / new mother</label></div>
                 </div>
                 <div class="col-12 mt-2">
-                  <button type="submit" class="btn btn-success btn-lg-senior w-100"><i class="bi bi-search me-1"></i><span data-i18n="findSchemes">Find my schemes</span></button>
+                  <button type="submit" class="btn btn-success btn-lg-senior w-100" title="Search for government schemes based on your profile"><i class="bi bi-search me-1"></i><span data-i18n="findSchemes">Find my schemes</span></button>
                 </div>
               </form>
             </div>
@@ -314,7 +340,7 @@
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-clock-history me-1"></i><span data-i18n="historyTitle">Past questions</span></h6>
-                <button id="historyClear" class="btn btn-sm btn-link text-danger p-0 d-none" data-i18n="clearAll">Clear all</button>
+                <button id="historyClear" class="btn btn-sm btn-link text-danger p-0 d-none" data-i18n="clearAll" title="Delete all search history">Clear all</button>
               </div>
               <input type="text" id="historySearch" class="form-control form-control-sm mb-2" data-i18n-ph="historySearchPh" placeholder="Search past questions..." />
               <div id="historyList" class="d-flex flex-column gap-2"></div>
@@ -361,9 +387,9 @@
             <div id="resultsMeta" class="mt-1 small text-muted"></div>
           </div>
           <div class="d-flex gap-2">
-            <button id="printBtnR" class="btn btn-sm btn-outline-secondary" title="Print"><i class="bi bi-printer me-1"></i><span class="d-none d-md-inline">Print</span></button>
-            <button id="downloadBtnR" class="btn btn-sm btn-outline-success" title="Download"><i class="bi bi-download me-1"></i><span class="d-none d-md-inline">Save</span></button>
-            <button id="shareBtnR" class="btn btn-sm btn-outline-secondary" title="Share"><i class="bi bi-share me-1"></i><span class="d-none d-md-inline">Share</span></button>
+            <button id="printBtnR" class="btn btn-sm btn-outline-secondary" title="Print these results to PDF"><i class="bi bi-printer me-1"></i><span class="d-none d-md-inline">Print</span></button>
+            <button id="downloadBtnR" class="btn btn-sm btn-outline-success" title="Download results as PDF file"><i class="bi bi-download me-1"></i><span class="d-none d-md-inline">Save</span></button>
+            <button id="shareBtnR" class="btn btn-sm btn-outline-secondary" title="Share results via email or link"><i class="bi bi-share me-1"></i><span class="d-none d-md-inline">Share</span></button>
           </div>
         </div>
       </div>

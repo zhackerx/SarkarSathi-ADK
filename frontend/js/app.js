@@ -49,7 +49,7 @@ function updateNavbar() {
   if (userInfo) userInfo.classList.toggle("d-none", !loggedIn);
   if (loggedIn && auth) {
     const mt = el("navMobileText");
-    if (mt) mt.textContent = "+91 " + auth.mobile;
+    if (mt) mt.textContent = auth.name || "+91 " + auth.mobile;
   }
 }
 
@@ -94,7 +94,29 @@ function handleVerifyOTP() {
     return;
   }
   if (otpErr) otpErr.classList.add("d-none");
-  setAuth({ mobile: pendingMobile, loggedIn: true, loginTime: Date.now() });
+  setAuth({ mobile: pendingMobile, loggedIn: false, loginTime: Date.now() });
+  showPage("page-name-setup");
+  setTimeout(() => {
+    const nameInp = el("nameInput");
+    if (nameInp) nameInp.focus();
+  }, 100);
+}
+
+function handleContinueName() {
+  const nameInp = el("nameInput");
+  const nameErr = el("nameError");
+  if (!nameInp) return;
+  const name = nameInp.value.trim();
+  if (!name) {
+    if (nameErr) { nameErr.textContent = "Please enter your name."; nameErr.classList.remove("d-none"); }
+    return;
+  }
+  if (nameErr) nameErr.classList.add("d-none");
+  const auth = getAuth();
+  if (!auth) return;
+  auth.name = name;
+  auth.loggedIn = true;
+  setAuth(auth);
   updateNavbar();
   showPage("page-main");
   updateWelcome();
@@ -128,7 +150,7 @@ function initOtpInputs() {
 function updateWelcome() {
   const auth = getAuth();
   const wn = el("welcomeName");
-  if (wn && auth) wn.textContent = "+91 " + auth.mobile;
+  if (wn && auth) wn.textContent = auth.name || "+91 " + auth.mobile;
 }
 
 // ============================================================
@@ -311,6 +333,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   initOtpInputs();
+
+  // Name setup handler
+  const continueNameBtn = el("continueNameBtn");
+  if (continueNameBtn) continueNameBtn.addEventListener("click", handleContinueName);
 
   // Profile form
   el("profileForm").addEventListener("submit", (e) => {
@@ -745,13 +771,13 @@ function schemeCard(s) {
       </details>
       <div class="mb-2">${docs}</div>
       <div class="d-flex gap-2 mt-auto">
-        <a href="${escapeHtml(s.apply_url)}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary flex-grow-1">
+        <a href="${escapeHtml(s.apply_url)}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary flex-grow-1" title="Go to official scheme website to apply">
           <i class="bi bi-box-arrow-up-right me-1"></i>Apply
         </a>
-        <button class="btn btn-sm btn-outline-secondary bm-btn" data-scheme-id="${escapeHtml(s.id)}" onclick="handleBookmarkClick(this)" title="${bmLabel}">
+        <button class="btn btn-sm btn-outline-secondary bm-btn" data-scheme-id="${escapeHtml(s.id)}" onclick="handleBookmarkClick(this)" title="${bmLabel} this scheme for later reference">
           <i class="bi ${bmIcon}"></i>
         </button>
-        <button class="btn btn-sm btn-outline-secondary" onclick="openDoc('${escapeHtml(s.id)}')">
+        <button class="btn btn-sm btn-outline-secondary" onclick="openDoc('${escapeHtml(s.id)}')" title="View required documents and checklist">
           <i class="bi bi-folder-check"></i>
         </button>
       </div>
