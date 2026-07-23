@@ -125,6 +125,30 @@ def filter_eligible(profile: UserProfile, schemes: List[Dict]) -> List[Dict]:
     return results
 
 
+def filter_near_eligible(profile: UserProfile, schemes: List[Dict]) -> List[Dict]:
+    """Return schemes where the user fails exactly one eligibility criterion.
+
+    Only one failed condition is allowed — schemes with multiple missing
+    requirements are excluded so the guidance stays actionable.
+    """
+    results: List[Dict] = []
+    for scheme in schemes:
+        eligible, reasons = evaluate_scheme(profile, scheme)
+        if eligible:
+            continue  # already fully eligible
+        fail_reasons = [r for r in reasons if r.startswith("\u2717")]
+        if len(fail_reasons) == 1:
+            pass_count = len([r for r in reasons if r.startswith("\u2713")])
+            total = pass_count + 1
+            pct = int((pass_count / total) * 100) if total > 0 else 0
+            enriched = dict(scheme)
+            enriched["reasons"] = reasons
+            enriched["match_percent"] = pct
+            enriched["missing_criterion"] = fail_reasons[0]
+            results.append(enriched)
+    return results
+
+
 def match_percent(profile: UserProfile, scheme: Dict) -> int:
     """Confidence score (65-100%) showing how strongly the profile corroborates
     an (already eligible) scheme. 100% when every restrictive criterion the

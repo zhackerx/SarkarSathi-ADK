@@ -22,7 +22,7 @@ from typing import Dict, List, Optional
 
 from config import get_settings
 from services.benefit import benefit_summary, calculate_total_benefit
-from services.eligibility_engine import filter_eligible
+from services.eligibility_engine import filter_eligible, filter_near_eligible
 from services.knowledge_base import load_schemes
 from services.profile import UserProfile, heuristic_profile
 from services.rag import rank_schemes
@@ -76,9 +76,18 @@ class AgentEngine:
         total = calculate_total_benefit(ranked)
         summary = benefit_summary(ranked, lang)
         explanation = self._explain(profile, ranked, query, lang)  # Explainability + Multilingual
+
+        # Near-eligible: schemes where exactly one criterion is not met (excluding already eligible).
+        eligible_ids = {s["id"] for s in eligible}
+        near_raw = filter_near_eligible(profile, all_schemes)
+        near_eligible = [s for s in near_raw if s["id"] not in eligible_ids]
+        # Sort near-eligible by match percent descending.
+        near_eligible.sort(key=lambda s: s.get("match_percent", 0), reverse=True)
+
         return {
             "profile": profile.as_dict(),
             "schemes": [self._scheme_view(s) for s in ranked],
+            "near_eligible_schemes": [self._near_scheme_view(s) for s in near_eligible],
             "total_benefit_inr": total,
             "benefit_summary": summary,
             "explanation": explanation,
@@ -145,6 +154,7 @@ class AgentEngine:
                 "reply": self._overview_reply(rec["schemes"], lang),
                 "profile": profile.as_dict(),
                 "schemes": rec["schemes"],
+                "near_eligible_schemes": rec.get("near_eligible_schemes", []),
                 "total_benefit_inr": 0,
                 "used_adk": False,
                 "mode": rec["mode"],
@@ -156,6 +166,7 @@ class AgentEngine:
                 "reply": rec["explanation"],
                 "profile": profile.as_dict(),
                 "schemes": rec["schemes"],
+                "near_eligible_schemes": rec.get("near_eligible_schemes", []),
                 "total_benefit_inr": rec["total_benefit_inr"],
                 "used_adk": False,
                 "mode": rec["mode"],
@@ -167,6 +178,7 @@ class AgentEngine:
                 "reply": reply or rec["explanation"],
                 "profile": profile.as_dict(),
                 "schemes": rec["schemes"],
+                "near_eligible_schemes": rec.get("near_eligible_schemes", []),
                 "total_benefit_inr": rec["total_benefit_inr"],
                 "used_adk": True,
                 "mode": "adk",
@@ -177,6 +189,7 @@ class AgentEngine:
                 "reply": rec["explanation"],
                 "profile": profile.as_dict(),
                 "schemes": rec["schemes"],
+                "near_eligible_schemes": rec.get("near_eligible_schemes", []),
                 "total_benefit_inr": rec["total_benefit_inr"],
                 "used_adk": False,
                 "mode": rec["mode"],
@@ -459,6 +472,12 @@ class AgentEngine:
             "match_percent": s.get("match_percent", 100),
             "score": s.get("score", 0.0),
         }
+
+    @staticmethod
+    def _near_scheme_view(s: Dict) -> Dict:
+        view = AgentEngine._scheme_view(s)
+        view["missing_criterion"] = s.get("missing_criterion", "")
+        return view
 
 
 _engine: Optional[AgentEngine] = None
