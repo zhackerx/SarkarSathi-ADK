@@ -4,6 +4,13 @@ const API = ""; // same origin (Flask serves this page)
 const el = (id) => document.getElementById(id);
 const lang = () => (el("langSelect") ? el("langSelect").value : "en");
 
+function bindEvent(id, eventName, handler) {
+  const node = el(id);
+  if (!node) return false;
+  node.addEventListener(eventName, handler);
+  return true;
+}
+
 // ============================================================
 // AUTH MODULE
 // ============================================================
@@ -258,6 +265,15 @@ const GUIDE = {
 const I18N = {
   en: { langLabel: "Language", askTitle: "Ask in your own words", askBtn: "Ask the Agents", askPlaceholder: "e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech", holdSpeak: "Hold & Speak", listening: "Listening… release to stop", guideBtn: "How to use — Listen & learn", citizenProfile: "Citizen Profile", trySample: "Try sample", age: "Age", income: "Annual income (₹)", state: "State", gender: "Gender", education: "Education", occupation: "Occupation", category: "Social category", land: "Owns land", disability: "Disability", maternity: "Pregnant / new mother", findSchemes: "Find my schemes", pipelineTitle: "ADK Agent Pipeline", aiTitle: "AI Decision Intelligence", placeholder: "Fill the profile or ask a question to discover the government schemes you qualify for.", working: "Agents are working on your request…", docTitle: "Document Readiness", docHelp: "Type the documents you already have (comma separated), e.g. Aadhaar, Income Certificate.", docCheck: "Check readiness", recommendedBecause: "Recommended because:", eligibilityMatch: "Eligibility Match", applicationSteps: "Application steps", printPdf: "Print / Save PDF", download: "Download", share: "Share", historyTitle: "Past questions", historySearchPh: "Search past questions…", historyEmpty: "Your recent questions will appear here.", ocrScanning: "Scanning documents…", reportTitle: "Citizen Summary — SarkarSathi", rpProfile: "Your profile", rpSchemes: "Eligible schemes", rpDocs: "Documents required", rpNextSteps: "Next steps", rpLinks: "Application links", stage1: "Analyzing your query…", stage2: "Searching eligible schemes…", stage3: "Checking documents…", stage4: "Preparing your response…", clearAll: "Clear all", deleteItem: "Delete", viewSchemes: "View Schemes" },
   hi: { langLabel: "भाषा", askTitle: "अपने शब्दों में पूछें", askBtn: "एजेंट्स से पूछें", askPlaceholder: "उदा. मैं बिहार से 65 वर्ष का सेवानिवृत्त व्यक्ति हूँ", holdSpeak: "दबाकर बोलें", listening: "सुन रहा हूँ… छोड़ें", guideBtn: "उपयोग कैसे करें — सुनें और सीखें", citizenProfile: "नागरिक प्रोफ़ाइल", trySample: "नमूना आज़माएँ", age: "आयु", income: "वार्षिक आय (₹)", state: "राज्य", gender: "लिंग", education: "शिक्षा", occupation: "व्यवसाय", category: "सामाजिक वर्ग", land: "भूमि है", disability: "दिव्यांगता", maternity: "गर्भवती / नई माँ", findSchemes: "मेरी योजनाएँ खोजें", pipelineTitle: "ADK एजेंट पाइपलाइन", aiTitle: "एआई निर्णय बुद्धिमत्ता", placeholder: "योजनाएँ जानने के लिए प्रोफ़ाइल भरें।", working: "एजेंट्स काम कर रहे हैं…", docTitle: "दस्तावेज़ तैयारी", docHelp: "आपके पास मौजूद दस्तावेज़ लिखें।", docCheck: "तैयारी जाँचें", recommendedBecause: "अनुशंसित क्योंकि:", eligibilityMatch: "पात्रता मिलान", applicationSteps: "आवेदन के चरण", printPdf: "प्रिंट / PDF", download: "डाउनलोड", share: "साझा करें", historyTitle: "पिछले प्रश्न", historySearchPh: "खोजें…", historyEmpty: "हाल के प्रश्न यहाँ दिखेंगे।", ocrScanning: "स्कैन हो रहा है…", reportTitle: "नागरिक सारांश — सरकारसाथी", rpProfile: "आपकी प्रोफ़ाइल", rpSchemes: "पात्र योजनाएँ", rpDocs: "आवश्यक दस्तावेज़", rpNextSteps: "अगले कदम", rpLinks: "लिंक", stage1: "प्रश्न समझ रहे हैं…", stage2: "योजनाएँ खोज रहे हैं…", stage3: "दस्तावेज़ जाँच रहे हैं…", stage4: "उत्तर तैयार कर रहे हैं…", clearAll: "सभी हटाएँ", deleteItem: "हटाएँ", viewSchemes: "योजनाएँ देखें" },
+  bn: { langLabel: "ভাষা", askTitle: "নিজের ভাষায় জিজ্ঞাসা করুন", askBtn: "এজেন্টদের জিজ্ঞাসা করুন", askPlaceholder: "যেমন: আমি বিহারের ৬৫ বছর বয়সী অবসরপ্রাপ্ত ব্যক্তি", holdSpeak: "চেপে ধরে বলুন", listening: "শুনছি… ছাড়লে থামবে", guideBtn: "কীভাবে ব্যবহার করবেন — শুনুন ও শিখুন", citizenProfile: "নাগরিক প্রোফাইল", trySample: "নমুনা চেষ্টা করুন", age: "বয়স", income: "বার্ষিক আয় (₹)", state: "রাজ্য", gender: "লিঙ্গ", education: "শিক্ষা", occupation: "পেশা", category: "সামাজিক শ্রেণি", land: "জমির মালিক", disability: "প্রতিবন্ধিতা", maternity: "গর্ভবতী / নতুন মা", findSchemes: "আমার স্কিম খুঁজুন", pipelineTitle: "ADK এজেন্ট পাইপলাইন", aiTitle: "এআই সিদ্ধান্ত বিশ্লেষণ", placeholder: "প্রোফাইল পূরণ করুন বা প্রশ্ন করুন, আপনার উপযুক্ত সরকারি স্কিম জানতে।", working: "এজেন্টরা আপনার অনুরোধে কাজ করছে…", docTitle: "নথির প্রস্তুতি", docHelp: "আপনার কাছে থাকা নথির নাম লিখুন।", docCheck: "প্রস্তুতি পরীক্ষা", recommendedBecause: "প্রস্তাবিত কারণ:", eligibilityMatch: "যোগ্যতার মিল", applicationSteps: "আবেদনের ধাপ", printPdf: "প্রিন্ট / PDF", download: "ডাউনলোড", share: "শেয়ার", historyTitle: "আগের প্রশ্ন", historySearchPh: "আগের প্রশ্ন খুঁজুন…", historyEmpty: "আপনার সাম্প্রতিক প্রশ্নগুলি এখানে দেখা যাবে।", ocrScanning: "নথি স্ক্যান হচ্ছে…", reportTitle: "নাগরিক সারাংশ — সরকারসাথী", rpProfile: "আপনার প্রোফাইল", rpSchemes: "যোগ্য স্কিম", rpDocs: "প্রয়োজনীয় নথি", rpNextSteps: "পরবর্তী ধাপ", rpLinks: "আবেদনের লিঙ্ক", stage1: "আপনার প্রশ্ন বিশ্লেষণ করা হচ্ছে…", stage2: "যোগ্য স্কিম খোঁজা হচ্ছে…", stage3: "নথি যাচাই করা হচ্ছে…", stage4: "আপনার উত্তর প্রস্তুত করা হচ্ছে…", clearAll: "সব মুছুন", deleteItem: "মুছুন", viewSchemes: "স্কিম দেখুন" },
+  ta: { langLabel: "மொழி", askTitle: "உங்கள் சொற்களில் கேளுங்கள்", askBtn: "ஏஜென்ட்களிடம் கேளுங்கள்", askPlaceholder: "உதா: நான் பீகாரைச் சேர்ந்த 65 வயது ஓய்வுபெற்றவர்", holdSpeak: "அழுத்தி பேசுங்கள்", listening: "கேட்கிறேன்… விடுங்கள் நிற்கும்", guideBtn: "எப்படி பயன்படுத்துவது — கேட்டு கற்றுக்கொள்ளுங்கள்", citizenProfile: "குடிமகன் சுயவிவரம்", trySample: "மாதிரி முயற்சி", age: "வயது", income: "வருடாந்திர வருமானம் (₹)", state: "மாநிலம்", gender: "பாலினம்", education: "கல்வி", occupation: "தொழில்", category: "சமூக வகை", land: "நிலம் உள்ளது", disability: "ஊனமுற்ற நிலை", maternity: "கர்ப்பிணி / புதிய தாய்", findSchemes: "எனக்கான திட்டங்களை காண்க", pipelineTitle: "ADK ஏஜென்ட் தொடர்", aiTitle: "ஏஐ முடிவு பகுப்பாய்வு", placeholder: "உங்கள் சுயவிவரத்தை நிரப்பவும் அல்லது கேள்வி கேட்கவும்.", working: "ஏஜென்ட்கள் உங்கள் கோரிக்கையில் பணிபுரிகின்றனர்…", docTitle: "ஆவண தயார் நிலை", docHelp: "உங்களிடம் உள்ள ஆவணங்களை எழுதுங்கள்.", docCheck: "தயார்நிலை சரிபார்", recommendedBecause: "பரிந்துரைக்கப்பட்ட காரணம்:", eligibilityMatch: "தகுதி பொருத்தம்", applicationSteps: "விண்ணப்ப படிகள்", printPdf: "அச்சிடு / PDF", download: "பதிவிறக்கு", share: "பகிர்", historyTitle: "முந்தைய கேள்விகள்", historySearchPh: "முந்தைய கேள்விகளை தேடுங்கள்…", historyEmpty: "உங்கள் சமீபத்திய கேள்விகள் இங்கே தோன்றும்.", ocrScanning: "ஆவணங்கள் ஸ்கேன் செய்யப்படுகிறது…", reportTitle: "குடிமகன் சுருக்கம் — சர்க்கார்சாத்தி", rpProfile: "உங்கள் சுயவிவரம்", rpSchemes: "தகுதியான திட்டங்கள்", rpDocs: "தேவையான ஆவணங்கள்", rpNextSteps: "அடுத்த படிகள்", rpLinks: "விண்ணப்ப இணைப்புகள்", stage1: "உங்கள் கேள்வி பகுப்பாய்வு செய்யப்படுகிறது…", stage2: "தகுதியான திட்டங்கள் தேடப்படுகிறது…", stage3: "ஆவணங்கள் சரிபார்க்கப்படுகிறது…", stage4: "உங்கள் பதில் தயாராகிறது…", clearAll: "அனைத்தையும் அழி", deleteItem: "அழி", viewSchemes: "திட்டங்களைப் பாருங்கள்" },
+  te: { langLabel: "భాష", askTitle: "మీ మాటల్లో అడగండి", askBtn: "ఏజెంట్లను అడగండి", askPlaceholder: "ఉదా: నేను బీహార్‌కు చెందిన 65 ఏళ్ల విరమణ పొందిన వ్యక్తిని", holdSpeak: "నొక్కి మాట్లాడండి", listening: "వింటున్నాను… వదిలితే ఆగుతుంది", guideBtn: "ఎలా ఉపయోగించాలి — వినండి & నేర్చుకోండి", citizenProfile: "పౌర ప్రొఫైల్", trySample: "నమూనా ప్రయత్నించండి", age: "వయస్సు", income: "వార్షిక ఆదాయం (₹)", state: "రాష్ట్రం", gender: "లింగం", education: "విద్య", occupation: "వృత్తి", category: "సామాజిక వర్గం", land: "భూమి యజమాని", disability: "వికలాంగత", maternity: "గర్భిణి / కొత్త తల్లి", findSchemes: "నా పథకాలు కనుగొనండి", pipelineTitle: "ADK ఏజెంట్ పైప్‌లైన్", aiTitle: "ఏఐ నిర్ణయ విశ్లేషణ", placeholder: "ప్రొఫైల్ నింపండి లేదా ప్రశ్న అడిగి మీకు సరిపోయే పథకాలు తెలుసుకోండి.", working: "ఏజెంట్లు మీ అభ్యర్థనపై పని చేస్తున్నారు…", docTitle: "పత్రాల సిద్ధత", docHelp: "మీ దగ్గర ఉన్న పత్రాలను టైప్ చేయండి.", docCheck: "సిద్ధత తనిఖీ", recommendedBecause: "సిఫార్సు చేసిన కారణం:", eligibilityMatch: "అర్హత సరిపోలిక", applicationSteps: "దరఖాస్తు దశలు", printPdf: "ప్రింట్ / PDF", download: "డౌన్‌లోడ్", share: "పంచుకోండి", historyTitle: "గత ప్రశ్నలు", historySearchPh: "గత ప్రశ్నలను వెతకండి…", historyEmpty: "మీ తాజా ప్రశ్నలు ఇక్కడ కనిపిస్తాయి.", ocrScanning: "పత్రాలు స్కాన్ అవుతున్నాయి…", reportTitle: "పౌర సారాంశం — సర్కార్‌సాథీ", rpProfile: "మీ ప్రొఫైల్", rpSchemes: "అర్హత కలిగిన పథకాలు", rpDocs: "అవసరమైన పత్రాలు", rpNextSteps: "తదుపరి దశలు", rpLinks: "దరఖాస్తు లింకులు", stage1: "మీ ప్రశ్నను విశ్లేషిస్తున్నాం…", stage2: "అర్హత కలిగిన పథకాలను వెతుకుతున్నాం…", stage3: "పత్రాలను తనిఖీ చేస్తున్నాం…", stage4: "మీ సమాధానాన్ని సిద్ధం చేస్తున్నాం…", clearAll: "అన్నీ తొలగించు", deleteItem: "తొలగించు", viewSchemes: "పథకాలను చూడండి" },
+  mr: { langLabel: "भाषा", askTitle: "तुमच्या शब्दांत विचारा", askBtn: "एजंटना विचारा", askPlaceholder: "उदा. मी बिहारमधील ६५ वर्षांचा निवृत्त व्यक्ती आहे", holdSpeak: "दाबून बोला", listening: "ऐकत आहे… सोडा थांबेल", guideBtn: "कसे वापरावे — ऐका आणि शिका", citizenProfile: "नागरिक प्रोफाइल", trySample: "नमुना वापरा", age: "वय", income: "वार्षिक उत्पन्न (₹)", state: "राज्य", gender: "लिंग", education: "शिक्षण", occupation: "व्यवसाय", category: "सामाजिक वर्ग", land: "जमीन आहे", disability: "अपंगत्व", maternity: "गर्भवती / नवीन आई", findSchemes: "माझ्या योजना शोधा", pipelineTitle: "ADK एजंट पाइपलाइन", aiTitle: "एआय निर्णय विश्लेषण", placeholder: "प्रोफाइल भरा किंवा प्रश्न विचारा आणि पात्र योजना शोधा.", working: "एजंट्स तुमच्या विनंतीवर काम करत आहेत…", docTitle: "दस्तऐवज तयारी", docHelp: "तुमच्याकडे असलेले दस्तऐवज लिहा.", docCheck: "तयारी तपासा", recommendedBecause: "शिफारस कारण:", eligibilityMatch: "पात्रता जुळणी", applicationSteps: "अर्ज चरण", printPdf: "प्रिंट / PDF", download: "डाउनलोड", share: "शेअर", historyTitle: "मागील प्रश्न", historySearchPh: "मागील प्रश्न शोधा…", historyEmpty: "तुमचे अलीकडील प्रश्न येथे दिसतील.", ocrScanning: "दस्तऐवज स्कॅन होत आहेत…", reportTitle: "नागरिक सारांश — सरकारसाथी", rpProfile: "तुमचे प्रोफाइल", rpSchemes: "पात्र योजना", rpDocs: "आवश्यक दस्तऐवज", rpNextSteps: "पुढील पावले", rpLinks: "अर्ज दुवे", stage1: "तुमचा प्रश्न विश्लेषित करत आहोत…", stage2: "पात्र योजना शोधत आहोत…", stage3: "दस्तऐवज तपासत आहोत…", stage4: "तुमचे उत्तर तयार करत आहोत…", clearAll: "सर्व हटवा", deleteItem: "हटवा", viewSchemes: "योजना पहा" },
+  kn: { langLabel: "ಭಾಷೆ", askTitle: "ನಿಮ್ಮ ಮಾತಿನಲ್ಲಿ ಕೇಳಿ", askBtn: "ಏಜೆಂಟ್‌ಗಳನ್ನು ಕೇಳಿ", askPlaceholder: "ಉದಾ: ನಾನು ಬಿಹಾರದ 65 ವರ್ಷದ ನಿವೃತ್ತ ವ್ಯಕ್ತಿ", holdSpeak: "ಒತ್ತಿ ಮಾತನಾಡಿ", listening: "ಕೇಳುತ್ತೇನೆ… ಬಿಡಿದರೆ ನಿಲ್ಲುತ್ತದೆ", guideBtn: "ಹೇಗೆ ಬಳಸುವುದು — ಕೇಳಿ ಮತ್ತು ಕಲಿಯಿರಿ", citizenProfile: "ನಾಗರಿಕ ಪ್ರೊಫೈಲ್", trySample: "ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ", age: "ವಯಸ್ಸು", income: "ವಾರ್ಷಿಕ ಆದಾಯ (₹)", state: "ರಾಜ್ಯ", gender: "ಲಿಂಗ", education: "ಶಿಕ್ಷಣ", occupation: "ಉದ್ಯೋಗ", category: "ಸಾಮಾಜಿಕ ವರ್ಗ", land: "ಭೂಮಿ ಇದೆ", disability: "ಅಂಗವೈಕಲ್ಯ", maternity: "ಗರ್ಭಿಣಿ / ಹೊಸ ತಾಯಿ", findSchemes: "ನನ್ನ ಯೋಜನೆಗಳನ್ನು ಹುಡುಕಿ", pipelineTitle: "ADK ಏಜೆಂಟ್ ಪೈಪ್‌ಲೈನ್", aiTitle: "ಎಐ ನಿರ್ಧಾರ ವಿಶ್ಲೇಷಣೆ", placeholder: "ಪ್ರೊಫೈಲ್ ಭರ್ತಿ ಮಾಡಿ ಅಥವಾ ಪ್ರಶ್ನೆ ಕೇಳಿ, ನಿಮಗೆ ತಕ್ಕ ಯೋಜನೆಗಳನ್ನು ಕಂಡುಹಿಡಿಯಿರಿ.", working: "ಏಜೆಂಟ್‌ಗಳು ನಿಮ್ಮ ವಿನಂತಿಯ ಮೇಲೆ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದಾರೆ…", docTitle: "ದಾಖಲೆ ಸಿದ್ಧತೆ", docHelp: "ನಿಮ್ಮ ಬಳಿ ಇರುವ ದಾಖಲೆಗಳನ್ನು ಬರೆಯಿರಿ.", docCheck: "ಸಿದ್ಧತೆ ಪರಿಶೀಲನೆ", recommendedBecause: "ಶಿಫಾರಸು ಮಾಡಿದ ಕಾರಣ:", eligibilityMatch: "ಅರ್ಹತಾ ಹೊಂದಾಣಿಕೆ", applicationSteps: "ಅರ್ಜಿಯ ಹಂತಗಳು", printPdf: "ಮುದ್ರಿಸಿ / PDF", download: "ಡೌನ್‌ಲೋಡ್", share: "ಹಂಚಿಕೆ", historyTitle: "ಹಿಂದಿನ ಪ್ರಶ್ನೆಗಳು", historySearchPh: "ಹಿಂದಿನ ಪ್ರಶ್ನೆಗಳನ್ನು ಹುಡುಕಿ…", historyEmpty: "ನಿಮ್ಮ ಇತ್ತೀಚಿನ ಪ್ರಶ್ನೆಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.", ocrScanning: "ದಾಖಲೆಗಳನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ…", reportTitle: "ನಾಗರಿಕ ಸಾರಾಂಶ — ಸರ್ಕಾರ್‌ಸಾಥಿ", rpProfile: "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್", rpSchemes: "ಅರ್ಹ ಯೋಜನೆಗಳು", rpDocs: "ಅಗತ್ಯ ದಾಖಲೆಗಳು", rpNextSteps: "ಮುಂದಿನ ಹಂತಗಳು", rpLinks: "ಅರ್ಜಿಯ ಕೊಂಡಿಗಳು", stage1: "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ…", stage2: "ಅರ್ಹ ಯೋಜನೆಗಳನ್ನು ಹುಡುಕಲಾಗುತ್ತಿದೆ…", stage3: "ದಾಖಲೆಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ…", stage4: "ನಿಮ್ಮ ಉತ್ತರವನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ…", clearAll: "ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಿ", deleteItem: "ಅಳಿಸಿ", viewSchemes: "ಯೋಜನೆಗಳನ್ನು ನೋಡಿ" },
+  gu: { langLabel: "ભાષા", askTitle: "તમારા શબ્દોમાં પૂછો", askBtn: "એજન્ટ્સને પૂછો", askPlaceholder: "દા.ત. હું બિહારનો 65 વર્ષનો નિવૃત્ત છું", holdSpeak: "દબાવીને બોલો", listening: "સાંભળી રહ્યો છું… છોડો તો બંધ", guideBtn: "કેવી રીતે ઉપયોગ કરવો — સાંભળો અને શીખો", citizenProfile: "નાગરિક પ્રોફાઇલ", trySample: "નમૂનો અજમાવો", age: "ઉંમર", income: "વાર્ષિક આવક (₹)", state: "રાજ્ય", gender: "લિંગ", education: "શિક્ષણ", occupation: "વ્યવસાય", category: "સામાજિક વર્ગ", land: "જમીન છે", disability: "અક્ષમતા", maternity: "ગર્ભવતી / નવી માતા", findSchemes: "મારી યોજનાઓ શોધો", pipelineTitle: "ADK એજન્ટ પાઇપલાઇન", aiTitle: "એઆઇ નિર્ણય વિશ્લેષણ", placeholder: "પ્રોફાઇલ ભરો અથવા પ્રશ્ન પૂછો અને યોગ્ય યોજનાઓ શોધો.", working: "એજન્ટ્સ તમારી વિનંતિ પર કામ કરી રહ્યા છે…", docTitle: "દસ્તાવેજ તૈયારી", docHelp: "તમારા પાસેના દસ્તાવેજો લખો.", docCheck: "તૈયારી તપાસો", recommendedBecause: "ભલામણનું કારણ:", eligibilityMatch: "પાત્રતા મેળ", applicationSteps: "અરજીના પગલાં", printPdf: "પ્રિન્ટ / PDF", download: "ડાઉનલોડ", share: "શેર", historyTitle: "ભૂતકાળના પ્રશ્નો", historySearchPh: "ભૂતકાળના પ્રશ્નો શોધો…", historyEmpty: "તમારા તાજેતરના પ્રશ્નો અહીં દેખાશે.", ocrScanning: "દસ્તાવેજો સ્કેન થઈ રહ્યા છે…", reportTitle: "નાગરિક સારાંશ — સરકારસાથી", rpProfile: "તમારી પ્રોફાઇલ", rpSchemes: "પાત્ર યોજનાઓ", rpDocs: "જરૂરી દસ્તાવેજો", rpNextSteps: "આગલા પગલાં", rpLinks: "અરજી લિંક્સ", stage1: "તમારો પ્રશ્ન વિશ્લેષણ થઈ રહ્યો છે…", stage2: "પાત્ર યોજનાઓ શોધાઈ રહી છે…", stage3: "દસ્તાવેજો ચકાસાઈ રહ્યા છે…", stage4: "તમારો જવાબ તૈયાર થઈ રહ્યો છે…", clearAll: "બધું સાફ કરો", deleteItem: "કાઢી નાખો", viewSchemes: "યોજનાઓ જુઓ" },
+  pa: { langLabel: "ਭਾਸ਼ਾ", askTitle: "ਆਪਣੇ ਸ਼ਬਦਾਂ ਵਿੱਚ ਪੁੱਛੋ", askBtn: "ਏਜੰਟਾਂ ਨੂੰ ਪੁੱਛੋ", askPlaceholder: "ਉਦਾਹਰਨ: ਮੈਂ ਬਿਹਾਰ ਦਾ 65 ਸਾਲਾਂ ਦਾ ਰਿਟਾਇਰਡ ਵਿਅਕਤੀ ਹਾਂ", holdSpeak: "ਦਬਾ ਕੇ ਬੋਲੋ", listening: "ਸੁਣ ਰਿਹਾ ਹਾਂ… ਛੱਡੋ ਤਾਂ ਰੁਕੇਗਾ", guideBtn: "ਕਿਵੇਂ ਵਰਤਣਾ — ਸੁਣੋ ਅਤੇ ਸਿੱਖੋ", citizenProfile: "ਨਾਗਰਿਕ ਪ੍ਰੋਫਾਈਲ", trySample: "ਨਮੂਨਾ ਅਜ਼ਮਾਓ", age: "ਉਮਰ", income: "ਸਾਲਾਨਾ ਆਮਦਨ (₹)", state: "ਰਾਜ", gender: "ਲਿੰਗ", education: "ਸਿੱਖਿਆ", occupation: "ਪੇਸ਼ਾ", category: "ਸਮਾਜਿਕ ਵਰਗ", land: "ਜ਼ਮੀਨ ਹੈ", disability: "ਅਪੰਗਤਾ", maternity: "ਗਰਭਵਤੀ / ਨਵੀਂ ਮਾਂ", findSchemes: "ਮੇਰੀਆਂ ਯੋਜਨਾਵਾਂ ਲੱਭੋ", pipelineTitle: "ADK ਏਜੰਟ ਪਾਈਪਲਾਈਨ", aiTitle: "ਏਆਈ ਫੈਸਲਾ ਵਿਸ਼ਲੇਸ਼ਣ", placeholder: "ਪ੍ਰੋਫਾਈਲ ਭਰੋ ਜਾਂ ਸਵਾਲ ਪੁੱਛੋ ਅਤੇ ਯੋਗ ਯੋਜਨਾਵਾਂ ਲੱਭੋ।", working: "ਏਜੰਟ ਤੁਹਾਡੀ ਬੇਨਤੀ 'ਤੇ ਕੰਮ ਕਰ ਰਹੇ ਹਨ…", docTitle: "ਦਸਤਾਵੇਜ਼ ਤਿਆਰੀ", docHelp: "ਤੁਹਾਡੇ ਕੋਲ ਮੌਜੂਦ ਦਸਤਾਵੇਜ਼ ਲਿਖੋ।", docCheck: "ਤਿਆਰੀ ਚੈੱਕ ਕਰੋ", recommendedBecause: "ਸਿਫ਼ਾਰਸ਼ ਦਾ ਕਾਰਨ:", eligibilityMatch: "ਯੋਗਤਾ ਮੇਲ", applicationSteps: "ਅਰਜ਼ੀ ਦੇ ਪੜਾਅ", printPdf: "ਪ੍ਰਿੰਟ / PDF", download: "ਡਾਊਨਲੋਡ", share: "ਸ਼ੇਅਰ", historyTitle: "ਪਿਛਲੇ ਸਵਾਲ", historySearchPh: "ਪਿਛਲੇ ਸਵਾਲ ਖੋਜੋ…", historyEmpty: "ਤੁਹਾਡੇ ਹਾਲੀਆ ਸਵਾਲ ਇੱਥੇ ਦਿਖਣਗੇ।", ocrScanning: "ਦਸਤਾਵੇਜ਼ ਸਕੈਨ ਹੋ ਰਹੇ ਹਨ…", reportTitle: "ਨਾਗਰਿਕ ਸੰਖੇਪ — ਸਰਕਾਰਸਾਥੀ", rpProfile: "ਤੁਹਾਡੀ ਪ੍ਰੋਫਾਈਲ", rpSchemes: "ਯੋਗ ਯੋਜਨਾਵਾਂ", rpDocs: "ਲੋੜੀਂਦੇ ਦਸਤਾਵੇਜ਼", rpNextSteps: "ਅਗਲੇ ਕਦਮ", rpLinks: "ਅਰਜ਼ੀ ਲਿੰਕ", stage1: "ਤੁਹਾਡੇ ਸਵਾਲ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਹੋ ਰਿਹਾ ਹੈ…", stage2: "ਯੋਗ ਯੋਜਨਾਵਾਂ ਲੱਭੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ…", stage3: "ਦਸਤਾਵੇਜ਼ ਜਾਂਚੇ ਜਾ ਰਹੇ ਹਨ…", stage4: "ਤੁਹਾਡਾ ਜਵਾਬ ਤਿਆਰ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ…", clearAll: "ਸਭ ਸਾਫ ਕਰੋ", deleteItem: "ਮਿਟਾਓ", viewSchemes: "ਯੋਜਨਾਵਾਂ ਵੇਖੋ" },
+  ml: { langLabel: "ഭാഷ", askTitle: "നിങ്ങളുടെ വാക്കുകളിൽ ചോദിക്കുക", askBtn: "ഏജന്റുകളോട് ചോദിക്കുക", askPlaceholder: "ഉദാ: ഞാൻ ബീഹാറിലെ 65 വയസ്സുള്ള വിരമിച്ച വ്യക്തിയാണ്", holdSpeak: "അമർത്തി സംസാരിക്കുക", listening: "കേൾക്കുന്നു… വിട്ടാൽ നിർത്തും", guideBtn: "എങ്ങനെ ഉപയോഗിക്കാം — കേൾക്കൂ, പഠിക്കൂ", citizenProfile: "പൗരൻ പ്രൊഫൈൽ", trySample: "സാമ്പിൾ പരീക്ഷിക്കുക", age: "പ്രായം", income: "വാർഷിക വരുമാനം (₹)", state: "സംസ്ഥാനം", gender: "ലിംഗം", education: "വിദ്യാഭ്യാസം", occupation: "തൊഴിൽ", category: "സാമൂഹിക വിഭാഗം", land: "ഭൂമി സ്വന്തമുണ്ട്", disability: "വൈകല്യം", maternity: "ഗർഭിണി / പുതിയ അമ്മ", findSchemes: "എന്റെ പദ്ധതികൾ കണ്ടെത്തുക", pipelineTitle: "ADK ഏജന്റ് പൈപ്പ്‌ലൈൻ", aiTitle: "എഐ തീരുമാന വിശകലനം", placeholder: "പ്രൊഫൈൽ പൂരിപ്പിക്കുകയോ ചോദ്യം ചോദിക്കുകയോ ചെയ്ത് അനുയോജ്യമായ പദ്ധതികൾ കണ്ടെത്തുക.", working: "ഏജന്റുകൾ നിങ്ങളുടെ അഭ്യർത്ഥനയിൽ പ്രവർത്തിക്കുന്നു…", docTitle: "രേഖാസജ്ജത", docHelp: "നിങ്ങൾക്കുള്ള രേഖകൾ എഴുതുക.", docCheck: "സജ്ജത പരിശോധിക്കുക", recommendedBecause: "ശുപാർശ ചെയ്ത കാരണം:", eligibilityMatch: "അർഹത പൊരുത്തം", applicationSteps: "അപേക്ഷാ ഘട്ടങ്ങൾ", printPdf: "പ്രിന്റ് / PDF", download: "ഡൗൺലോഡ്", share: "പങ്കിടുക", historyTitle: "മുൻ ചോദ്യങ്ങൾ", historySearchPh: "മുൻ ചോദ്യങ്ങൾ തിരയുക…", historyEmpty: "നിങ്ങളുടെ സമീപകാല ചോദ്യങ്ങൾ ഇവിടെ കാണിക്കും.", ocrScanning: "രേഖകൾ സ്കാൻ ചെയ്യുന്നു…", reportTitle: "പൗരൻ സംഗ്രഹം — സർക്കാർസാഥി", rpProfile: "നിങ്ങളുടെ പ്രൊഫൈൽ", rpSchemes: "അർഹമായ പദ്ധതികൾ", rpDocs: "ആവശ്യമായ രേഖകൾ", rpNextSteps: "അടുത്ത ഘട്ടങ്ങൾ", rpLinks: "അപേക്ഷ ലിങ്കുകൾ", stage1: "നിങ്ങളുടെ ചോദ്യത്തെ വിശകലനം ചെയ്യുന്നു…", stage2: "അർഹമായ പദ്ധതികൾ തിരയുന്നു…", stage3: "രേഖകൾ പരിശോധിക്കുന്നു…", stage4: "നിങ്ങളുടെ മറുപടി തയ്യാറാക്കുന്നു…", clearAll: "എല്ലാം നീക്കുക", deleteItem: "നീക്കുക", viewSchemes: "പദ്ധതികൾ കാണുക" },
+  or: { langLabel: "ଭାଷା", askTitle: "ଆପଣଙ୍କ ଶବ୍ଦରେ ପଚାରନ୍ତୁ", askBtn: "ଏଜେଣ୍ଟଙ୍କୁ ପଚାରନ୍ତୁ", askPlaceholder: "ଉଦା: ମୁଁ ବିହାରର 65 ବର୍ଷର ଅବସରପ୍ରାପ୍ତ ବ୍ୟକ୍ତି", holdSpeak: "ଦବାଇ କହନ୍ତୁ", listening: "ଶୁଣୁଛି… ଛାଡିଲେ ଥାମିବ", guideBtn: "କିପରି ବ୍ୟବହାର କରିବେ — ଶୁଣନ୍ତୁ ଏବଂ ଶିଖନ୍ତୁ", citizenProfile: "ନାଗରିକ ପ୍ରୋଫାଇଲ୍", trySample: "ନମୁନା ଚେଷ୍ଟା କରନ୍ତୁ", age: "ବୟସ", income: "ବାର୍ଷିକ ଆୟ (₹)", state: "ରାଜ୍ୟ", gender: "ଲିଙ୍ଗ", education: "ଶିକ୍ଷା", occupation: "ପେଶା", category: "ସାମାଜିକ ବର୍ଗ", land: "ଜମି ଅଛି", disability: "ଅସମର୍ଥତା", maternity: "ଗର୍ଭବତୀ / ନୂତନ ମା'", findSchemes: "ମୋର ଯୋଜନା ଖୋଜନ୍ତୁ", pipelineTitle: "ADK ଏଜେଣ୍ଟ ପାଇପ୍ଲାଇନ୍", aiTitle: "ଏଆଇ ନିଷ୍ପତ୍ତି ବିଶ୍ଳେଷଣ", placeholder: "ପ୍ରୋଫାଇଲ୍ ଭରନ୍ତୁ କିମ୍ବା ପ୍ରଶ୍ନ କରନ୍ତୁ ଏବଂ ଯୋଗ୍ୟ ଯୋଜନା ଜାଣନ୍ତୁ।", working: "ଏଜେଣ୍ଟମାନେ ଆପଣଙ୍କ ଅନୁରୋଧରେ କାମ କରୁଛନ୍ତି…", docTitle: "ଦଳିଲ ପ୍ରସ୍ତୁତି", docHelp: "ଆପଣଙ୍କ ପାଖରେ ଥିବା ଦଳିଲ ଲେଖନ୍ତୁ।", docCheck: "ପ୍ରସ୍ତୁତି ଯାଞ୍ଚ", recommendedBecause: "ସୁପାରିଶ କାରଣ:", eligibilityMatch: "ଯୋଗ୍ୟତା ମେଳ", applicationSteps: "ଆବେଦନ ପଦକ୍ଷେପ", printPdf: "ପ୍ରିଣ୍ଟ / PDF", download: "ଡାଉନଲୋଡ୍", share: "ସେୟାର", historyTitle: "ପୂର୍ବ ପ୍ରଶ୍ନ", historySearchPh: "ପୂର୍ବ ପ୍ରଶ୍ନ ଖୋଜନ୍ତୁ…", historyEmpty: "ଆପଣଙ୍କ ସମ୍ପ୍ରତିକ ପ୍ରଶ୍ନଗୁଡ଼ିକ ଏଠାରେ ଦେଖାଯିବ।", ocrScanning: "ଦଳିଲ ସ୍କାନ୍ ହେଉଛି…", reportTitle: "ନାଗରିକ ସାରାଂଶ — ସରକାରସାଥୀ", rpProfile: "ଆପଣଙ୍କ ପ୍ରୋଫାଇଲ୍", rpSchemes: "ଯୋଗ୍ୟ ଯୋଜନା", rpDocs: "ଆବଶ୍ୟକ ଦଳିଲ", rpNextSteps: "ପରବର୍ତ୍ତୀ ପଦକ୍ଷେପ", rpLinks: "ଆବେଦନ ଲିଙ୍କ", stage1: "ଆପଣଙ୍କ ପ୍ରଶ୍ନ ବିଶ୍ଳେଷଣ ହେଉଛି…", stage2: "ଯୋଗ୍ୟ ଯୋଜନା ଖୋଜାଯାଉଛି…", stage3: "ଦଳିଲ ଯାଞ୍ଚ ହେଉଛି…", stage4: "ଆପଣଙ୍କ ଉତ୍ତର ପ୍ରସ୍ତୁତ ହେଉଛି…", clearAll: "ସବୁ ସଫା କରନ୍ତୁ", deleteItem: "ଡିଲିଟ୍", viewSchemes: "ଯୋଜନା ଦେଖନ୍ତୁ" },
 };
 
 function t(key) {
@@ -317,9 +333,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // OTP event listeners
-  el("sendOtpBtn").addEventListener("click", handleSendOTP);
-  el("verifyOtpBtn").addEventListener("click", handleVerifyOTP);
-  el("resendOtpLink").addEventListener("click", (e) => {
+  bindEvent("sendOtpBtn", "click", handleSendOTP);
+  bindEvent("verifyOtpBtn", "click", handleVerifyOTP);
+  bindEvent("resendOtpLink", "click", (e) => {
     e.preventDefault();
     if (pendingMobile) {
       document.querySelectorAll(".otp-digit").forEach((i) => { i.value = ""; i.classList.remove("is-invalid"); });
@@ -339,17 +355,17 @@ document.addEventListener("DOMContentLoaded", () => {
   if (continueNameBtn) continueNameBtn.addEventListener("click", handleContinueName);
 
   // Profile form
-  el("profileForm").addEventListener("submit", (e) => {
+  bindEvent("profileForm", "submit", (e) => {
     e.preventDefault();
     recommendFromForm();
   });
 
   // Ask button
-  el("askBtn").addEventListener("click", askAgents);
-  el("sampleBtn").addEventListener("click", fillSample);
-  el("docCheckBtn").addEventListener("click", runDocCheck);
-  el("docUploadBtn").addEventListener("click", handleDocUpload);
-  el("docReadyBtn").addEventListener("click", () => {
+  bindEvent("askBtn", "click", askAgents);
+  bindEvent("sampleBtn", "click", fillSample);
+  bindEvent("docCheckBtn", "click", runDocCheck);
+  bindEvent("docUploadBtn", "click", handleDocUpload);
+  bindEvent("docReadyBtn", "click", () => {
     const schemeFiles = getUploadedDocs()[currentDocScheme] || [];
     if (schemeFiles.length > 0) {
       el("docResult").innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="bi bi-check-circle-fill me-2"></i>Document readiness confirmed! You have ${schemeFiles.length} file(s) ready.</div>`;
@@ -358,21 +374,21 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Please upload at least one document first");
     }
   });
-  el("guideBtn").addEventListener("click", toggleGuide);
-  el("guideStopBtn").addEventListener("click", stopGuide);
-  el("themeToggle").addEventListener("click", toggleTheme);
+  bindEvent("guideBtn", "click", toggleGuide);
+  bindEvent("guideStopBtn", "click", stopGuide);
+  bindEvent("themeToggle", "click", toggleTheme);
 
   // Results page report buttons
-  el("printBtnR").addEventListener("click", () => { buildReport(); window.print(); });
-  el("downloadBtnR").addEventListener("click", downloadReport);
-  el("shareBtnR").addEventListener("click", shareReport);
+  bindEvent("printBtnR", "click", () => { buildReport(); window.print(); });
+  bindEvent("downloadBtnR", "click", downloadReport);
+  bindEvent("shareBtnR", "click", shareReport);
 
-  el("historySearch").addEventListener("input", renderHistory);
-  el("historyClear").addEventListener("click", clearHistory);
+  bindEvent("historySearch", "input", renderHistory);
+  bindEvent("historyClear", "click", clearHistory);
 
   initHoldToSpeak();
 
-  el("langSelect").addEventListener("change", () => {
+  bindEvent("langSelect", "change", () => {
     stopGuide();
     applyI18n();
     renderHistory();
@@ -955,6 +971,11 @@ async function runDocCheck() {
   const prog = el("docProgress");
   const bar = el("docProgressBar");
   el("docResult").innerHTML = "";
+  const uploadedNames = (getUploadedDocs()[currentDocScheme] || []).map((d) => d.name);
+  if (!uploadedNames.length) {
+    el("docResult").innerHTML = '<p class="small text-danger mb-0">Please upload at least one document first.</p>';
+    return;
+  }
   prog.classList.remove("d-none");
   bar.style.width = "0%";
   let pct = 0;
@@ -962,7 +983,7 @@ async function runDocCheck() {
   try {
     const res = await postJSON("/api/documents/check", {
       scheme_id: currentDocScheme,
-      uploaded: el("docInput").value,
+      uploaded: uploadedNames.join(", "),
       lang: lang(),
     });
     clearInterval(timer);
@@ -1320,7 +1341,30 @@ async function shareReport() {
   const lines = [t("reportTitle"), res.explanation ? res.explanation.slice(0, 200) + "…" : "", "", ...(res.schemes || []).slice(0, 5).map((s) => `• ${s.scheme_name}: ${s.benefit_text}`)];
   const text = lines.filter(Boolean).join("\n");
   try {
-    if (navigator.share) { await navigator.share({ title: t("reportTitle"), text }); }
-    else { await navigator.clipboard.writeText(text); alert("Summary copied to clipboard!"); }
-  } catch {}
+    if (navigator.share) {
+      await navigator.share({ title: t("reportTitle"), text });
+      return;
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      alert("Summary copied to clipboard!");
+      return;
+    }
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const copied = document.execCommand("copy");
+    document.body.removeChild(ta);
+    if (copied) {
+      alert("Summary copied to clipboard!");
+    } else {
+      alert("Unable to auto-copy. Please copy manually:\n\n" + text);
+    }
+  } catch {
+    alert("Unable to share right now. Please try again.");
+  }
 }
