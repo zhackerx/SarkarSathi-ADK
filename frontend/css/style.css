@@ -371,13 +371,13 @@ body {
 [data-theme="dark"] .match-bar { background: #2a3350; }
 
 /* ============ Print / PDF report ============ */
-#reportArea { position: absolute; left: -9999px; top: 0; width: 800px; }
+#reportArea { display: none; width: 800px; }
 #reportArea h1 { font-size: 1.6rem; }
 #reportArea .rp-scheme { border: 1px solid #ccc; border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; }
 @media print {
-  body * { visibility: hidden !important; }
-  #reportArea, #reportArea * { visibility: visible !important; }
-  #reportArea { position: static; left: 0; width: 100%; padding: 10px 20px; color: #000; }
+  body { margin: 0; background: #fff; }
+  body > * { display: none !important; }
+  #reportArea { display: block !important; position: static; width: 100%; padding: 10px 20px; color: #000; }
   .no-print { display: none !important; }
 }
 
