@@ -103,11 +103,12 @@ gcloud run deploy sarkarsathi-adk `
   --source backend `
   --region asia-south1 `
   --allow-unauthenticated `
-  --set-env-vars GOOGLE_API_KEY=YOUR_KEY,GEMINI_MODEL=gemini-2.5-flash
+  --set-env-vars GOOGLE_GENAI_USE_VERTEXAI=True,GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_ID,GOOGLE_CLOUD_LOCATION=global,GEMINI_MODEL=gemini-2.5-flash
 ```
 
 Add a `Dockerfile` (python:3.12-slim → `pip install -r requirements.txt` →
-`gunicorn app:app`). Store the key in **Secret Manager**.
+`gunicorn app:app`). No API key to manage — grant the Cloud Run service
+account the `roles/aiplatform.user` IAM role instead.
 
 ---
 

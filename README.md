@@ -54,9 +54,11 @@ add reasoning, ranking, guidance and localisation.
 
 ### Prerequisites
 - Python 3.10–3.12
-- (Optional) A **Gemini API key** — free at https://aistudio.google.com/apikey
-  - Without a key the app still runs in **offline demo mode** (deterministic
-    engine + template responses). With a key it runs the **real ADK agents**.
+- A Google Cloud project with the Vertex AI API enabled
+- Local auth via `gcloud auth application-default login` (no API key needed)
+  - Without a configured project the app still runs in **offline demo mode**
+    (deterministic engine + template responses). With Vertex AI configured
+    it runs the **real ADK agents**.
 
 ### Run
 
@@ -65,7 +67,7 @@ cd "SarkarSathi-ADK\backend"
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-copy .env.example .env      # then edit .env and paste your GOOGLE_API_KEY
+copy .env.example .env      # then edit .env with your GOOGLE_CLOUD_PROJECT
 python app.py
 ```
 
@@ -78,7 +80,7 @@ cd SarkarSathi-ADK/backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env        # then edit .env and paste your GOOGLE_API_KEY
+cp .env.example .env        # then edit .env with your GOOGLE_CLOUD_PROJECT
 python app.py
 ```
 
@@ -87,10 +89,12 @@ python app.py
 ```bash
 # from the project root (where the Dockerfile is)
 docker build -t sarkarsathi-adk .
-docker run -p 8080:8080 -e GOOGLE_API_KEY=your_key sarkarsathi-adk
+docker run -p 8080:8080 \
+  -e GOOGLE_GENAI_USE_VERTEXAI=True -e GOOGLE_CLOUD_PROJECT=your-project-id \
+  -v ~/.config/gcloud:/root/.config/gcloud sarkarsathi-adk
 ```
 
-Then open http://localhost:8080. Omit `-e GOOGLE_API_KEY` to run in offline demo mode.
+Then open http://localhost:8080. Omit the Vertex env vars to run in offline demo mode.
 
 ### Run the agents in the ADK dev UI (optional)
 

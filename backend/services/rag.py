@@ -23,13 +23,15 @@ def _embed(text: str):
     if text in _embedding_cache:
         return _embedding_cache[text]
     try:
-        import google.generativeai as genai
+        from google import genai
 
-        genai.configure(api_key=settings.google_api_key)
-        result = genai.embed_content(
-            model=f"models/{settings.embedding_model}", content=text
+        client = genai.Client(
+            vertexai=True,
+            project=settings.google_cloud_project,
+            location=settings.google_cloud_location,
         )
-        vec = result["embedding"]
+        result = client.models.embed_content(model=settings.embedding_model, contents=text)
+        vec = result.embeddings[0].values
         _embedding_cache[text] = vec
         return vec
     except Exception:

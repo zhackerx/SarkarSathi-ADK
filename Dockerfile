@@ -1,7 +1,9 @@
 # SarkarSathi ADK — container image (Flask + ADK, served by gunicorn).
 # Build context is the PROJECT ROOT so both backend/ and frontend/ are copied.
 #   docker build -t sarkarsathi-adk .
-#   docker run -p 8080:8080 -e GOOGLE_API_KEY=your_key sarkarsathi-adk
+#   docker run -p 8080:8080 \
+#     -e GOOGLE_GENAI_USE_VERTEXAI=True -e GOOGLE_CLOUD_PROJECT=your-project-id \
+#     -v ~/.config/gcloud:/root/.config/gcloud sarkarsathi-adk   # mounts local ADC
 FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \

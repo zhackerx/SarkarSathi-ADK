@@ -333,11 +333,14 @@ class AgentEngine:
     # Gemini helpers (Explainability + Multilingual Response)
     # ------------------------------------------------------------------ #
     def _gemini_text(self, prompt: str) -> str:
-        import google.generativeai as genai
+        from google import genai
 
-        genai.configure(api_key=self.settings.google_api_key)
-        model = genai.GenerativeModel(self.settings.gemini_model)
-        resp = model.generate_content(prompt)
+        client = genai.Client(
+            vertexai=True,
+            project=self.settings.google_cloud_project,
+            location=self.settings.google_cloud_location,
+        )
+        resp = client.models.generate_content(model=self.settings.gemini_model, contents=prompt)
         return resp.text or ""
 
     def _explain(self, profile: UserProfile, schemes: List[Dict], query: Optional[str], lang: str) -> str:
