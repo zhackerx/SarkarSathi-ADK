@@ -22,9 +22,12 @@
     </button>
     <div class="d-flex align-items-center gap-1 gap-sm-2 ms-auto">
       <!-- Nav links - hidden on mobile -->
-      <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="handleLogoClick()" title="Home"
-        aria-label="Home">
+      <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="goHome()" title="Home" aria-label="Home">
         <i class="bi bi-house-fill"></i>
+      </button>
+      <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="goToDashboard()" title="Dashboard"
+        aria-label="Dashboard">
+        <i class="bi bi-graph-up-arrow"></i>
       </button>
       <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-history')"
         title="Past Conversations" aria-label="Past Conversations">
@@ -370,6 +373,88 @@
           <button class="btn btn-link btn-sm text-muted" onclick="handleLogout()">
             <i class="bi bi-arrow-left me-1"></i>Logout
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PAGE: DASHBOARD ========== -->
+  <div id="page-dashboard" class="ss-page d-none">
+    <div class="container py-4 py-lg-5">
+      <div class="card shadow-sm dashboard-hero mb-4">
+        <div class="card-body p-4 p-lg-5">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge rounded-pill dashboard-pill">
+                  <i class="bi bi-shield-check me-1"></i>Citizen Dashboard
+                </span>
+              </div>
+              <h2 class="fw-bold mb-3">Welcome back, <span id="dashboardName">Citizen</span></h2>
+              <p class="text-muted mb-4">Track your scheme applications, upcoming deadlines, and personalized
+                opportunities in one place.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <button onclick="showPage('page-main')" class="btn btn-primary btn-lg">
+                  <i class="bi bi-search me-2"></i>Search for Schemes
+                </button>
+                <button onclick="showPage('page-results')" class="btn btn-outline-primary">
+                  <i class="bi bi-bar-chart-line me-2"></i>View Results
+                </button>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="dashboard-side-card p-3 rounded-4">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <i class="bi bi-lightning-charge-fill text-warning"></i>
+                  <span class="fw-semibold">Priority update</span>
+                </div>
+                <p class="small text-muted mb-0">Keep an eye on pending documents and nearing deadlines so your
+                  applications stay on track.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mb-4" id="dashboardStats"></div>
+
+      <div class="row g-4">
+        <div class="col-xl-7">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Saved Schemes</h5>
+                <span class="text-muted small">Bookmarked for later</span>
+              </div>
+              <div id="dashboardSaved" class="dashboard-list"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-5">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Your Schemes</h5>
+                <span class="text-muted small">Application progress</span>
+              </div>
+              <div id="dashboardApplications" class="dashboard-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm mt-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h5 class="fw-bold mb-1">Suggested for You</h5>
+              <p class="text-muted small mb-0">Recommendations aligned with your profile and recent activity.</p>
+            </div>
+            <button onclick="showPage('page-main')" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-arrow-right-circle me-2"></i>Refresh Search
+            </button>
+          </div>
+          <div id="dashboardSuggestions" class="row g-3"></div>
         </div>
       </div>
     </div>
