@@ -41,6 +41,15 @@ class AgentEngine:
     def __init__(self) -> None:
         self.settings = get_settings()
         self.adk_ready = self._probe_adk()
+        self._session_service = None  # created lazily, shared across requests
+        self._genai_client = None  # cached Vertex AI client — avoids re-auth per call
+
+    def _get_session_service(self):
+        if self._session_service is None:
+            from google.adk.sessions import InMemorySessionService
+
+            self._session_service = InMemorySessionService()
+        return self._session_service
 
     # ------------------------------------------------------------------ #
     # Capability probing
@@ -67,7 +76,7 @@ class AgentEngine:
     # ------------------------------------------------------------------ #
     # Reliable pipeline (main API)
     # ------------------------------------------------------------------ #
-    def recommend(self, profile: UserProfile, query: Optional[str], lang: str) -> Dict:
+    def recommend(self, profile: UserProfile, query: Optional[str], lang: str, include_explanation: bool = True) -> Dict:
         all_schemes = load_schemes()
         eligible = filter_eligible(profile, all_schemes)  # Eligibility Agent's tool
         ranked = rank_schemes(query or self._profile_query(profile), eligible)  # Recommendation Agent
@@ -75,7 +84,9 @@ class AgentEngine:
         ranked.sort(key=lambda s: (s.get("match_percent", 0), s.get("score", 0.0)), reverse=True)
         total = calculate_total_benefit(ranked)
         summary = benefit_summary(ranked, lang)
-        explanation = self._explain(profile, ranked, query, lang)  # Explainability + Multilingual
+        # Skip the extra Gemini call when the caller already has a reply (e.g. the
+        # ADK orchestrator path) — this explanation would just be discarded.
+        explanation = self._explain(profile, ranked, query, lang) if include_explanation else ""
 
         # Near-eligible: schemes where exactly one criterion is not met (excluding already eligible).
         eligible_ids = {s["id"] for s in eligible}
@@ -127,7 +138,13 @@ class AgentEngine:
     # ------------------------------------------------------------------ #
     # True ADK orchestration (agentic showcase)
     # ------------------------------------------------------------------ #
-    def run_orchestrator(self, message: str, lang: str = "en", base_profile: Optional[UserProfile] = None) -> Dict:
+    def run_orchestrator(
+        self,
+        message: str,
+        lang: str = "en",
+        base_profile: Optional[UserProfile] = None,
+        session_id: Optional[str] = None,
+    ) -> Dict:
         profile = self.extract_profile(message)
         if base_profile is not None:
             # Explicit Citizen Profile form selections win over text-inferred fields.
@@ -144,6 +161,7 @@ class AgentEngine:
                 "total_benefit_inr": 0,
                 "used_adk": False,
                 "mode": self.status()["mode"],
+                "session_id": session_id,
             }
         # General information questions (e.g. "tell me about the schemes") with no
         # personal details are informational, not a personalised eligibility check —
@@ -159,6 +177,7 @@ class AgentEngine:
                 "used_adk": False,
                 "mode": rec["mode"],
                 "general_info": True,
+                "session_id": session_id,
             }
         if not self.adk_ready:
             rec = self.recommend(profile, message, lang)
@@ -170,18 +189,30 @@ class AgentEngine:
                 "total_benefit_inr": rec["total_benefit_inr"],
                 "used_adk": False,
                 "mode": rec["mode"],
+                "session_id": session_id,
             }
         try:
-            reply = self._run_adk(message, lang)
-            rec = self.recommend(profile, message, lang)  # structured cards for the UI
+            reply, used_session_id, was_new = self._run_adk(message, lang, session_id=session_id)
+            # Structured cards for the UI — skip the extra Gemini explanation call,
+            # we already have `reply` from the ADK agents above.
+            rec = self.recommend(profile, message, lang, include_explanation=False)
+            # Safety net: on a brand-new request the orchestrator is instructed to
+            # always give a full multi-paragraph answer. LLMs don't follow that
+            # instruction with 100% consistency — if it comes back suspiciously
+            # short this time, use the reliable template instead of a one-liner.
+            # (Short replies ARE expected/valid on follow-ups, so this only
+            # applies to new requests.)
+            too_short = was_new and len(reply.strip()) < 100
+            fallback = self._template_explanation(profile, rec["schemes"], lang) if (not reply or too_short) else reply
             return {
-                "reply": reply or rec["explanation"],
+                "reply": fallback,
                 "profile": profile.as_dict(),
                 "schemes": rec["schemes"],
                 "near_eligible_schemes": rec.get("near_eligible_schemes", []),
                 "total_benefit_inr": rec["total_benefit_inr"],
                 "used_adk": True,
                 "mode": "adk",
+                "session_id": used_session_id,
             }
         except Exception as exc:  # pragma: no cover - network dependent
             rec = self.recommend(profile, message, lang)
@@ -194,6 +225,7 @@ class AgentEngine:
                 "used_adk": False,
                 "mode": rec["mode"],
                 "adk_error": str(exc),
+                "session_id": session_id,
             }
 
     @staticmethod
@@ -295,30 +327,45 @@ class AgentEngine:
         )
         return "\n".join(lines)
 
-    def _run_adk(self, message: str, lang: str) -> str:
+    def _run_adk(self, message: str, lang: str, session_id: Optional[str] = None) -> tuple[str, str, bool]:
         from google.adk.runners import Runner
-        from google.adk.sessions import InMemorySessionService
         from google.genai import types
 
         from agents.adk_agents import root_agent
 
         app_name, user_id = "sarkarsathi", "citizen"
-        session_id = str(uuid.uuid4())
-        session_service = InMemorySessionService()
-        self._resolve(
-            session_service.create_session(
-                app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}
+        session_service = self._get_session_service()
+        is_new = session_id is None
+        session_id = session_id or str(uuid.uuid4())
+
+        if is_new:
+            self._resolve(
+                session_service.create_session(
+                    app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}
+                )
             )
-        )
+        else:
+            existing = self._resolve(
+                session_service.get_session(app_name=app_name, user_id=user_id, session_id=session_id)
+            )
+            if existing is None:
+                is_new = True  # session was lost (e.g. server restart) — treat as a fresh start
+                self._resolve(
+                    session_service.create_session(
+                        app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}
+                    )
+                )
+
         runner = Runner(agent=root_agent, app_name=app_name, session_service=session_service)
         lang_hint = f"Respond in {self._LANG_NAMES.get(lang, 'English')}."
-        content = types.Content(role="user", parts=[types.Part(text=f"{message}\n\n{lang_hint}")])
+        stage_tag = "[NEW REQUEST]" if is_new else "[FOLLOW-UP]"
+        content = types.Content(role="user", parts=[types.Part(text=f"{stage_tag} {message}\n\n{lang_hint}")])
 
         final = ""
         for event in runner.run(user_id=user_id, session_id=session_id, new_message=content):
             if event.is_final_response() and event.content and event.content.parts:
                 final = event.content.parts[0].text or final
-        return (final or "").strip()
+        return (final or "").strip(), session_id, is_new
 
     @staticmethod
     def _resolve(value):
@@ -332,14 +379,19 @@ class AgentEngine:
     # ------------------------------------------------------------------ #
     # Gemini helpers (Explainability + Multilingual Response)
     # ------------------------------------------------------------------ #
-    def _gemini_text(self, prompt: str) -> str:
-        from google import genai
+    def _get_genai_client(self):
+        if self._genai_client is None:
+            from google import genai
 
-        client = genai.Client(
-            vertexai=True,
-            project=self.settings.google_cloud_project,
-            location=self.settings.google_cloud_location,
-        )
+            self._genai_client = genai.Client(
+                vertexai=True,
+                project=self.settings.google_cloud_project,
+                location=self.settings.google_cloud_location,
+            )
+        return self._genai_client
+
+    def _gemini_text(self, prompt: str) -> str:
+        client = self._get_genai_client()
         resp = client.models.generate_content(model=self.settings.gemini_model, contents=prompt)
         return resp.text or ""
 

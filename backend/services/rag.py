@@ -15,6 +15,20 @@ from services.knowledge_base import scheme_to_text
 settings = get_settings()
 
 _embedding_cache: Dict[str, List[float]] = {}
+_genai_client = None  # cached Vertex AI client — avoids re-auth on every embed call
+
+
+def _get_genai_client():
+    global _genai_client
+    if _genai_client is None:
+        from google import genai
+
+        _genai_client = genai.Client(
+            vertexai=True,
+            project=settings.google_cloud_project,
+            location=settings.google_cloud_location,
+        )
+    return _genai_client
 
 
 def _embed(text: str):
@@ -23,17 +37,10 @@ def _embed(text: str):
     if text in _embedding_cache:
         return _embedding_cache[text]
     try:
-        from google import genai
-
-        client = genai.Client(
-            vertexai=True,
-            project=settings.google_cloud_project,
-            location=settings.google_cloud_location,
-        )
+        client = _get_genai_client()
         result = client.models.embed_content(model=settings.embedding_model, contents=text)
         vec = result.embeddings[0].values
         _embedding_cache[text] = vec
-        return vec
     except Exception:
         return None
 
