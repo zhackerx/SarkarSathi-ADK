@@ -9,6 +9,17 @@
 This is an **ADK re-implementation** of the reference `SarkarSathi-AI` project,
 using the requested stack:
 
+## ✨ Refined experience (recent updates)
+
+The application has been refined into a more polished, citizen-focused experience with a dedicated dashboard that feels like a natural extension of the existing interface. Recent improvements include:
+
+- A **Citizen Dashboard** that appears after successful login, providing a central place to review scheme activity.
+- A **Dashboard** entry in the top navigation, with seamless **Home ↔ Dashboard** switching.
+- A **Search for Schemes** quick action that connects directly to the existing profile/scheme discovery flow.
+- Responsive summary cards for **Applied**, **Pending**, **Completed**, **Deadline Running**, and **Documents Missing**.
+- Dedicated sections for **Saved Schemes**, **Your Schemes**, and **Suggested Schemes** tailored to the citizen profile.
+- UI refinements that preserve the existing **Bootstrap layout**, **dark/light mode**, **language switching**, and **responsive behaviour**.
+
 | Layer | Technology |
 | --------------- | --------------------------------------------- |
 | Frontend | HTML, CSS, JavaScript, Bootstrap |
@@ -51,6 +62,17 @@ add reasoning, ranking, guidance and localisation.
 ---
 
 ## 🚀 Quick Start
+
+### Run the frontend locally
+
+The frontend is served directly by the Flask app, but for quick local preview you can also open the static frontend files in a browser from the project root.
+
+```powershell
+cd "SarkarSathi-ADK"
+python -m http.server 8124 --directory frontend
+```
+
+Then open http://127.0.0.1:8124/index.html.
 
 ### Prerequisites
 - Python 3.10–3.12
@@ -162,12 +184,14 @@ SarkarSathi-ADK/
 
 ## 🧪 Demo script (for judges)
 
-1. Open the app → click **"Try sample"**.
-2. Click **"Ask the Agents"** — watch the ADK agent pipeline light up.
-3. Show the eligible schemes, the **✓ "Eligible because…"** reasons, and the
+1. Open the app and log in with the demo OTP flow.
+2. Observe the new **Citizen Dashboard** with activity summary cards and quick actions.
+3. Click **"Search for Schemes"** to move into the profile-driven discovery flow.
+4. Click **"Ask the Agents"** — watch the ADK agent pipeline light up.
+5. Show the eligible schemes, the **✓ "Eligible because…"** reasons, and the
    **₹ estimated combined annual benefit** banner.
-4. Toggle **हिंदी**, ask again by **voice** (mic button), show the localised answer.
-5. Click **Docs** on a scheme → type a document you have → show readiness %.
+6. Toggle **हिंदी**, ask again by **voice** (mic button), show the localised answer.
+7. Click **Docs** on a scheme → type a document you have → show readiness %.
 
 ---
 
