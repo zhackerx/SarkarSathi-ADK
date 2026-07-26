@@ -125,6 +125,110 @@ body {
   box-shadow: 0 0 0 0.25rem rgba(11, 61, 145, 0.15);
 }
 
+/* ============ Dashboard ============ */
+.dashboard-hero {
+  background: linear-gradient(135deg, rgba(11, 61, 145, 0.08), rgba(255, 153, 51, 0.12));
+  border: 1px solid rgba(11, 61, 145, 0.12);
+}
+
+.dashboard-pill {
+  background: linear-gradient(90deg, rgba(11, 61, 145, 0.16), rgba(255, 153, 51, 0.2));
+  color: var(--brand-dark);
+  padding: 0.45rem 0.75rem;
+  font-weight: 700;
+}
+
+.dashboard-side-card {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(11, 61, 145, 0.14);
+}
+
+.dashboard-stat-card {
+  border-radius: 1.1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-accent-primary {
+  background: linear-gradient(135deg, rgba(11, 61, 145, 0.12), rgba(255, 255, 255, 0.95));
+}
+
+.dashboard-accent-warning {
+  background: linear-gradient(135deg, rgba(255, 153, 51, 0.14), rgba(255, 255, 255, 0.95));
+}
+
+.dashboard-accent-success {
+  background: linear-gradient(135deg, rgba(19, 136, 8, 0.16), rgba(255, 255, 255, 0.95));
+}
+
+.dashboard-accent-info {
+  background: linear-gradient(135deg, rgba(23, 162, 184, 0.16), rgba(255, 255, 255, 0.95));
+}
+
+.dashboard-accent-danger {
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.14), rgba(255, 255, 255, 0.95));
+}
+
+.dashboard-stat-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.dashboard-stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--brand-dark);
+  line-height: 1;
+}
+
+.dashboard-stat-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--brand);
+}
+
+.dashboard-stat-text {
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.dashboard-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.dashboard-scheme-item,
+.dashboard-suggestion-card {
+  border: 1px solid rgba(11, 61, 145, 0.12);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-scheme-item:hover,
+.dashboard-suggestion-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-suggestion-card {
+  display: block;
+}
+
 /* ============ Buttons ============ */
 .btn {
   border-radius: 0.8rem;
@@ -1730,6 +1834,25 @@ input:focus-visible {
 
 [data-theme="dark"] .auth-wrap {
   background: radial-gradient(600px 400px at 80% 20%, rgba(11, 61, 145, 0.12), transparent), #0b1020;
+}
+
+[data-theme="dark"] .dashboard-hero,
+[data-theme="dark"] .dashboard-side-card,
+[data-theme="dark"] .dashboard-scheme-item,
+[data-theme="dark"] .dashboard-suggestion-card,
+[data-theme="dark"] .dashboard-stat-card {
+  background: rgba(10, 18, 32, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #f5f7fb;
+}
+
+[data-theme="dark"] .dashboard-pill {
+  color: #ffd197;
+}
+
+[data-theme="dark"] .dashboard-stat-icon {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
 [data-theme="dark"] .auth-card {
