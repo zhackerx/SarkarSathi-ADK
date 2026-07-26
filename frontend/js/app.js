@@ -194,9 +194,13 @@ function escapeHtml(str) {
 }
 
 function normalizeInlineBullets(raw) {
-  const hasRealBulletLines = /(^|\n)[ \t]*[*-][ \t]+\S/.test(raw);
-  if (hasRealBulletLines) return raw;
-  let text = raw;
+  // Convert inline numbered list items like "1. **Scheme**: ..." (all run
+  // together on one line/paragraph, as models often produce) into real
+  // markdown bullet lines, so the renderer below can turn them into a <ul>.
+  let text = raw.replace(/(?:\s|^)(\d{1,2})\.\s+(?=\*\*)/g, "\n- ");
+
+  const hasRealBulletLines = /(^|\n)[ \t]*[*-][ \t]+\S/.test(text);
+  if (hasRealBulletLines) return text;
   text = text.replace(/(\*\*[^*]+\*\*) \* (?=\*\*)/g, (_, headingBold) => {
     const headingText = headingBold.replace(/\*\*/g, "").trim();
     return `\n\n### ${headingText}\n* `;
@@ -204,7 +208,6 @@ function normalizeInlineBullets(raw) {
   text = text.replace(/ \* (?=\S)/g, "\n* ");
   return text;
 }
-
 function renderMarkdown(raw) {
   const lines = escapeHtml(normalizeInlineBullets(raw)).split("\n");
   let html = "";
@@ -311,6 +314,7 @@ let recognition = null;
 let recording = false;
 let lastResult = null;
 let lastQuery = "";
+let sessionId = null; // ADK conversation id — kept across "Chat and Refine" turns
 let stageTimer = null;
 
 // ============================================================
@@ -360,9 +364,18 @@ document.addEventListener("DOMContentLoaded", () => {
     recommendFromForm();
   });
 
-  // Ask button
+// Ask button
   bindEvent("askBtn", "click", askAgents);
   bindEvent("sampleBtn", "click", fillSample);
+
+  // Chat and Refine box (results page)
+  bindEvent("refineSendBtn", "click", refineChat);
+  const refineInputEl = el("refineInput");
+  if (refineInputEl) {
+    refineInputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); refineChat(); }
+    });
+  }
   bindEvent("docCheckBtn", "click", runDocCheck);
   bindEvent("docUploadBtn", "click", handleDocUpload);
   bindEvent("docReadyBtn", "click", () => {
@@ -462,6 +475,7 @@ function readProfile() {
 
 async function recommendFromForm() {
   lastQuery = t("citizenProfile");
+  sessionId = null; // starting a fresh conversation
   setBusy(true);
   animatePipeline();
   try {
@@ -471,14 +485,22 @@ async function recommendFromForm() {
   finally { setBusy(false); }
 }
 
+let askInFlight = false; // guards against a second submit while the first is still running
+
 async function askAgents() {
+  if (askInFlight) return;
   const message = el("freeText").value.trim();
   if (!message) { el("freeText").focus(); return; }
   lastQuery = message;
+  sessionId = null; // starting a fresh conversation
+  askInFlight = true;
+  const askBtnEl = el("askBtn");
+  if (askBtnEl) askBtnEl.disabled = true;
   setBusy(true);
   animatePipeline();
   try {
-    const res = await postJSON("/api/agent", { message, profile: readProfile(), lang: lang() });
+    const res = await postJSON("/api/agent", { message, profile: readProfile(), lang: lang(), session_id: sessionId });
+    sessionId = res.session_id || null;
     render({
       explanation: res.reply,
       schemes: res.schemes,
@@ -490,9 +512,55 @@ async function askAgents() {
     });
     if (res.profile) reflectProfile(res.profile);
   } catch (e) { showError(e); }
-  finally { setBusy(false); }
+  finally {
+    setBusy(false);
+    askInFlight = false;
+    if (askBtnEl) askBtnEl.disabled = false;
+  }
 }
 
+let refineInFlight = false; // guards against a second submit while the first is still running
+
+async function refineChat() {
+  if (refineInFlight) return; // e.g. Enter pressed then send button also clicked before reply arrived
+  const input = el("refineInput");
+  const sendBtn = el("refineSendBtn");
+  const message = input.value.trim();
+  if (!message) { input.focus(); return; }
+  lastQuery = message;
+  refineInFlight = true;
+  input.disabled = true;
+  if (sendBtn) sendBtn.disabled = true;
+
+  const explEl = el("resultsExplanation");
+  const previousHtml = explEl ? explEl.innerHTML : "";
+  if (explEl) explEl.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+
+  try {
+    // Reuses the current sessionId (if any) so the agent remembers what was
+    // already discussed instead of starting over on every refinement.
+    const res = await postJSON("/api/agent", { message, profile: readProfile(), lang: lang(), session_id: sessionId });
+    sessionId = res.session_id || null;
+    render({
+      explanation: res.reply,
+      schemes: res.schemes,
+      near_eligible_schemes: res.near_eligible_schemes || [],
+      total_benefit_inr: res.total_benefit_inr,
+      benefit_summary: null,
+      mode: res.mode,
+      profile: res.profile,
+    });
+    if (res.profile) reflectProfile(res.profile);
+    input.value = "";
+  } catch (e) {
+    if (explEl) explEl.innerHTML = previousHtml;
+    showError(e);
+  } finally {
+    refineInFlight = false;
+    input.disabled = false;
+    if (sendBtn) sendBtn.disabled = false;
+  }
+}
 // ============================================================
 // BENEFIT SCORE (ranking)
 // ============================================================
