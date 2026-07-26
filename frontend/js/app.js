@@ -31,7 +31,19 @@ function handleLogout() {
 }
 
 function handleLogoClick() {
-  showPage(isLoggedIn() ? "page-main" : "page-home");
+  showPage(isLoggedIn() ? "page-dashboard" : "page-home");
+}
+
+function goHome() {
+  showPage("page-home");
+}
+
+function goToDashboard() {
+  if (isLoggedIn()) {
+    showPage("page-dashboard");
+  } else {
+    showPage("page-login");
+  }
 }
 
 // ============================================================
@@ -41,6 +53,7 @@ function showPage(pageId) {
   document.querySelectorAll(".ss-page").forEach((p) => p.classList.add("d-none"));
   const page = el(pageId);
   if (page) { page.classList.remove("d-none"); window.scrollTo(0, 0); }
+  if (pageId === "page-dashboard") renderDashboard();
   updateNavbar();
   // Show mode badge only on main/results pages
   const mb = el("modeBadge");
@@ -57,6 +70,133 @@ function updateNavbar() {
   if (loggedIn && auth) {
     const mt = el("navMobileText");
     if (mt) mt.textContent = auth.name || "+91 " + auth.mobile;
+  }
+}
+
+function getDashboardApplications() {
+  return [
+    { name: "PM-Kisan Samman Nidhi", status: "Applied", amount: "₹6,000", updated: "Today" },
+    { name: "Ayushman Bharat Health Card", status: "Pending", amount: "₹5,00,000", updated: "2 days ago" },
+    { name: "National Scholarship Portal", status: "Approved", amount: "₹50,000", updated: "1 week ago" },
+    { name: "PM Awas Yojana", status: "Completed", amount: "₹2,67,000", updated: "2 weeks ago" },
+  ];
+}
+
+function getDashboardSuggestions() {
+  const profile = readProfile();
+  const profileText = [profile.age, profile.gender, profile.state, profile.occupation, profile.education].filter(Boolean).join(" ");
+  const suggestions = [];
+
+  if (profile.age && profile.age >= 60) {
+    suggestions.push({ name: "Senior Citizen Pension Support", desc: "Assistance for older citizens with limited income and healthcare needs.", amount: "₹2,000/month", action: "View details" });
+  }
+  if (profile.income && profile.income <= 300000) {
+    suggestions.push({ name: "State Health Assistance", desc: "Financial support for low-income families and treatment coverage.", amount: "Up to ₹1,00,000", action: "View details" });
+  }
+  if (profile.occupation === "Student" || profile.education === "UG" || profile.education === "PG") {
+    suggestions.push({ name: "Merit-based Education Grant", desc: "Scholarship and fee support for continuing education.", amount: "₹25,000–₹75,000", action: "View details" });
+  }
+  if (profile.land_owner || profile.occupation === "Farmer") {
+    suggestions.push({ name: "Agriculture Input Subsidy", desc: "Support for seeds, irrigation, and farm equipment.", amount: "₹10,000+", action: "View details" });
+  }
+  if (profile.disability || profile.social_category === "SC" || profile.social_category === "ST") {
+    suggestions.push({ name: "Inclusive Welfare Support", desc: "Special assistance and benefits tailored for eligible citizens.", amount: "₹15,000+", action: "View details" });
+  }
+
+  if (!suggestions.length) {
+    suggestions.push(
+      { name: "Ayushman Bharat", desc: "Health coverage for eligible families and senior citizens.", amount: "Up to ₹5,00,000", action: "View details" },
+      { name: "PM SVANidhi", desc: "Micro-credit support for street vendors and small traders.", amount: "₹10,000", action: "View details" }
+    );
+  }
+
+  return suggestions.slice(0, 3).map((item) => ({ ...item, profileHint: profileText || "Based on your recent profile details" }));
+}
+
+function renderDashboard() {
+  const auth = getAuth();
+  const dashboardName = el("dashboardName");
+  if (dashboardName) dashboardName.textContent = auth?.name || "Citizen";
+
+  const stats = el("dashboardStats");
+  if (stats) {
+    const cards = [
+      { key: "Applied", count: 6, label: "New applications", icon: "bi-file-earmark-check-fill", accent: "primary" },
+      { key: "Pending", count: 3, label: "Awaiting review", icon: "bi-hourglass-split", accent: "warning" },
+      { key: "Completed", count: 2, label: "Successfully closed", icon: "bi-flag-fill", accent: "success" },
+      { key: "Deadline Running", count: 4, label: "Within next 30 days", icon: "bi-calendar2-week-fill", accent: "info" },
+      { key: "Documents Missing", count: 2, label: "Needs attention", icon: "bi-file-earmark-excel-fill", accent: "danger" },
+    ];
+    stats.innerHTML = cards.map((card) => `
+      <div class="col-12 col-sm-6 col-xl-2">
+        <div class="card dashboard-stat-card h-100 border-0 ${card.accent === "warning" ? "dashboard-accent-warning" : card.accent === "success" ? "dashboard-accent-success" : card.accent === "info" ? "dashboard-accent-info" : card.accent === "danger" ? "dashboard-accent-danger" : "dashboard-accent-primary"}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <div class="dashboard-stat-label">${escapeHtml(card.key)}</div>
+                <div class="dashboard-stat-value">${card.count}</div>
+              </div>
+              <div class="dashboard-stat-icon"><i class="bi ${card.icon}"></i></div>
+            </div>
+            <div class="dashboard-stat-text">${escapeHtml(card.label)}</div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  const saved = el("dashboardSaved");
+  if (saved) {
+    const bookmarks = getBookmarks();
+    const items = bookmarks.length ? bookmarks.slice(0, 3) : [
+      { id: "sample-1", name: "Housing Assistance Scheme", benefit_annual_inr: 250000, category: "Housing" },
+      { id: "sample-2", name: "Scholarship Support", benefit_annual_inr: 50000, category: "Education" },
+    ];
+    saved.innerHTML = items.map((scheme) => `
+      <div class="dashboard-scheme-item">
+        <div>
+          <div class="fw-semibold">${escapeHtml(scheme.name || scheme.title || "Scheme")}</div>
+          <div class="small text-muted">₹${Number(scheme.benefit_annual_inr || 0).toLocaleString("en-IN")} benefit</div>
+        </div>
+        <button class="btn btn-sm btn-outline-primary" onclick="showPage('page-results')">
+          <i class="bi bi-eye me-1"></i>Quick View
+        </button>
+      </div>
+    `).join("");
+  }
+
+  const applications = el("dashboardApplications");
+  if (applications) {
+    applications.innerHTML = getDashboardApplications().map((item) => `
+      <div class="dashboard-scheme-item">
+        <div>
+          <div class="fw-semibold">${escapeHtml(item.name)}</div>
+          <div class="d-flex flex-wrap gap-2 mt-1">
+            <span class="badge rounded-pill bg-light text-dark">${escapeHtml(item.status)}</span>
+            <span class="small text-muted">${escapeHtml(item.amount)}</span>
+          </div>
+        </div>
+        <div class="text-end small text-muted">${escapeHtml(item.updated)}</div>
+      </div>
+    `).join("");
+  }
+
+  const suggestions = el("dashboardSuggestions");
+  if (suggestions) {
+    suggestions.innerHTML = getDashboardSuggestions().map((item) => `
+      <div class="col-md-6 col-xl-4">
+        <div class="dashboard-suggestion-card h-100">
+          <div class="fw-semibold mb-2">${escapeHtml(item.name)}</div>
+          <p class="small text-muted mb-3">${escapeHtml(item.desc)}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-primary">${escapeHtml(item.amount)}</span>
+            <button class="btn btn-sm btn-outline-primary" onclick="showPage('page-main')">
+              <i class="bi bi-arrow-right me-1"></i>${escapeHtml(item.action)}
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join("");
   }
 }
 
@@ -125,7 +265,7 @@ function handleContinueName() {
   auth.loggedIn = true;
   setAuth(auth);
   updateNavbar();
-  showPage("page-main");
+  showPage("page-dashboard");
   updateWelcome();
   renderPipeline([]);
   loadHealth();
@@ -216,7 +356,7 @@ function renderMarkdown(raw) {
   const closeList = () => { if (inList) { html += "</ul>"; inList = false; } };
   const inline = (s) =>
     s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-     .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
+      .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
   for (const rawLine of lines) {
     const line = rawLine.trimEnd();
     const heading = line.match(/^(#{1,4})\s+(.*)$/);
@@ -323,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Routing: show appropriate page
   if (isLoggedIn()) {
-    showPage("page-main");
+    showPage("page-dashboard");
     updateWelcome();
     renderPipeline([]);
     loadHealth();
@@ -814,7 +954,7 @@ function schemeCard(s) {
 // ============================================================
 // BOOKMARK CLICK HANDLER
 // ============================================================
-window.handleBookmarkClick = function(btn) {
+window.handleBookmarkClick = function (btn) {
   const schemeId = btn.getAttribute("data-scheme-id");
   const scheme = schemeMap[schemeId];
   if (!scheme) return;
@@ -881,15 +1021,15 @@ function displayUploadedFiles(schemeId) {
   const schemeFiles = docs[schemeId] || [];
   const list = el("uploadedFilesList");
   const noFiles = el("noFilesText");
-  
+
   if (!list) return;
-  
+
   if (schemeFiles.length === 0) {
     list.innerHTML = "";
     if (noFiles) noFiles.classList.remove("d-none");
     return;
   }
-  
+
   if (noFiles) noFiles.classList.add("d-none");
   list.innerHTML = schemeFiles.map(doc => {
     const date = new Date(doc.uploadTime).toLocaleDateString();
@@ -907,62 +1047,62 @@ function displayUploadedFiles(schemeId) {
   }).join("");
 }
 
-window.openDoc = function(schemeId) {
+window.openDoc = function (schemeId) {
   currentDocScheme = schemeId;
   const scheme = schemeMap[schemeId];
-  
+
   // Display required documents
   const docList = el("docRequiredList");
   if (docList && scheme && scheme.documents) {
-    docList.innerHTML = (scheme.documents || []).map(d => 
+    docList.innerHTML = (scheme.documents || []).map(d =>
       `<div class="list-group-item py-1"><i class="bi bi-file-pdf me-2 text-danger"></i>${escapeHtml(d)}</div>`
     ).join("") || `<p class="text-muted small mb-0">No specific documents listed</p>`;
   }
-  
+
   // Display uploaded files for this scheme
   displayUploadedFiles(schemeId);
-  
+
   el("docFileInput").value = "";
   el("docResult").innerHTML = "";
   docModal.show();
 };
 
 // Handle file upload
-window.handleDocUpload = function() {
+window.handleDocUpload = function () {
   if (!currentDocScheme) return;
-  
+
   const input = el("docFileInput");
   const file = input.files[0];
   if (!file) return;
-  
+
   // Validate file type
   const allowed = ["application/pdf", "image/jpeg", "image/png"];
   if (!allowed.includes(file.type)) {
     alert("Only PDF and image files (JPG, PNG) are supported");
     return;
   }
-  
+
   // Validate file size (5MB max)
   if (file.size > 5 * 1024 * 1024) {
     alert("File size must be less than 5MB");
     return;
   }
-  
+
   // Add to uploaded docs
   addUploadedDoc(currentDocScheme, file);
   displayUploadedFiles(currentDocScheme);
-  
+
   // Show success message
   const result = el("docResult");
   if (result) {
     result.innerHTML = `<div class="alert alert-success py-2 mb-0"><i class="bi bi-check-circle me-2"></i>File uploaded: ${escapeHtml(file.name)}</div>`;
     setTimeout(() => { result.innerHTML = ""; }, 3000);
   }
-  
+
   input.value = "";
 };
 
-window.removeUploadedDoc = function(schemeId, docId) {
+window.removeUploadedDoc = function (schemeId, docId) {
   removeUploadedDoc(schemeId, docId);
 };
 
@@ -1047,7 +1187,7 @@ function startHold() {
     }
     el("freeText").value = (finalText + interim).trim();
   };
-  recognition.onerror = () => {};
+  recognition.onerror = () => { };
   recognition.onend = () => {
     recording = false;
     recognition = null;
@@ -1057,11 +1197,11 @@ function startHold() {
   recording = true;
   el("voiceBtn").classList.add("recording");
   setVoiceLabel(true);
-  try { recognition.start(); } catch (_) {}
+  try { recognition.start(); } catch (_) { }
 }
 
 function stopHold() {
-  if (recognition) { try { recognition.stop(); } catch (_) {} }
+  if (recognition) { try { recognition.stop(); } catch (_) { } }
 }
 
 // ============================================================
