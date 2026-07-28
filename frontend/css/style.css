@@ -1044,6 +1044,12 @@ body {
   color: #8894b3;
 }
 
+[data-theme="dark"] .input-group-text {
+  background: #111830;
+  color: #7ab0ff;
+  border-color: #2a3350;
+}
+
 [data-theme="dark"] .agent-chip {
   background: #141b33;
   color: #aab4cc;
