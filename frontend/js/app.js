@@ -50,6 +50,12 @@ function goToDashboard() {
 // PAGE ROUTING
 // ============================================================
 function showPage(pageId) {
+  // Check authentication for protected pages
+  if (pageId === "page-history" && !isLoggedIn()) {
+    showPage("page-login");
+    return;
+  }
+  
   document.querySelectorAll(".ss-page").forEach((p) => p.classList.add("d-none"));
   const page = el(pageId);
   if (page) { page.classList.remove("d-none"); window.scrollTo(0, 0); }
