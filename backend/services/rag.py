@@ -43,6 +43,22 @@ def _embed(text: str):
         _embedding_cache[text] = vec
     except Exception:
         return None
+    
+def _embed_batch(texts: List[str]) -> None:
+    """Embed any not-yet-cached texts in a single batched API call instead of
+    one network round-trip per scheme."""
+    if not settings.gemini_enabled:
+        return
+    to_fetch = [t for t in texts if t not in _embedding_cache]
+    if not to_fetch:
+        return
+    try:
+        client = _get_genai_client()
+        result = client.models.embed_content(model=settings.embedding_model, contents=to_fetch)
+        for t, emb in zip(to_fetch, result.embeddings):
+            _embedding_cache[t] = emb.values
+    except Exception:
+        pass
 
 
 def _cosine(a, b) -> float:
@@ -67,12 +83,14 @@ def rank_schemes(query: str, schemes: List[Dict], top_k: int | None = None) -> L
         return []
 
     query = query or "government welfare schemes"
-    q_vec = _embed(query)
+    texts = [query] + [scheme_to_text(s) for s in schemes]
+    _embed_batch(texts)  # one network call instead of N+1
+    q_vec = _embedding_cache.get(query)
 
     scored: List[Dict] = []
     for scheme in schemes:
         if q_vec is not None:
-            s_vec = _embed(scheme_to_text(scheme))
+            s_vec = _embedding_cache.get(scheme_to_text(scheme))
             score = _cosine(q_vec, s_vec) if s_vec is not None else _keyword_score(query, scheme)
         else:
             score = _keyword_score(query, scheme)

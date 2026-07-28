@@ -13,7 +13,7 @@ Two execution paths, both backed by the same verified service layer:
 Everything falls back gracefully so the prototype always runs.
 """
 from __future__ import annotations
-
+import re
 import inspect
 import json
 import logging
@@ -26,6 +26,7 @@ from services.eligibility_engine import filter_eligible, filter_near_eligible
 from services.knowledge_base import load_schemes
 from services.profile import UserProfile, heuristic_profile
 from services.rag import rank_schemes
+from services.context_builder import build_grounding_context, known_scheme_names
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,7 @@ class AgentEngine:
         self.adk_ready = self._probe_adk()
         self._session_service = None  # created lazily, shared across requests
         self._genai_client = None  # cached Vertex AI client — avoids re-auth per call
+        self._session_cache: Dict[str, Dict] = {}  # ← ADD THIS LINE
 
     def _get_session_service(self):
         if self._session_service is None:
@@ -145,63 +147,77 @@ class AgentEngine:
         base_profile: Optional[UserProfile] = None,
         session_id: Optional[str] = None,
     ) -> Dict:
-        profile = self.extract_profile(message)
-        if base_profile is not None:
-            # Explicit Citizen Profile form selections win over text-inferred fields.
-            profile = profile.merged_with(base_profile)
         # Conversational / informational questions (e.g. "what is this?", "hi",
         # "who are you") are NOT scheme requests — answer them directly instead
         # of dumping every scheme and a combined benefit total.
-        meta = self._meta_reply(message, profile, lang)
+        # (extract_profile is cheap/heuristic here, just for meta/general-info checks)
+        quick_profile = self.extract_profile(message) if session_id is None else UserProfile.from_dict({})
+        meta = self._meta_reply(message, quick_profile, lang)
         if meta is not None:
             return {
                 "reply": meta,
-                "profile": profile.as_dict(),
+                "profile": quick_profile.as_dict(),
                 "schemes": [],
                 "total_benefit_inr": 0,
                 "used_adk": False,
                 "mode": self.status()["mode"],
                 "session_id": session_id,
             }
-        # General information questions (e.g. "tell me about the schemes") with no
-        # personal details are informational, not a personalised eligibility check —
-        # give an overview and DON'T show a personalised combined-benefit total.
-        if self._is_general_info(message, profile):
-            rec = self.recommend(profile, message, lang)
-            return {
-                "reply": self._overview_reply(rec["schemes"], lang),
-                "profile": profile.as_dict(),
-                "schemes": rec["schemes"],
-                "near_eligible_schemes": rec.get("near_eligible_schemes", []),
-                "total_benefit_inr": 0,
-                "used_adk": False,
-                "mode": rec["mode"],
-                "general_info": True,
-                "session_id": session_id,
-            }
-        if not self.adk_ready:
-            rec = self.recommend(profile, message, lang)
-            return {
-                "reply": rec["explanation"],
-                "profile": profile.as_dict(),
-                "schemes": rec["schemes"],
-                "near_eligible_schemes": rec.get("near_eligible_schemes", []),
-                "total_benefit_inr": rec["total_benefit_inr"],
-                "used_adk": False,
-                "mode": rec["mode"],
-                "session_id": session_id,
-            }
-        try:
-            reply, used_session_id, was_new = self._run_adk(message, lang, session_id=session_id)
-            # Structured cards for the UI — skip the extra Gemini explanation call,
-            # we already have `reply` from the ADK agents above.
+
+        cached = self._session_cache.get(session_id) if session_id else None
+
+        if cached is not None:
+            # Follow-up in an existing session — profile & eligible schemes don't
+            # change turn to turn, so skip re-extraction and re-ranking entirely.
+            profile = cached["profile"]
+            rec = cached["rec"]
+        else:
+            profile = self.extract_profile(message)
+            if base_profile is not None:
+                profile = profile.merged_with(base_profile)
+
+            if self._is_general_info(message, profile):
+                rec = self.recommend(profile, message, lang)
+                return {
+                    "reply": self._overview_reply(rec["schemes"], lang),
+                    "profile": profile.as_dict(),
+                    "schemes": rec["schemes"],
+                    "near_eligible_schemes": rec.get("near_eligible_schemes", []),
+                    "total_benefit_inr": 0,
+                    "used_adk": False,
+                    "mode": rec["mode"],
+                    "general_info": True,
+                    "session_id": session_id,
+                }
+
+            if not self.adk_ready:
+                rec = self.recommend(profile, message, lang)
+                return {
+                    "reply": rec["explanation"],
+                    "profile": profile.as_dict(),
+                    "schemes": rec["schemes"],
+                    "near_eligible_schemes": rec.get("near_eligible_schemes", []),
+                    "total_benefit_inr": rec["total_benefit_inr"],
+                    "used_adk": False,
+                    "mode": rec["mode"],
+                    "session_id": session_id,
+                }
+
             rec = self.recommend(profile, message, lang, include_explanation=False)
-            # Safety net: on a brand-new request the orchestrator is instructed to
-            # always give a full multi-paragraph answer. LLMs don't follow that
-            # instruction with 100% consistency — if it comes back suspiciously
-            # short this time, use the reliable template instead of a one-liner.
-            # (Short replies ARE expected/valid on follow-ups, so this only
-            # applies to new requests.)
+
+        grounding_context = build_grounding_context(
+            rec["schemes"], rec.get("near_eligible_schemes", [])
+        )
+
+        try:
+            reply, used_session_id, was_new = self._run_adk(
+                message, lang, grounding_context, session_id=session_id
+            )
+            reply = self._enforce_grounding(
+                reply, known_scheme_names(rec["schemes"], rec.get("near_eligible_schemes", [])), lang
+            )
+            if was_new:
+                self._session_cache[used_session_id] = {"profile": profile, "rec": rec}
             too_short = was_new and len(reply.strip()) < 100
             fallback = self._template_explanation(profile, rec["schemes"], lang) if (not reply or too_short) else reply
             return {
@@ -327,10 +343,9 @@ class AgentEngine:
         )
         return "\n".join(lines)
 
-    def _run_adk(self, message: str, lang: str, session_id: Optional[str] = None) -> tuple[str, str, bool]:
+    def _run_adk(self, message: str, lang: str, grounding_context: str, session_id: Optional[str] = None) -> tuple[str, str, bool]:
         from google.adk.runners import Runner
         from google.genai import types
-
         from agents.adk_agents import root_agent
 
         app_name, user_id = "sarkarsathi", "citizen"
@@ -339,33 +354,51 @@ class AgentEngine:
         session_id = session_id or str(uuid.uuid4())
 
         if is_new:
-            self._resolve(
-                session_service.create_session(
-                    app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}
-                )
-            )
+            self._resolve(session_service.create_session(
+                app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}))
         else:
-            existing = self._resolve(
-                session_service.get_session(app_name=app_name, user_id=user_id, session_id=session_id)
-            )
+            existing = self._resolve(session_service.get_session(
+                app_name=app_name, user_id=user_id, session_id=session_id))
             if existing is None:
-                is_new = True  # session was lost (e.g. server restart) — treat as a fresh start
-                self._resolve(
-                    session_service.create_session(
-                        app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}
-                    )
-                )
+                is_new = True
+                self._resolve(session_service.create_session(
+                    app_name=app_name, user_id=user_id, session_id=session_id, state={"lang": lang}))
 
         runner = Runner(agent=root_agent, app_name=app_name, session_service=session_service)
         lang_hint = f"Respond in {self._LANG_NAMES.get(lang, 'English')}."
         stage_tag = "[NEW REQUEST]" if is_new else "[FOLLOW-UP]"
-        content = types.Content(role="user", parts=[types.Part(text=f"{stage_tag} {message}\n\n{lang_hint}")])
+        # Grounding context is re-sent EVERY turn — correctness never depends on
+        # the model "remembering" facts from earlier in the ADK session.
+        full_text = f"{stage_tag} {message}\n\n{lang_hint}\n\n{grounding_context}"
+        content = types.Content(role="user", parts=[types.Part(text=full_text)])
 
         final = ""
         for event in runner.run(user_id=user_id, session_id=session_id, new_message=content):
             if event.is_final_response() and event.content and event.content.parts:
                 final = event.content.parts[0].text or final
         return (final or "").strip(), session_id, is_new
+
+    
+    def _enforce_grounding(self, reply: str, known_names: set, lang: str) -> str:
+        """Heuristic check: flag replies that name a scheme absent from the
+        retrieved data. This does not rewrite prose — it only catches the
+        clearest failure mode (a fabricated scheme name) and appends a
+        correction note so the citizen isn't misled."""
+        if not reply or not known_names:
+            return reply
+        # crude scheme-name-shaped token scan: capitalised multi-word phrases
+        candidates = re.findall(r"\b([A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+){1,5})\b", reply)
+        scheme_like = [c for c in candidates if any(w in c for w in ("Yojana", "Scheme", "Scholarship", "Card", "Bharat"))]
+        unknown = [c for c in scheme_like if c not in known_names and not any(c in n or n in c for n in known_names)]
+        if unknown:
+            logger.warning("Possible ungrounded scheme mention(s) in ADK reply: %s", unknown)
+            note = ("\n\n(नोट: ऊपर दिखाई गई सभी योजनाएँ हमारे सत्यापित डेटा से हैं।)" if lang == "hi"
+                    else "\n\n(Note: only the schemes shown in this conversation come from our verified data — please disregard any other scheme names.)")
+            return reply + note
+        return reply
+    
+
+    
 
     @staticmethod
     def _resolve(value):
@@ -408,28 +441,46 @@ class AgentEngine:
             return self._template_explanation(profile, schemes, lang)
 
         lang_name = self._LANG_NAMES.get(lang, "English")
-        context = "\n".join(
-            f"- {s['scheme_name']} ({s['level']}, {s['state']}) | benefit: {s['benefit_text']} | "
-            f"why: {'; '.join(s.get('reasons', []))}"
-            for s in schemes
-        )
+        from services.context_builder import build_grounding_context
+        context = build_grounding_context(schemes) 
         prompt = (
-            "You are SarkarSathi, a warm and knowledgeable assistant that helps every Indian "
-            "citizen — students, farmers, women, senior citizens, entrepreneurs, persons with "
-            "disability and the general public — understand the government welfare schemes they "
-            "qualify for.\n"
-            "Rules:\n- Use ONLY the schemes listed below. Do NOT invent schemes or eligibility.\n"
-            "- Open with a short, friendly sentence acknowledging who the citizen is.\n"
-            "- Group your answer by scheme category (e.g. Education, Farmers, Women, Health, "
-            "Senior Citizens) when there is more than one.\n"
-            "- Cite each scheme by its exact name and briefly state WHY the user qualifies "
-            "using the provided reasons, plus the benefit amount.\n"
-            "- End with one encouraging next-step line. Be concise. "
-            f"Respond entirely in {lang_name}.\n\n"
-            f"User profile: {profile.as_dict()}\n"
-            f"User question: {query or 'Which schemes am I eligible for?'}\n\n"
-            f"Eligible schemes (already verified by our eligibility engine):\n{context}\n\n"
-            "Write the answer now."
+
+            "You are SarkarSathi, an AI assistant for Indian Government Welfare Schemes.\n\n"
+
+            "###########################\n"
+            "STRICT GROUNDING RULES\n"
+            "###########################\n"
+            "1. Use ONLY the Retrieved Scheme Data provided below.\n"
+            "2. NEVER use your own knowledge about government schemes.\n"
+            "3. NEVER invent scheme names, benefits, eligibility criteria, documents, application steps or links.\n"
+            "4. If the user's question cannot be answered from the Retrieved Scheme Data, reply exactly:\n"
+            "\"I couldn't find that information in the retrieved scheme data.\"\n"
+            "5. The Retrieved Scheme Data is the ONLY source of truth.\n\n"
+
+            "###########################\n"
+            "RESPONSE STYLE\n"
+            "###########################\n"
+            "- Be warm and professional.\n"
+            "- Open with one short friendly sentence.\n"
+            "- Group schemes by category when appropriate.\n"
+            "- Mention the exact scheme name.\n"
+            "- Explain why the user qualifies using ONLY the provided reasons.\n"
+            "- Mention the benefit ONLY if present in the Retrieved Scheme Data.\n"
+            "- Mention documents ONLY if present in the Retrieved Scheme Data.\n"
+            "- Mention application steps ONLY if present in the Retrieved Scheme Data.\n"
+            "- Finish with one encouraging next step.\n"
+            f"- Respond entirely in {lang_name}.\n\n"
+
+            f"User Profile:\n{profile.as_dict()}\n\n"
+
+            f"User Question:\n{query or 'Which schemes am I eligible for?'}\n\n"
+
+            "###########################\n"
+            "RETRIEVED SCHEME DATA\n"
+            "###########################\n"
+            f"{context}\n\n"
+
+            "Answer the user's question using ONLY the Retrieved Scheme Data."
         )
         try:
             return self._gemini_text(prompt).strip()
