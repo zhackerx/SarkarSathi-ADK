@@ -749,10 +749,10 @@ function render(res) {
     explWrap.classList.remove("d-none");
     // Show loading animation while displaying explanation
     el("resultsExplanation").innerHTML = '<div class="typing"><span></span><span></span><span></span></div><p class="text-muted small mt-2">Loading and preparing your response...</p>';
-    // Replace with actual content
+    // Replace with actual content after delay
     setTimeout(() => {
       el("resultsExplanation").innerHTML = renderMarkdown(res.explanation);
-    }, 300);
+    }, 1500);
   } else {
     explWrap.classList.add("d-none");
   }
