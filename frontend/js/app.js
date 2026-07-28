@@ -65,8 +65,10 @@ function updateNavbar() {
   const auth = getAuth();
   const loginBtn = el("navLoginBtn");
   const userInfo = el("navUserInfo");
+  const historyBtn = el("navHistoryBtn");
   if (loginBtn) loginBtn.classList.toggle("d-none", loggedIn);
   if (userInfo) userInfo.classList.toggle("d-none", !loggedIn);
+  if (historyBtn) historyBtn.classList.toggle("d-none", !loggedIn);
   if (loggedIn && auth) {
     const mt = el("navMobileText");
     if (mt) mt.textContent = auth.name || "+91 " + auth.mobile;
