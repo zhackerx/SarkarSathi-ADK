@@ -1940,6 +1940,39 @@ input:focus-visible {
   color: #fff;
 }
 
+[data-theme="dark"] .dashboard-stat-value {
+  color: #7ab0ff;
+  font-weight: 800;
+}
+
+[data-theme="dark"] .dashboard-stat-label {
+  color: #aab4cc;
+}
+
+[data-theme="dark"] .dashboard-stat-text {
+  color: #aab4cc;
+}
+
+[data-theme="dark"] .dashboard-accent-primary {
+  background: linear-gradient(135deg, rgba(122, 176, 255, 0.2), rgba(17, 24, 48, 0.95));
+}
+
+[data-theme="dark"] .dashboard-accent-warning {
+  background: linear-gradient(135deg, rgba(255, 207, 135, 0.2), rgba(17, 24, 48, 0.95));
+}
+
+[data-theme="dark"] .dashboard-accent-success {
+  background: linear-gradient(135deg, rgba(75, 224, 123, 0.2), rgba(17, 24, 48, 0.95));
+}
+
+[data-theme="dark"] .dashboard-accent-info {
+  background: linear-gradient(135deg, rgba(100, 200, 255, 0.2), rgba(17, 24, 48, 0.95));
+}
+
+[data-theme="dark"] .dashboard-accent-danger {
+  background: linear-gradient(135deg, rgba(255, 100, 100, 0.2), rgba(17, 24, 48, 0.95));
+}
+
 [data-theme="dark"] .auth-card {
   background: rgba(20, 27, 51, 0.96);
   border-color: #2a3350;
