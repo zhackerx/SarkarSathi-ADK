@@ -5,6 +5,7 @@ __pycache__/
 venv/
 ven/
 ve/
+v/
 .env
 
 # Node (frontend uses CDN only, but just in case)
