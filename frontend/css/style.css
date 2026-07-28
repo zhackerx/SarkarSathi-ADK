@@ -370,6 +370,23 @@ body {
 }
 
 /* ============ Agent pipeline chips ============ */
+#pipeline {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.15rem;
+  scrollbar-width: thin;
+}
+
+#pipeline::-webkit-scrollbar {
+  height: 6px;
+}
+
+#pipeline::-webkit-scrollbar-thumb {
+  background: rgba(91, 103, 128, 0.32);
+  border-radius: 999px;
+}
+
 .agent-chip {
   border: 1px solid #dbe2f1;
   background: #fff;
@@ -381,6 +398,8 @@ body {
   align-items: center;
   gap: 0.45rem;
   transition: all 0.3s ease;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .agent-chip .dot {
@@ -427,6 +446,46 @@ body {
 
 .explanation p:last-child {
   margin-bottom: 0;
+}
+
+@media (max-width: 575.98px) {
+  #page-main .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  #page-main .welcome-bar {
+    gap: 0.5rem;
+  }
+
+  #page-main .card-body {
+    padding: 1rem;
+  }
+
+  #page-main .section-title {
+    letter-spacing: 0.04em;
+  }
+
+  #page-main .btn-lg-senior,
+  #page-main .btn-voice {
+    min-height: 48px;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+  }
+
+  #page-main #freeText {
+    font-size: 1rem;
+    min-height: 7.5rem;
+  }
+
+  #page-main .agent-chip {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  #page-main .form-label.small {
+    font-size: 0.86rem;
+  }
 }
 
 .explanation h3,
