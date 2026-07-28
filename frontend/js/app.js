@@ -50,6 +50,7 @@ function goToDashboard() {
 // PAGE ROUTING
 // ============================================================
 function showPage(pageId) {
+  // Check authentication for protected pages
   if (pageId === "page-history" && !isLoggedIn()) {
     showPage("page-login");
     return;
@@ -447,13 +448,13 @@ function applyI18n() {
 // AGENT PIPELINE
 // ============================================================
 const AGENTS = [
-  "ADK Agent Orchestrator",
+  "Agent Orchestrator",
   "Eligibility Agent",
-  "Scheme Recommendation Agent",
+  "Recommendation Agent",
   "Explainability Agent",
-  "Application Guide Agent",
-  "Document Verification Agent",
-  "Multilingual Response Agent",
+  "Application Agent",
+  "Verification Agent",
+  "Multilingual Agent",
 ];
 
 let currentDocScheme = null;
