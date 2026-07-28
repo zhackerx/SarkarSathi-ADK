@@ -371,28 +371,20 @@ body {
 
 /* ============ Agent pipeline chips ============ */
 #pipeline {
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
+  flex-wrap: wrap;
+  overflow-x: visible;
+  overflow-y: visible;
   padding-bottom: 0.15rem;
-  scrollbar-width: thin;
-}
-
-#pipeline::-webkit-scrollbar {
-  height: 6px;
-}
-
-#pipeline::-webkit-scrollbar-thumb {
-  background: rgba(91, 103, 128, 0.32);
-  border-radius: 999px;
+  justify-content: flex-start;
+  gap: 0.5rem;
 }
 
 .agent-chip {
   border: 1px solid #dbe2f1;
   background: #fff;
   border-radius: 2rem;
-  padding: 0.45rem 0.95rem;
-  font-size: 0.84rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
   color: #55617a;
   display: inline-flex;
   align-items: center;
