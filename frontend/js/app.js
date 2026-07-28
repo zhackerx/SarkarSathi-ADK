@@ -55,11 +55,12 @@ function showPage(pageId) {
     showPage("page-login");
     return;
   }
-  
+
   document.querySelectorAll(".ss-page").forEach((p) => p.classList.add("d-none"));
   const page = el(pageId);
   if (page) { page.classList.remove("d-none"); window.scrollTo(0, 0); }
   if (pageId === "page-dashboard") renderDashboard();
+  if (pageId === "page-history") renderHistory();
   updateNavbar();
   // Show mode badge only on main/results pages
   const mb = el("modeBadge");
@@ -512,7 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
     recommendFromForm();
   });
 
-// Ask button
+  // Ask button
   bindEvent("askBtn", "click", askAgents);
   bindEvent("sampleBtn", "click", fillSample);
 
@@ -625,9 +626,10 @@ async function recommendFromForm() {
   lastQuery = t("citizenProfile");
   sessionId = null; // starting a fresh conversation
   setBusy(true);
-  animatePipeline();
+  const pipelinePromise = animatePipeline();
   try {
     const res = await postJSON("/api/recommend", { profile: readProfile(), lang: lang() });
+    await pipelinePromise;
     render(res);
   } catch (e) { showError(e); }
   finally { setBusy(false); }
@@ -645,10 +647,11 @@ async function askAgents() {
   const askBtnEl = el("askBtn");
   if (askBtnEl) askBtnEl.disabled = true;
   setBusy(true);
-  animatePipeline();
+  const pipelinePromise = animatePipeline();
   try {
     const res = await postJSON("/api/agent", { message, profile: readProfile(), lang: lang(), session_id: sessionId });
     sessionId = res.session_id || null;
+    await pipelinePromise;
     render({
       explanation: res.reply,
       schemes: res.schemes,
