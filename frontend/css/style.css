@@ -372,11 +372,11 @@ body {
 /* ============ Agent pipeline chips ============ */
 #pipeline {
   flex-wrap: wrap;
-  overflow-x: visible;
-  overflow-y: visible;
+  overflow: hidden;
   padding-bottom: 0.15rem;
   justify-content: flex-start;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .agent-chip {
