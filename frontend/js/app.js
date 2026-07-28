@@ -65,8 +65,10 @@ function updateNavbar() {
   const auth = getAuth();
   const loginBtn = el("navLoginBtn");
   const userInfo = el("navUserInfo");
+  const historyBtn = el("navHistoryBtn");
   if (loginBtn) loginBtn.classList.toggle("d-none", loggedIn);
   if (userInfo) userInfo.classList.toggle("d-none", !loggedIn);
+  if (historyBtn) historyBtn.classList.toggle("d-none", !loggedIn);
   if (loggedIn && auth) {
     const mt = el("navMobileText");
     if (mt) mt.textContent = auth.name || "+91 " + auth.mobile;
@@ -745,7 +747,12 @@ function render(res) {
   const explWrap = el("resultsExplanationWrap");
   if (res.explanation) {
     explWrap.classList.remove("d-none");
-    el("resultsExplanation").innerHTML = renderMarkdown(res.explanation);
+    // Show loading animation while displaying explanation
+    el("resultsExplanation").innerHTML = '<div class="typing"><span></span><span></span><span></span></div><p class="text-muted small mt-2">Loading and preparing your response...</p>';
+    // Replace with actual content after delay
+    setTimeout(() => {
+      el("resultsExplanation").innerHTML = renderMarkdown(res.explanation);
+    }, 1500);
   } else {
     explWrap.classList.add("d-none");
   }

@@ -29,7 +29,7 @@
         aria-label="Dashboard">
         <i class="bi bi-graph-up-arrow"></i>
       </button>
-      <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-history')"
+      <button id="navHistoryBtn" class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-history')"
         title="Past Conversations" aria-label="Past Conversations">
         <i class="bi bi-clock-history"></i>
       </button>
@@ -279,6 +279,189 @@
     </footer>
   </div>
 
+  <!-- ========== PAGE: MAIN APP ========== -->
+  <div id="page-main" class="ss-page d-none">
+    <div class="container-fluid py-3 px-md-4">
+      <div class="welcome-bar mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-2">
+          <span class="fs-5">👋</span>
+          <span class="fw-semibold">Welcome, <strong id="welcomeName" class="text-primary"></strong>!</span>
+          <span class="text-muted small d-none d-md-inline">Fill your profile to find schemes you qualify for.</span>
+        </div>
+        <button id="viewLastResultsBtn" class="btn btn-sm btn-outline-primary d-none"
+          onclick="showPage('page-results')">
+          <i class="bi bi-eye me-1"></i>Last Results
+        </button>
+      </div>
+
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-diagram-3 me-1"></i><span
+                data-i18n="pipelineTitle">ADK Agent Pipeline</span></h6>
+            <span id="modeBadge" class="badge rounded-pill text-bg-secondary"
+              style="font-size: 0.7rem; padding: 0.3rem 0.6rem;">connecting</span>
+          </div>
+          <div id="pipeline" class="d-flex flex-nowrap gap-2 overflow-auto pb-1"></div>
+        </div>
+      </div>
+
+      <div class="row g-3 g-lg-4 align-items-stretch">
+        <div class="col-lg-6">
+          <div class="card shadow-sm ask-card h-100 mb-0">
+            <div class="card-body d-flex flex-column">
+              <h6 class="fw-bold text-uppercase section-title small mb-2">
+                <i class="bi bi-stars me-1"></i> <span data-i18n="askTitle">Ask in your own words</span>
+              </h6>
+              <p class="small text-muted mb-3">Describe yourself in your own words</p>
+              <textarea id="freeText" class="form-control mb-3" rows="4" data-i18n-ph="askPlaceholder"
+                placeholder="e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech"></textarea>
+              <div class="d-grid gap-2 mb-3">
+                <button id="askBtn" class="btn btn-primary btn-lg-senior"
+                  title="Send your description to AI agents for analysis"><i class="bi bi-send-fill me-1"></i><span
+                    data-i18n="askBtn">Ask Agents</span></button>
+                <button id="voiceBtn" class="btn btn-voice btn-lg-senior"
+                  title="Press and hold to speak your profile in your own words"><span
+                    class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span><i
+                    class="bi bi-mic-fill me-1 mic-icon"></i><span id="voiceLabel" data-i18n="holdSpeak">Hold &amp;
+                    Speak</span></button>
+              </div>
+              <button id="guideBtn" class="btn btn-link btn-sm w-100 text-muted mt-auto" aria-controls="voiceGuide"
+                title="Learn how to use voice input"><i class="bi bi-volume-up-fill me-1"></i><span id="guideBtnText"
+                  data-i18n="guideBtn">How to use</span></button>
+              <div id="voiceGuide" class="voice-guide p-2 mt-2 d-none rounded bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h6 class="fw-bold mb-0 small"><i class="bi bi-info-circle me-1"></i><span id="guideHeading">How to
+                      use</span></h6>
+                  <button id="guideStopBtn" class="btn btn-sm btn-outline-secondary" title="Stop voice"><i
+                      class="bi bi-stop-fill"></i></button>
+                </div>
+                <ol id="guideSteps" class="guide-steps mb-2 ps-3 small"></ol>
+                <div id="guideExample" class="example small"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100 mb-0">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-person-vcard me-1"></i><span
+                    data-i18n="citizenProfile">Citizen Profile</span></h6>
+                <button id="sampleBtn" class="btn btn-sm btn-link p-0 small" data-i18n="trySample"
+                  title="Auto-fill with sample profile">Try sample</button>
+              </div>
+              <p class="small text-muted mb-3">Tell us about yourself to find matching schemes</p>
+              <form id="profileForm" class="row g-2">
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="age">Age</label><input
+                    type="number" class="form-control" name="age" min="0" max="120" placeholder="18" /></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="gender">Gender</label><select
+                    class="form-select" name="gender">
+                    <option value="">Any</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="state">State</label><select
+                    class="form-select" name="state">
+                    <option value="">Select state</option>
+                    <option>Andaman and Nicobar Islands</option>
+                    <option>Andhra Pradesh</option>
+                    <option>Arunachal Pradesh</option>
+                    <option>Assam</option>
+                    <option>Bihar</option>
+                    <option>Chandigarh</option>
+                    <option>Chattisgarh</option>
+                    <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                    <option>Delhi</option>
+                    <option>Goa</option>
+                    <option>Gujarat</option>
+                    <option>Haryana</option>
+                    <option>Himachal Pradesh</option>
+                    <option>Jammu and Kashmir</option>
+                    <option>Jharkhand</option>
+                    <option>Karnataka</option>
+                    <option>Kerala</option>
+                    <option>Ladakh</option>
+                    <option>Lakshadweep</option>
+                    <option>Madhya Pradesh</option>
+                    <option>Maharashtra</option>
+                    <option>Manipur</option>
+                    <option>Meghalaya</option>
+                    <option>Mizoram</option>
+                    <option>Nagaland</option>
+                    <option>Odisha</option>
+                    <option>Puducherry</option>
+                    <option>Punjab</option>
+                    <option>Rajasthan</option>
+                    <option>Sikkim</option>
+                    <option>Tamil Nadu</option>
+                    <option>Telangana</option>
+                    <option>Tripura</option>
+                    <option>Uttar Pradesh</option>
+                    <option>Uttarakhand</option>
+                    <option>West Bengal</option>
+                  </select></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="income">Income (₹)</label><input
+                    type="number" class="form-control" name="income" min="0" placeholder="0" /></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="education">Education</label><select
+                    class="form-select" name="education">
+                    <option value="">Any</option>
+                    <option>School</option>
+                    <option>UG</option>
+                    <option>PG</option>
+                    <option>Diploma</option>
+                  </select></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600"
+                    data-i18n="occupation">Occupation</label><select class="form-select" name="occupation">
+                    <option value="">Any</option>
+                    <option>Student</option>
+                    <option>Farmer</option>
+                    <option>Entrepreneur</option>
+                    <option>Self-Employed</option>
+                    <option>Unemployed</option>
+                  </select></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="category">Category</label><select
+                    class="form-select" name="social_category">
+                    <option value="">General</option>
+                    <option>SC</option>
+                    <option>ST</option>
+                    <option>OBC</option>
+                  </select></div>
+                <div class="col-12 col-sm-6 d-flex flex-column justify-content-end">
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"
+                      title="Select if you own agricultural or residential land"><label class="form-check-label small"
+                      for="land" data-i18n="land">Owns land</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"
+                      title="Select if you have any registered disability"><label class="form-check-label small"
+                      for="dis" data-i18n="disability">Disability</label></div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"
+                      title="Select if you are pregnant or a new mother"><label class="form-check-label small" for="mat"
+                      data-i18n="maternity">Pregnant / new mother</label></div>
+                </div>
+                <div class="col-12 mt-2">
+                  <button type="submit" class="btn btn-success btn-lg-senior w-100"
+                    title="Search for government schemes based on your profile"><i class="bi bi-search me-1"></i><span
+                      data-i18n="findSchemes">Find my schemes</span></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="placeholder" class="text-center text-muted py-5">
+        <i class="bi bi-file-earmark-text display-4 d-block mb-3"></i>
+        <span data-i18n="placeholder">Fill the profile or ask a question to discover the government schemes you
+          qualify for.</span>
+      </div>
+      <div id="spinner" class="text-center py-5 d-none">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="text-muted mt-3 mb-0" data-i18n="working">Agents are working on your request...</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ========== PAGE: LOGIN ========== -->
   <div id="page-login" class="ss-page d-none">
     <div class="auth-wrap">
@@ -460,194 +643,6 @@
     </div>
   </div>
 
-  <!-- ========== PAGE: MAIN APP ========== -->
-  <div id="page-main" class="ss-page d-none">
-    <div class="container-fluid py-3 px-md-4">
-      <div class="welcome-bar mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
-        <div class="d-flex align-items-center gap-2">
-          <span class="fs-5">👋</span>
-          <span class="fw-semibold">Welcome, <strong id="welcomeName" class="text-primary"></strong>!</span>
-          <span class="text-muted small d-none d-md-inline">Fill your profile to find schemes you qualify for.</span>
-        </div>
-        <button id="viewLastResultsBtn" class="btn btn-sm btn-outline-primary d-none"
-          onclick="showPage('page-results')">
-          <i class="bi bi-eye me-1"></i>Last Results
-        </button>
-      </div>
-
-      <div class="row g-4">
-        <!-- Left column: Ask, Profile, History (stacked) -->
-        <div class="col-lg-5">
-          <!-- Ask Card -->
-          <div class="card shadow-sm ask-card mb-4">
-            <div class="card-body">
-              <h6 class="fw-bold text-uppercase section-title small mb-2">
-                <i class="bi bi-stars me-1"></i> <span data-i18n="askTitle">Ask in your own words</span>
-              </h6>
-              <p class="small text-muted mb-3">Describe yourself in your own words</p>
-              <textarea id="freeText" class="form-control mb-3" rows="4" data-i18n-ph="askPlaceholder"
-                placeholder="e.g. I am a 65-year-old retired person from Bihar, or: I am a 19-year-old girl from Kanpur pursuing B.Tech"></textarea>
-              <div class="d-grid gap-2 mb-3">
-                <button id="askBtn" class="btn btn-primary btn-lg-senior"
-                  title="Send your description to AI agents for analysis"><i class="bi bi-send-fill me-1"></i><span
-                    data-i18n="askBtn">Ask Agents</span></button>
-                <button id="voiceBtn" class="btn btn-voice btn-lg-senior"
-                  title="Press and hold to speak your profile in your own words"><span
-                    class="voice-wave"><span></span><span></span><span></span><span></span><span></span></span><i
-                    class="bi bi-mic-fill me-1 mic-icon"></i><span id="voiceLabel" data-i18n="holdSpeak">Hold &amp;
-                    Speak</span></button>
-              </div>
-              <button id="guideBtn" class="btn btn-link btn-sm w-100 text-muted" aria-controls="voiceGuide"
-                title="Learn how to use voice input"><i class="bi bi-volume-up-fill me-1"></i><span id="guideBtnText"
-                  data-i18n="guideBtn">How to use</span></button>
-              <div id="voiceGuide" class="voice-guide p-2 mt-2 d-none rounded bg-light">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h6 class="fw-bold mb-0 small"><i class="bi bi-info-circle me-1"></i><span id="guideHeading">How to
-                      use</span></h6>
-                  <button id="guideStopBtn" class="btn btn-sm btn-outline-secondary" title="Stop voice"><i
-                      class="bi bi-stop-fill"></i></button>
-                </div>
-                <ol id="guideSteps" class="guide-steps mb-2 ps-3 small"></ol>
-                <div id="guideExample" class="example small"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Citizen Profile Card -->
-          <div class="card shadow-sm mb-4">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-person-vcard me-1"></i><span
-                    data-i18n="citizenProfile">Citizen Profile</span></h6>
-                <button id="sampleBtn" class="btn btn-sm btn-link p-0 small" data-i18n="trySample"
-                  title="Auto-fill with sample profile">Try sample</button>
-              </div>
-              <p class="small text-muted mb-3">Tell us about yourself to find matching schemes</p>
-              <form id="profileForm" class="row g-2">
-                <div class="col-6"><label class="form-label small fw-600" data-i18n="age">Age</label><input
-                    type="number" class="form-control" name="age" min="0" max="120" placeholder="18" /></div>
-                <div class="col-6"><label class="form-label small fw-600" data-i18n="gender">Gender</label><select
-                    class="form-select" name="gender">
-                    <option value="">Any</option>
-                    <option>Male</option>
-                    <option>Female</option>
-                  </select></div>
-                <div class="col-6"><label class="form-label small fw-600" data-i18n="state">State</label><select
-                    class="form-select" name="state">
-                    <option value="">Select state</option>
-                    <option>Andaman and Nicobar Islands</option>
-                    <option>Andhra Pradesh</option>
-                    <option>Arunachal Pradesh</option>
-                    <option>Assam</option>
-                    <option>Bihar</option>
-                    <option>Chandigarh</option>
-                    <option>Chattisgarh</option>
-                    <option>Dadra and Nagar Haveli and Daman and Diu</option>
-                    <option>Delhi</option>
-                    <option>Goa</option>
-                    <option>Gujarat</option>
-                    <option>Haryana</option>
-                    <option>Himachal Pradesh</option>
-                    <option>Jammu and Kashmir</option>
-                    <option>Jharkhand</option>
-                    <option>Karnataka</option>
-                    <option>Kerala</option>
-                    <option>Ladakh</option>
-                    <option>Lakshadweep</option>
-                    <option>Madhya Pradesh</option>
-                    <option>Maharashtra</option>
-                    <option>Manipur</option>
-                    <option>Meghalaya</option>
-                    <option>Mizoram</option>
-                    <option>Nagaland</option>
-                    <option>Odisha</option>
-                    <option>Puducherry</option>
-                    <option>Punjab</option>
-                    < <option>Rajasthan</option>
-                      <option>Sikkim</option>
-                      <option>Tamil Nadu</option>
-                      <option>Telangana</option>
-                      <option>Tripura</option>
-                      <option>Uttar Pradesh</option>
-                      <option>Uttarakhand</option>
-                      <option>West Bengal</option>
-                  </select></div>
-                <div class="col-6"><label class="form-label small fw-600" data-i18n="income">Income (₹)</label><input
-                    type="number" class="form-control" name="income" min="0" placeholder="0" /></div>
-                <div class="col-6"><label class="form-label small fw-600" data-i18n="education">Education</label><select
-                    class="form-select" name="education">
-                    <option value="">Any</option>
-                    <option>School</option>
-                    <option>UG</option>
-                    <option>PG</option>
-                    <option>Diploma</option>
-                  </select></div>
-                <div class="col-6"><label class="form-label small fw-600"
-                    data-i18n="occupation">Occupation</label><select class="form-select" name="occupation">
-                    <option value="">Any</option>
-                    <option>Student</option>
-                    <option>Farmer</option>
-                    <option>Entrepreneur</option>
-                    <option>Self-Employed</option>
-                    <option>Unemployed</option>
-                  </select></div>
-                <div class="col-6"><label class="form-label small fw-600" data-i18n="category">Category</label><select
-                    class="form-select" name="social_category">
-                    <option value="">General</option>
-                    <option>SC</option>
-                    <option>ST</option>
-                    <option>OBC</option>
-                  </select></div>
-                <div class="col-6 d-flex flex-column justify-content-end">
-                  <div class="form-check"><input class="form-check-input" type="checkbox" name="land_owner" id="land"
-                      title="Select if you own agricultural or residential land"><label class="form-check-label small"
-                      for="land" data-i18n="land">Owns land</label></div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" name="disability" id="dis"
-                      title="Select if you have any registered disability"><label class="form-check-label small"
-                      for="dis" data-i18n="disability">Disability</label></div>
-                  <div class="form-check"><input class="form-check-input" type="checkbox" name="maternity" id="mat"
-                      title="Select if you are pregnant or a new mother"><label class="form-check-label small" for="mat"
-                      data-i18n="maternity">Pregnant / new mother</label></div>
-                </div>
-                <div class="col-12 mt-2">
-                  <button type="submit" class="btn btn-success btn-lg-senior w-100"
-                    title="Search for government schemes based on your profile"><i class="bi bi-search me-1"></i><span
-                      data-i18n="findSchemes">Find my schemes</span></button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-
-        </div>
-
-        <!-- Right column: Agent Pipeline + Results -->
-        <div class="col-lg-7">
-          <div class="card shadow-sm mb-4">
-            <div class="card-body">
-              <div class="d-flex align-items-center gap-2 mb-3">
-                <h6 class="fw-bold text-uppercase section-title small mb-0"><i class="bi bi-diagram-3 me-1"></i><span
-                    data-i18n="pipelineTitle">ADK Agent Pipeline</span></h6>
-                <span id="modeBadge" class="badge rounded-pill text-bg-secondary"
-                  style="font-size: 0.7rem; padding: 0.3rem 0.6rem;">connecting</span>
-              </div>
-              <div id="pipeline" class="d-flex flex-wrap gap-2"></div>
-            </div>
-          </div>
-          <div id="placeholder" class="text-center text-muted py-5">
-            <i class="bi bi-file-earmark-text display-4 d-block mb-3"></i>
-            <span data-i18n="placeholder">Fill the profile or ask a question to discover the government schemes you
-              qualify for.</span>
-          </div>
-          <div id="spinner" class="text-center py-5 d-none">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="text-muted mt-3 mb-0" data-i18n="working">Agents are working on your request...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ========== PAGE: RESULTS ========== -->
   <div id="page-results" class="ss-page d-none">
     <div class="container-fluid py-3 px-md-4">
@@ -679,6 +674,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <h6 class="fw-bold text-uppercase section-title small mb-0">
                 <i class="bi bi-robot me-1"></i> <span data-i18n="aiTitle">AI Decision Intelligence</span>
+                <span class="live-badge ms-2">ADK agents live</span>
               </h6>
               <button class="btn btn-sm btn-link p-0" data-bs-toggle="collapse" data-bs-target="#resultsExplBody"
                 aria-expanded="true">
