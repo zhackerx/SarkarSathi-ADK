@@ -747,7 +747,12 @@ function render(res) {
   const explWrap = el("resultsExplanationWrap");
   if (res.explanation) {
     explWrap.classList.remove("d-none");
-    el("resultsExplanation").innerHTML = renderMarkdown(res.explanation);
+    // Show loading animation while displaying explanation
+    el("resultsExplanation").innerHTML = '<div class="typing"><span></span><span></span><span></span></div><p class="text-muted small mt-2">Loading and preparing your response...</p>';
+    // Replace with actual content
+    setTimeout(() => {
+      el("resultsExplanation").innerHTML = renderMarkdown(res.explanation);
+    }, 300);
   } else {
     explWrap.classList.add("d-none");
   }
