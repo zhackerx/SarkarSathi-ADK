@@ -2002,6 +2002,11 @@ input:focus-visible {
   border-color: rgba(100, 140, 255, 0.3);
 }
 
+[data-theme="dark"] #navUserBadge {
+  background: #0d6e2a !important;
+  color: #e8f5e9 !important;
+}
+
 /* ============ MOBILE & RESPONSIVE ============ */
 /* Touch-friendly minimum sizes for all buttons and inputs */
 button,
