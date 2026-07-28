@@ -448,6 +448,31 @@ body {
   margin-bottom: 0;
 }
 
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.24rem 0.55rem;
+  margin-left: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: #138808;
+  background: #eafbe7;
+  border: 1px solid rgba(19, 136, 8, 0.18);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+  .live-badge {
+    margin-left: 0.25rem;
+    padding: 0.2rem 0.45rem;
+    font-size: 0.62rem;
+  }
+}
+
 @media (max-width: 575.98px) {
   #page-main .container-fluid {
     padding-left: 0.75rem;
