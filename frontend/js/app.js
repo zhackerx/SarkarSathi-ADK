@@ -525,6 +525,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Enter") { e.preventDefault(); refineChat(); }
     });
   }
+  bindUploadedDocDeleteHandler();
   bindEvent("docCheckBtn", "click", runDocCheck);
   bindEvent("docUploadBtn", "click", handleDocUpload);
   bindEvent("docReadyBtn", "click", () => {
@@ -1095,7 +1096,8 @@ function addUploadedDoc(schemeId, file) {
 function removeUploadedDoc(schemeId, docId) {
   const docs = getUploadedDocs();
   if (docs[schemeId]) {
-    docs[schemeId] = docs[schemeId].filter(d => d.id !== docId);
+    docs[schemeId] = docs[schemeId].filter((d) => d.id !== docId);
+    if (docs[schemeId].length === 0) delete docs[schemeId];
   }
   saveUploadedDocs(docs);
 }
@@ -1115,20 +1117,33 @@ function displayUploadedFiles(schemeId) {
   }
 
   if (noFiles) noFiles.classList.add("d-none");
-  list.innerHTML = schemeFiles.map(doc => {
+  list.innerHTML = schemeFiles.map((doc) => {
     const date = new Date(doc.uploadTime).toLocaleDateString();
     const sizeKB = (doc.size / 1024).toFixed(1);
     return `
-      <div class="list-group-item d-flex justify-content-between align-items-center py-2">
-        <div>
-          <div class="small fw-500"><i class="bi bi-file-earmark me-1"></i>${escapeHtml(doc.name)}</div>
+      <div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3 rounded-2">
+        <div class="me-3">
+          <div class="small fw-600"><i class="bi bi-file-earmark me-1"></i>${escapeHtml(doc.name)}</div>
           <div class="text-muted small">${sizeKB} KB · ${date}</div>
         </div>
-        <button class="btn btn-sm btn-outline-danger" onclick="removeUploadedDoc('${schemeId}', '${doc.id}'); displayUploadedFiles('${schemeId}')" title="Delete this file">
-          <i class="bi bi-trash"></i>
+        <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete-uploaded-doc" data-scheme-id="${escapeHtml(schemeId)}" data-doc-id="${escapeHtml(doc.id)}" title="Delete this file">
+          <i class="bi bi-trash me-1"></i>Delete
         </button>
       </div>`;
   }).join("");
+}
+
+function bindUploadedDocDeleteHandler() {
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-action='delete-uploaded-doc']");
+    if (!button) return;
+    const schemeId = button.getAttribute("data-scheme-id");
+    const docId = button.getAttribute("data-doc-id");
+    if (!schemeId || !docId) return;
+    event.preventDefault();
+    event.stopPropagation();
+    window.removeUploadedDoc(schemeId, docId);
+  });
 }
 
 window.openDoc = function (schemeId) {
@@ -1188,6 +1203,7 @@ window.handleDocUpload = function () {
 
 window.removeUploadedDoc = function (schemeId, docId) {
   removeUploadedDoc(schemeId, docId);
+  displayUploadedFiles(schemeId);
 };
 
 async function runDocCheck() {

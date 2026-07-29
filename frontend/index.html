@@ -29,8 +29,8 @@
         aria-label="Dashboard">
         <i class="bi bi-graph-up-arrow"></i>
       </button>
-      <button id="navHistoryBtn" class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-history')"
-        title="Past Conversations" aria-label="Past Conversations">
+      <button id="navHistoryBtn" class="btn btn-sm nav-icon-btn d-none d-md-inline-flex"
+        onclick="showPage('page-history')" title="Past Conversations" aria-label="Past Conversations">
         <i class="bi bi-clock-history"></i>
       </button>
       <button class="btn btn-sm nav-icon-btn d-none d-md-inline-flex" onclick="showPage('page-about')" title="About"
@@ -356,14 +356,14 @@
               <form id="profileForm" class="row g-2">
                 <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="age">Age</label><input
                     type="number" class="form-control" name="age" min="0" max="120" placeholder="18" /></div>
-                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="gender">Gender</label><select
-                    class="form-select" name="gender">
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600"
+                    data-i18n="gender">Gender</label><select class="form-select" name="gender">
                     <option value="">Any</option>
                     <option>Male</option>
                     <option>Female</option>
                   </select></div>
-                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="state">State</label><select
-                    class="form-select" name="state">
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600"
+                    data-i18n="state">State</label><select class="form-select" name="state">
                     <option value="">Select state</option>
                     <option>Andaman and Nicobar Islands</option>
                     <option>Andhra Pradesh</option>
@@ -402,10 +402,10 @@
                     <option>Uttarakhand</option>
                     <option>West Bengal</option>
                   </select></div>
-                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="income">Income (₹)</label><input
-                    type="number" class="form-control" name="income" min="0" placeholder="0" /></div>
-                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="education">Education</label><select
-                    class="form-select" name="education">
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="income">Income
+                    (₹)</label><input type="number" class="form-control" name="income" min="0" placeholder="0" /></div>
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600"
+                    data-i18n="education">Education</label><select class="form-select" name="education">
                     <option value="">Any</option>
                     <option>School</option>
                     <option>UG</option>
@@ -421,8 +421,8 @@
                     <option>Self-Employed</option>
                     <option>Unemployed</option>
                   </select></div>
-                <div class="col-12 col-sm-6"><label class="form-label small fw-600" data-i18n="category">Category</label><select
-                    class="form-select" name="social_category">
+                <div class="col-12 col-sm-6"><label class="form-label small fw-600"
+                    data-i18n="category">Category</label><select class="form-select" name="social_category">
                     <option value="">General</option>
                     <option>SC</option>
                     <option>ST</option>
@@ -687,68 +687,68 @@
                 <input id="refineInput" class="Chat" placeholder="Chat and Refine" type="text">
                 <button id="refineSendBtn" class="send"><i class="bi bi-send-fill"></i></button>
               </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- SECTION 1: TOP RECOMMENDED -->
-      <section id="topSchemesSection" class="results-section mb-5">
-        <div class="section-hdr section-hdr-gold">
-          <div class="section-hdr-left">
-            <h3 class="fw-bold mb-1">🏆 Top Recommended Schemes</h3>
-            <p class="mb-0 opacity-75">Ranked by overall benefit value, financial assistance and eligibility match</p>
-          </div>
-          <span id="topSchemesBadge" class="section-count-badge badge-gold"></span>
-        </div>
-        <div id="topSchemeCards" class="row g-4 mt-1"></div>
-      </section>
-
-      <!-- SECTION 2: ELIGIBLE -->
-      <section id="eligibleSection" class="results-section mb-5">
-        <div class="section-hdr section-hdr-green">
-          <div class="section-hdr-left">
-            <h4 class="fw-bold mb-1">✅ Eligible Schemes</h4>
-            <p class="mb-0 opacity-75">All schemes you fully qualify for</p>
-          </div>
-          <span id="eligibleBadge" class="section-count-badge badge-green"></span>
-        </div>
-        <div id="eligibleCards" class="row g-3 mt-1"></div>
-        <div id="eligibleEmpty" class="d-none text-center text-muted py-4">
-          <i class="bi bi-emoji-neutral display-6 d-block mb-2"></i>
-          No fully eligible schemes found. Try adjusting your profile criteria.
-        </div>
-      </section>
-
-      <!-- SECTION 3: NEARLY ELIGIBLE -->
-      <section id="nearlySection" class="results-section mb-5 d-none">
-        <div class="section-hdr section-hdr-warning">
-          <div class="section-hdr-left">
-            <h4 class="fw-bold mb-1">⚠️ Nearly Eligible Schemes</h4>
-            <p class="mb-0 opacity-75">You satisfy all but one requirement — see exactly what is missing</p>
-          </div>
-          <span id="nearlyBadge" class="section-count-badge badge-warning"></span>
-        </div>
-        <div id="nearlyCards" class="row g-3 mt-1"></div>
-      </section>
-
-      <!-- SECTION 4: SAVED -->
-      <section id="savedSection" class="results-section mb-5">
-        <div class="section-hdr section-hdr-blue">
-          <div class="section-hdr-left">
-            <h4 class="fw-bold mb-1">📄 Saved / Bookmarked Schemes</h4>
-            <p class="mb-0 opacity-75">Schemes you have saved for later reference</p>
-          </div>
-          <span id="savedBadge" class="section-count-badge badge-blue"></span>
-        </div>
-        <div id="savedCards" class="row g-3 mt-1"></div>
-        <div id="savedEmpty" class="text-center text-muted py-4">
-          <i class="bi bi-bookmark display-6 d-block mb-2"></i>
-          No saved schemes yet. Click the bookmark icon on any scheme to save it here.
-        </div>
-      </section>
     </div>
+
+    <!-- SECTION 1: TOP RECOMMENDED -->
+    <section id="topSchemesSection" class="results-section mb-5">
+      <div class="section-hdr section-hdr-gold">
+        <div class="section-hdr-left">
+          <h3 class="fw-bold mb-1">🏆 Top Recommended Schemes</h3>
+          <p class="mb-0 opacity-75">Ranked by overall benefit value, financial assistance and eligibility match</p>
+        </div>
+        <span id="topSchemesBadge" class="section-count-badge badge-gold"></span>
+      </div>
+      <div id="topSchemeCards" class="row g-4 mt-1"></div>
+    </section>
+
+    <!-- SECTION 2: ELIGIBLE -->
+    <section id="eligibleSection" class="results-section mb-5">
+      <div class="section-hdr section-hdr-green">
+        <div class="section-hdr-left">
+          <h4 class="fw-bold mb-1">✅ Eligible Schemes</h4>
+          <p class="mb-0 opacity-75">All schemes you fully qualify for</p>
+        </div>
+        <span id="eligibleBadge" class="section-count-badge badge-green"></span>
+      </div>
+      <div id="eligibleCards" class="row g-3 mt-1"></div>
+      <div id="eligibleEmpty" class="d-none text-center text-muted py-4">
+        <i class="bi bi-emoji-neutral display-6 d-block mb-2"></i>
+        No fully eligible schemes found. Try adjusting your profile criteria.
+      </div>
+    </section>
+
+    <!-- SECTION 3: NEARLY ELIGIBLE -->
+    <section id="nearlySection" class="results-section mb-5 d-none">
+      <div class="section-hdr section-hdr-warning">
+        <div class="section-hdr-left">
+          <h4 class="fw-bold mb-1">⚠️ Nearly Eligible Schemes</h4>
+          <p class="mb-0 opacity-75">You satisfy all but one requirement — see exactly what is missing</p>
+        </div>
+        <span id="nearlyBadge" class="section-count-badge badge-warning"></span>
+      </div>
+      <div id="nearlyCards" class="row g-3 mt-1"></div>
+    </section>
+
+    <!-- SECTION 4: SAVED -->
+    <section id="savedSection" class="results-section mb-5">
+      <div class="section-hdr section-hdr-blue">
+        <div class="section-hdr-left">
+          <h4 class="fw-bold mb-1">📄 Saved / Bookmarked Schemes</h4>
+          <p class="mb-0 opacity-75">Schemes you have saved for later reference</p>
+        </div>
+        <span id="savedBadge" class="section-count-badge badge-blue"></span>
+      </div>
+      <div id="savedCards" class="row g-3 mt-1"></div>
+      <div id="savedEmpty" class="text-center text-muted py-4">
+        <i class="bi bi-bookmark display-6 d-block mb-2"></i>
+        No saved schemes yet. Click the bookmark icon on any scheme to save it here.
+      </div>
+    </section>
+  </div>
   </div>
 
   <!-- ========== PAGE: PAST CONVERSATIONS ========== -->
@@ -1021,7 +1021,7 @@
         <div class="modal-body">
           <div class="mb-3">
             <p class="fw-bold mb-2">Required Documents:</p>
-            <div id="docRequiredList" class="mb-3 p-3 rounded border bg-light"
+            <div id="docRequiredList" class="mb-3 p-3 rounded border bg-light shadow-sm"
               style="max-height: 200px; overflow-y: auto;"></div>
           </div>
 
