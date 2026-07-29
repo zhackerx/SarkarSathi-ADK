@@ -1087,6 +1087,64 @@ body {
   color: var(--ink);
 }
 
+[data-theme="dark"] .btn-close {
+  color: white;
+}
+
+[data-theme="dark"] #docRequiredList,
+[data-theme="dark"] #uploadedFilesList,
+[data-theme="dark"] #docUploadedList {
+  background: #ffffff;
+  color: #111111;
+  border-color: #d1d5db;
+}
+
+[data-theme="dark"] #docRequiredList .list-group-item,
+[data-theme="dark"] #uploadedFilesList .list-group-item {
+  background: #ffffff;
+  color: #111111;
+  border-color: #e5e7eb;
+}
+
+[data-theme="dark"] #docRequiredList .bi-file-pdf {
+  color: #dc2626 !important;
+}
+
+[data-theme="dark"] #docFileInput,
+[data-theme="dark"] #docFileInput.form-control {
+  background: #ffffff;
+  color: #111111;
+  -webkit-text-fill-color: #111111;
+  border-color: #d1d5db;
+}
+
+[data-theme="dark"] #docFileInput::file-selector-button {
+  color: #111111;
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+[data-theme="dark"] #docUploadBtn {
+  background: #2d6cdf;
+  color: #ffffff;
+  border-color: #2d6cdf;
+}
+
+[data-theme="dark"] #docUploadBtn:hover {
+  background: #3e7de8;
+  border-color: #3e7de8;
+}
+
+[data-theme="dark"] #uploadedFilesList .btn-outline-danger {
+  color: #ff8f8f;
+  border-color: #ff8f8f;
+}
+
+[data-theme="dark"] #uploadedFilesList .btn-outline-danger:hover {
+  background: rgba(255, 143, 143, 0.16);
+  color: #ffd0d0;
+}
+
 [data-theme="dark"] .history-item {
   background: rgba(17, 24, 48, 0.7);
   color: var(--ink);
