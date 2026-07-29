@@ -4,6 +4,31 @@ const API = ""; // same origin (Flask serves this page)
 const el = (id) => document.getElementById(id);
 const lang = () => (el("langSelect") ? el("langSelect").value : "en");
 
+function getLanguageLabel(code) {
+  const labels = {
+    en: "English",
+    hi: "हिंदी",
+    bn: "বাংলা",
+    ta: "தமிழ்",
+    te: "తెలుగు",
+    mr: "मराठी",
+    kn: "ಕನ್ನಡ",
+    gu: "ગુજરાતી",
+    pa: "ਪੰਜਾਬੀ",
+    ml: "മലയാളം",
+    or: "ଓଡ଼ିଆ",
+  };
+  return labels[code] || "English";
+}
+
+function updateLanguageDisplay() {
+  const display = el("langDisplay");
+  const select = el("langSelect");
+  if (display && select) {
+    display.textContent = getLanguageLabel(select.value || "en");
+  }
+}
+
 function bindEvent(id, eventName, handler) {
   const node = el(id);
   if (!node) return false;
@@ -473,6 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
   docModal = new bootstrap.Modal(el("docModal"));
   initTheme();
   applyI18n();
+  updateLanguageDisplay();
 
   // Routing: show appropriate page
   if (isLoggedIn()) {
@@ -554,6 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bindEvent("langSelect", "change", () => {
     stopGuide();
     applyI18n();
+    updateLanguageDisplay();
     renderHistory();
     if (el("voiceGuide") && !el("voiceGuide").classList.contains("d-none")) renderGuide();
   });

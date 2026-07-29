@@ -1245,6 +1245,29 @@ input:focus-visible {
   font-size: 1rem;
 }
 
+.lang-switcher {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  min-width: 84px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+.lang-switcher:hover,
+.lang-switcher:focus {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
 .nav-icon-btn:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
